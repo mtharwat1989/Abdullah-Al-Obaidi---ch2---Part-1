@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#15110a">
+  <title>مراجعة مهارات الإدارة | عبدالله العبيدي</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #110e09;
+      --panel: rgba(32, 27, 18, .88);
+      --panel-light: #282216;
+      --gold: #e6bf72;
+      --gold-bright: #f5d995;
+      --muted-gold: #9c804d;
+      --text: #f7f0df;
+      --muted: #b8ad96;
+      --green: #8dd6a6;
+      --red: #f08f81;
+      --line: rgba(230, 191, 114, .17);
+      --shadow: 0 24px 80px rgba(0,0,0,.38);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 82% 0%, rgba(181, 135, 54, .16), transparent 36rem),
+        radial-gradient(ellipse at 4% 52%, rgba(120, 87, 31, .10), transparent 32rem),
+        var(--bg);
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    button { font: inherit; }
+    .page-shell { width: min(1120px, calc(100% - 36px)); margin: auto; }
+    .topbar {
+      min-height: 78px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(230,191,114,.12);
+    }
+    .brand { display: flex; gap: 12px; align-items: center; font-weight: 700; letter-spacing: -.3px; }
+    .brand-mark {
+      width: 39px; height: 39px; display: grid; place-items: center;
+      border: 1px solid rgba(245,217,149,.55); border-radius: 13px;
+      color: var(--gold-bright); background: linear-gradient(145deg, rgba(230,191,114,.18), rgba(230,191,114,.04));
+      box-shadow: inset 0 0 16px rgba(230,191,114,.08);
+    }
+    .brand small { display: block; color: var(--muted); font-size: 11px; font-weight: 400; margin-top: 2px; }
+    .top-actions { display: flex; align-items: center; gap: 12px; }
+    .sound-toggle, .pill {
+      display: inline-flex; align-items: center; gap: 7px; color: var(--muted);
+      background: rgba(255,255,255,.035); border: 1px solid var(--line);
+      border-radius: 999px; padding: 9px 13px; font-size: 12px;
+    }
+    .sound-toggle { cursor: pointer; transition: .2s; }
+    .sound-toggle:hover { color: var(--gold-bright); border-color: var(--muted-gold); }
+    .hero { padding: 65px 0 34px; text-align: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px;
+      color: var(--gold-bright); border: 1px solid rgba(230,191,114,.25);
+      background: rgba(230,191,114,.06); border-radius: 100px; font-size: 12px;
+    }
+    .hero h1 {
+      margin: 19px 0 10px; font-size: clamp(34px, 5vw, 56px); line-height: 1.22;
+      letter-spacing: -1.5px; font-weight: 700;
+    }
+    .hero h1 span {
+      color: var(--gold-bright);
+      background: linear-gradient(90deg, #f7dda4, #c3923f);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p { max-width: 610px; margin: 0 auto; color: var(--muted); line-height: 1.9; font-size: 15px; }
+    .hero-meta { display: flex; justify-content: center; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+    .hero-meta .pill { padding: 8px 12px; }
+
+    .quiz-wrap { max-width: 840px; margin: 0 auto 80px; }
+    .quiz-card {
+      position: relative; overflow: hidden; border: 1px solid rgba(230,191,114,.22);
+      border-radius: 23px; background: linear-gradient(145deg, rgba(37,31,21,.97), rgba(24,21,16,.98));
+      box-shadow: var(--shadow);
+    }
+    .quiz-card::before {
+      content: ""; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245,217,149,.75), transparent);
+    }
+    .quiz-inner { padding: clamp(20px, 5vw, 37px); }
+    .quiz-topline { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .section-tag { color: var(--gold); font-size: 12px; font-weight: 600; }
+    .counter { color: var(--muted); font: 600 12px Manrope, sans-serif; direction: ltr; }
+    .progress-track { height: 5px; margin: 17px 0 29px; border-radius: 9px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #a9792d, #f4d38e); transition: width .45s ease; }
+    .question-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .question-kicker { color: var(--muted); font-size: 12px; margin-bottom: 9px; }
+    .question-text {
+      margin: 0; color: #fff8e9; font: 600 clamp(16px, 2.4vw, 19px)/1.8 Manrope, "IBM Plex Sans Arabic", sans-serif;
+      direction: ltr; text-align: left;
+    }
+    .question-text.arabic { font-family: "IBM Plex Sans Arabic", sans-serif; direction: rtl; text-align: right; }
+    .translate-btn {
+      flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 11px; border: 1px solid rgba(230,191,114,.25);
+      border-radius: 10px; background: rgba(230,191,114,.06); color: var(--gold-bright);
+      font-size: 12px; cursor: pointer; transition: .2s;
+    }
+    .translate-btn:hover { background: rgba(230,191,114,.13); transform: translateY(-1px); }
+    .answers { display: grid; gap: 11px; margin-top: 25px; }
+    .answer-option {
+      position: relative; display: flex; align-items: center; gap: 13px; min-height: 58px;
+      width: 100%; padding: 12px 15px; text-align: left; direction: ltr;
+      border: 1px solid rgba(255,255,255,.10); border-radius: 13px;
+      color: #eee7d8; background: rgba(255,255,255,.025);
+      cursor: pointer; transition: border .2s, background .2s, transform .2s;
+    }
+    .answer-option:hover:not(:disabled) { border-color: rgba(230,191,114,.55); background: rgba(230,191,114,.07); transform: translateY(-1px); }
+    .answer-option.arabic { direction: rtl; text-align: right; }
+    .option-key {
+      flex: 0 0 29px; height: 29px; display: grid; place-items: center;
+      border-radius: 9px; border: 1px solid rgba(230,191,114,.24);
+      color: var(--gold-bright); font: 700 12px Manrope, sans-serif;
+    }
+    .option-label { line-height: 1.65; font: 500 14px/1.65 Manrope, "IBM Plex Sans Arabic", sans-serif; }
+    .answer-option.correct { border-color: rgba(141,214,166,.6); background: rgba(48,124,77,.15); }
+    .answer-option.correct .option-key { color: var(--green); border-color: rgba(141,214,166,.55); }
+    .answer-option.incorrect { border-color: rgba(240,143,129,.55); background: rgba(139,50,43,.15); }
+    .answer-option.incorrect .option-key { color: var(--red); border-color: rgba(240,143,129,.5); }
+    .answer-option:disabled { cursor: default; }
+    .feedback {
+      display: none; margin-top: 20px; padding: 15px 16px; border-radius: 13px;
+      border: 1px solid; animation: appear .28s ease both;
+    }
+    .feedback.show { display: block; }
+    .feedback.success { border-color: rgba(141,214,166,.34); background: rgba(47,113,70,.11); }
+    .feedback.retry { border-color: rgba(240,143,129,.32); background: rgba(133,52,44,.10); }
+    .feedback-title { margin: 0 0 5px; font-weight: 700; font-size: 15px; }
+    .feedback.success .feedback-title { color: var(--green); }
+    .feedback.retry .feedback-title { color: var(--red); }
+    .feedback-copy { margin: 0; color: #d1c8b5; font-size: 13px; line-height: 1.8; }
+    .explanation {
+      display: none; margin-top: 12px; padding: 15px 17px; border-radius: 12px;
+      background: rgba(230,191,114,.055); border: 1px solid rgba(230,191,114,.15);
+      animation: appear .3s ease both;
+    }
+    .explanation.show { display: block; }
+    .explanation h3 { margin: 0 0 7px; color: var(--gold-bright); font-size: 13px; }
+    .explanation p { margin: 0; color: #d5cbb7; font-size: 13px; line-height: 1.9; }
+    .explanation .model-answer { display: block; margin-top: 8px; color: #fff0c9; font-weight: 600; }
+    .quiz-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 23px; }
+    .footer-hint { color: #918773; font-size: 11px; line-height: 1.7; }
+    .primary-btn, .secondary-btn {
+      border: 0; border-radius: 12px; padding: 12px 20px; cursor: pointer;
+      font-weight: 700; transition: .2s;
+    }
+    .primary-btn {
+      color: #241a0b; background: linear-gradient(135deg, #f1d38e, #c59442);
+      box-shadow: 0 7px 20px rgba(171,123,44,.19);
+    }
+    .primary-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(171,123,44,.28); }
+    .primary-btn:disabled { cursor: not-allowed; opacity: .4; box-shadow: none; }
+    .secondary-btn { color: var(--gold-bright); background: rgba(230,191,114,.08); border: 1px solid var(--line); }
+    .secondary-btn:hover { background: rgba(230,191,114,.14); }
+    .start-screen { text-align: center; padding: 27px 10px 17px; }
+    .start-emblem {
+      margin: 0 auto 18px; width: 67px; height: 67px; display: grid; place-items: center;
+      font-size: 27px; border-radius: 22px; color: var(--gold-bright);
+      border: 1px solid rgba(230,191,114,.34);
+      background: radial-gradient(circle at 35% 25%, rgba(245,217,149,.18), rgba(230,191,114,.03));
+    }
+    .start-screen h2 { margin: 0 0 10px; font-size: 24px; }
+    .start-screen p { max-width: 490px; margin: 0 auto 23px; color: var(--muted); line-height: 1.9; font-size: 14px; }
+    .start-screen .primary-btn { padding: 13px 25px; }
+    .report { display: none; }
+    .report.show { display: block; animation: appear .45s ease both; }
+    .report-head { text-align: center; padding: 8px 0 24px; }
+    .report-icon { font-size: 42px; }
+    .report-head h2 { margin: 9px 0 6px; font-size: 27px; }
+    .report-head p { margin: 0; color: var(--muted); }
+    .score-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 11px; margin: 22px 0; }
+    .score-box { padding: 15px; text-align: center; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,255,255,.025); }
+    .score-box strong { display: block; color: var(--gold-bright); font: 800 23px Manrope, sans-serif; }
+    .score-box span { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+    .report-list { display: grid; gap: 9px; margin-top: 22px; }
+    .report-item { padding: 13px 15px; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: rgba(255,255,255,.025); }
+    .report-item.is-correct { border-right: 3px solid var(--green); }
+    .report-item.is-wrong { border-right: 3px solid var(--red); }
+    .report-item .report-q { color: #eee5d2; font-size: 12px; line-height: 1.7; }
+    .report-item .report-answer { margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .report-item .report-answer b { color: var(--gold-bright); }
+    .report-tools { display: flex; justify-content: center; margin-top: 23px; }
+    .footer-note { text-align: center; padding: 0 0 30px; color: #746b5a; font-size: 11px; }
+    .confetti-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99; }
+    .toast {
+      position: fixed; z-index: 100; bottom: 23px; left: 50%; transform: translate(-50%, 20px);
+      background: #292116; border: 1px solid rgba(230,191,114,.35); color: var(--gold-bright);
+      border-radius: 12px; padding: 11px 17px; font-size: 13px; opacity: 0; transition: .3s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%,0); }
+    @keyframes appear { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 600px) {
+      .page-shell { width: min(100% - 24px, 1120px); }
+      .topbar { min-height: 67px; }
+      .brand { font-size: 13px; }
+      .brand-mark { width: 35px; height: 35px; }
+      .brand small { font-size: 10px; }
+      .sound-toggle { padding: 8px 10px; font-size: 11px; }
+      .hero { padding: 43px 0 25px; }
+      .hero p { font-size: 13px; }
+      .quiz-inner { padding: 20px 16px; }
+      .question-header { gap: 8px; }
+      .translate-btn { padding: 8px; font-size: 11px; }
+      .answer-option { min-height: 54px; padding: 11px; }
+      .option-label { font-size: 13px; }
+      .quiz-footer { align-items: flex-end; }
+      .footer-hint { max-width: 155px; }
+      .primary-btn, .secondary-btn { padding: 11px 15px; }
+      .score-grid { gap: 7px; }
+      .score-box { padding: 12px 6px; }
+      .score-box strong { font-size: 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="confetti-canvas" id="confetti" aria-hidden="true"></canvas>
+
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">✦</div>
+        <div>مِعيار <small>منصة المراجعة الذكية</small></div>
+      </div>
+      <div class="top-actions">
+        <span class="pill">✧ مراجعة الشابتر</span>
+        <button class="sound-toggle" id="soundToggle" type="button" aria-label="تفعيل أو إيقاف الصوت">🔊 <span>الصوت يعمل</span></button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">✦ تجهيزك للكويز يبدأ من هنا</div>
+        <h1>جاهز يا <span>عبدالله؟</span></h1>
+        <p>مراجعة تفاعلية أنيقة لمادة مهارات الإدارة. أجب عن الأسئلة، راجع شرح كل إجابة، وتابع مستواك خطوة بخطوة.</p>
+        <div class="hero-meta">
+          <span class="pill">📚 59 سؤالًا</span>
+          <span class="pill">✓ صح أو خطأ واختيار من متعدد</span>
+          <span class="pill">⏱️ على راحتك، بدون مؤقت</span>
+        </div>
+      </section>
+
+      <section class="quiz-wrap" aria-label="مراجعة الأسئلة">
+        <div class="quiz-card">
+          <div class="quiz-inner" id="quizInner">
+            <div class="start-screen" id="startScreen">
+              <div class="start-emblem">♛</div>
+              <h2>مراجعتك، بطريقتك</h2>
+              <p>ابدأ مراجعة شاملة لمفاهيم الوعي الذاتي وإدارة الذات. تقدر تترجم السؤال، تعيد المحاولة، وتشوف الإجابة النموذجية مع شرحها.</p>
+              <button type="button" class="primary-btn" id="startBtn">ابدأ المراجعة <span aria-hidden="true">←</span></button>
+            </div>
+
+            <div id="questionScreen" hidden>
+              <div class="quiz-topline">
+                <div class="section-tag" id="sectionTag">الجزء الأول · صح أو خطأ</div>
+                <div class="counter" id="counter">01 / 59</div>
+              </div>
+              <div class="progress-track" role="progressbar" aria-label="التقدم في الأسئلة" aria-valuemin="0" aria-valuemax="59" aria-valuenow="0">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="question-header">
+                <div>
+                  <div class="question-kicker" id="questionKicker">السؤال 1 · صفحة 3</div>
+                  <h2 class="question-text" id="questionText" dir="ltr"></h2>
+                </div>
+                <button type="button" class="translate-btn" id="translateBtn" aria-pressed="false">文A <span>ترجم</span></button>
+              </div>
+              <div class="answers" id="answers" role="group" aria-label="اختر إجابتك"></div>
+              <div class="feedback" id="feedback" aria-live="polite"></div>
+              <div class="explanation" id="explanation">
+                <h3>✧ شرح الإجابة</h3>
+                <p id="explanationText"></p>
+              </div>
+              <div class="quiz-footer">
+                <div class="footer-hint" id="footerHint">اختر الإجابة التي تراها صحيحة.</div>
+                <button type="button" class="primary-btn" id="nextBtn" disabled>السؤال التالي ←</button>
+              </div>
+            </div>
+
+            <div class="report" id="reportScreen">
+              <div class="report-head">
+                <div class="report-icon" id="reportIcon">🏆</div>
+                <h2 id="reportTitle">أحسنت يا عبدالله!</h2>
+                <p id="reportSubtitle">هذا تقريرك النهائي لمراجعة مهارات الإدارة.</p>
+              </div>
+              <div class="score-grid">
+                <div class="score-box"><strong id="scoreTotal">0%</strong><span>النتيجة النهائية</span></div>
+                <div class="score-box"><strong id="scoreCorrect">0</strong><span>إجابات صحيحة</span></div>
+                <div class="score-box"><strong id="scoreWrong">0</strong><span>إجابات تحتاج مراجعة</span></div>
+              </div>
+              <div class="report-tools">
+                <button type="button" class="secondary-btn" id="toggleReport">عرض جميع الإجابات والتفاصيل ↓</button>
+              </div>
+              <div class="report-list" id="reportList" hidden></div>
+              <div class="report-tools">
+                <button type="button" class="primary-btn" id="restartBtn">أعد المراجعة من البداية ↻</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer-note">صُممت لعبدالله العبيدي · بالتوفيق في الكويز ✦</footer>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const tf = [
+      [3,"Self-awareness lies at the heart of the ability to master oneself.",true,"يقع الوعي الذاتي في صميم القدرة على إتقان الذات."],
+      [3,"Self-awareness alone is sufficient for effective self-management.",false,"الوعي الذاتي وحده كافٍ للإدارة الفعّالة للذات."],
+      [3,"Self-management depends first and foremost on self-awareness.",true,"تعتمد إدارة الذات أولًا وقبل كل شيء على الوعي الذاتي."],
+      [5,"Developing self-control is one of the self-management skills linked to self-awareness.",true,"تطوير ضبط النفس إحدى مهارات إدارة الذات المرتبطة بالوعي الذاتي."],
+      [5,"Managing time and managing stress make it possible for individuals to adapt to and organize their surroundings.",true,"تساعد إدارة الوقت وإدارة الضغوط الأفراد على التكيف مع بيئتهم وتنظيمها."],
+      [5,"Clarifying priorities and goals helps individuals create direction in their own lives.",true,"يساعد توضيح الأولويات والأهداف الأفراد على رسم مسار لحياتهم."],
+      [6,"Self-awareness includes knowledge of strengths and weaknesses.",true,"يشمل الوعي الذاتي معرفة نقاط القوة والضعف."],
+      [6,"Self-awareness includes thoughts, beliefs, motivation, and emotions.",true,"يشمل الوعي الذاتي الأفكار والمعتقدات والدوافع والعواطف."],
+      [6,"Self-awareness is only a knowledge of other people's personalities.",false,"الوعي الذاتي هو مجرد معرفة شخصيات الآخرين."],
+      [7,"Self-awareness can help you understand how other people perceive you.",true,"يمكن أن يساعدك الوعي الذاتي على فهم نظرة الآخرين إليك."],
+      [7,"Better self-awareness can improve relationships and help individuals reach their goals more effectively.",true,"يمكن للوعي الذاتي الأفضل أن يحسّن العلاقات ويساعد الأفراد على تحقيق أهدافهم بفاعلية أكبر."],
+      [7,"Self-awareness leads to better self-assessment and greater self-confidence.",true,"يؤدي الوعي الذاتي إلى تقييم أفضل للذات وثقة أكبر بالنفس."],
+      [8,"Individuals can improve themselves without knowing their current level of capability.",false,"يستطيع الأفراد تطوير أنفسهم دون معرفة مستوى قدراتهم الحالي."],
+      [8,"Individuals who are more self-aware are more productive at work.",true,"الأفراد الأكثر وعيًا بذواتهم أكثر إنتاجية في العمل."],
+      [8,"Seeking self-knowledge is a prerequisite for personal growth.",true,"السعي إلى معرفة الذات شرط أساسي للنمو الشخصي."],
+      [8,"Self-knowledge can never inhibit growth and improvement.",false,"لا يمكن لمعرفة الذات أبدًا أن تعيق النمو والتحسن."],
+      [10,"The sensitivity line is the point at which individuals become defensive when encountering information inconsistent with their self-concept.",true,"خط الحساسية هو النقطة التي يصبح عندها الأفراد دفاعيين عند مواجهة معلومات لا تتوافق مع مفهومهم عن ذواتهم."],
+      [10,"The sensitivity line refers to information that always agrees with an individual's self-concept.",false,"يشير خط الحساسية إلى المعلومات التي تتفق دائمًا مع مفهوم الفرد عن ذاته."],
+      [11,"A relatively minor discrepancy is likely to evoke a strong defensive reaction.",false,"من المرجح أن يؤدي اختلاف بسيط نسبيًا إلى رد فعل دفاعي قوي."],
+      [11,"A minor discrepancy would probably not require a person to reexamine and change their self-concept.",true,"من المرجح ألا يتطلب الاختلاف البسيط من الشخص إعادة فحص مفهومه عن ذاته وتغييره."],
+      [12,"The more discrepant the information, the closer it approaches the sensitive line.",true,"كلما زاد اختلاف المعلومات، اقتربت أكثر من خط الحساسية."],
+      [12,"Threat-rigidity response refers to becoming flexible and open when faced with a threat.",false,"تشير استجابة الجمود الناتج عن التهديد إلى أن يصبح الفرد مرنًا ومنفتحًا عند مواجهة تهديد."],
+      [13,"Verifiable, predictable, and controllable information is less likely to cross the sensitive line.",true,"المعلومات القابلة للتحقق والتنبؤ والتحكم أقل احتمالًا لتجاوز خط الحساسية."],
+      [13,"Self-disclosure can allow others to provide insights into our behavior.",true,"يمكن للإفصاح عن الذات أن يتيح للآخرين تقديم رؤى حول سلوكنا."],
+      [14,"The enigma of self-awareness can be managed by exercising some control over when and what kind of information you receive about yourself.",true,"يمكن التعامل مع إشكالية الوعي الذاتي بالتحكم في توقيت ونوع المعلومات التي تتلقاها عن نفسك."],
+      [14,"Support and feedback from others during self-disclosure can help increase self-awareness without crossing the sensitive line.",true,"يمكن للدعم والتغذية الراجعة من الآخرين أثناء الإفصاح عن الذات زيادة الوعي الذاتي دون تجاوز خط الحساسية."],
+      [15,"Self-awareness can help develop the ability to diagnose important differences among people with whom you interact.",true,"يمكن للوعي الذاتي أن ينمّي القدرة على تمييز الاختلافات المهمة بين الأشخاص الذين تتفاعل معهم."],
+      [15,"Distinctions between people help eliminate social barriers.",false,"تساعد التصنيفات بين الناس على إزالة الحواجز الاجتماعية."],
+      [16,"Self-knowledge requires understanding and valuing differences.",true,"تتطلب معرفة الذات فهم الاختلافات وتقديرها."],
+      [17,"The five critical areas of self-awareness include Emotional intelligence, Personal values, Learning style, Orientation toward change, and Core self-evaluation.",true,"تشمل المجالات الخمسة الأساسية للوعي الذاتي: الذكاء العاطفي، والقيم الشخصية، وأسلوب التعلم، والتوجه نحو التغيير، والتقييم الجوهري للذات."]
+    ];
+    const mc = [
+      [3,"According to the chapter, self-awareness lies at the heart of the ability to:",["Manage stress","Master oneself","Manage time","Clarify priorities"],1,"وفقًا للشابتر، يقع الوعي الذاتي في صميم القدرة على:"],
+      [3,"Self-management depends first and foremost on:",["Self-awareness","Managing time","Managing stress","Personal values"],0,"تعتمد إدارة الذات أولًا وقبل كل شيء على:"],
+      [5,"Which skill helps individuals create direction in their own lives?",["Managing stress","Managing time","Clarifying priorities and goals","Self-disclosure"],2,"أي مهارة تساعد الأفراد على رسم مسار لحياتهم؟"],
+      [5,"Which two skills make it possible for individuals to adapt to and organize their surroundings?",["Self-control and self-awareness","Managing time and managing stress","Personal values and learning style","Priorities and goals"],1,"أي مهارتين تساعدان الأفراد على التكيف مع بيئتهم وتنظيمها؟"],
+      [6,"Self-awareness is having a clear knowledge of your:",["Surroundings only","Personality","Coworkers","Organization"],1,"الوعي الذاتي هو امتلاك معرفة واضحة بـ:"],
+      [6,"Which of the following is included in self-awareness?",["Strengths and weaknesses","Regions and gender","Social barriers","Organizations"],0,"أي مما يلي يدخل ضمن الوعي الذاتي؟"],
+      [7,"Better self-awareness can help individuals:",["Avoid all feedback","Improve relationships","Create distinctions","Avoid self-assessment"],1,"يمكن للوعي الذاتي الأفضل أن يساعد الأفراد على:"],
+      [7,"Self-awareness leads to better self-assessment and finally to greater:",["Self-control","Self-disclosure","Self-confidence","Self-concept"],2,"يؤدي الوعي الذاتي إلى تقييم أفضل للذات، ومن ثم إلى:"],
+      [8,"We cannot improve ourselves unless we know:",["How others behave","What level of capability we currently possess","How to manage stress","Our coworkers' education level"],1,"لا نستطيع تطوير أنفسنا ما لم نعرف:"],
+      [8,"Seeking self-knowledge is a prerequisite for:",["Personal growth","Managing time","Creating distinctions","Social barriers"],0,"السعي إلى معرفة الذات شرط أساسي لـ:"],
+      [8,"Why might individuals avoid seeking information about themselves?",["To improve relationships","To increase feedback","To protect their self-esteem or self-respect","To understand differences"],2,"لماذا قد يتجنب الأفراد البحث عن معلومات عن أنفسهم؟"],
+      [10,"The sensitivity line is the point at which individuals become:",["More productive","Defensive","More flexible","More self-confident"],1,"خط الحساسية هو النقطة التي يصبح عندها الأفراد:"],
+      [10,"Individuals may become defensive when information about themselves is inconsistent with their:",["Learning style","Self-concept","Personal values","Management skills"],1,"قد يصبح الأفراد دفاعيين عندما تتعارض المعلومات عنهم مع:"],
+      [11,"In Situation 1, the discrepancy is described as:",["Very high","Very serious","Relatively minor","Completely predictable"],2,"في الموقف الأول، وُصف الاختلاف بأنه:"],
+      [11,"A relatively minor discrepancy would probably not require a person to:",["Improve relationships","Reexamine and change their self-concept","Manage stress","Clarify priorities"],1,"من المرجح ألا يتطلب الاختلاف البسيط نسبيًا من الشخص أن:"],
+      [12,"The more discrepant the information, the closer it approaches the:",["Self-assessment","Sensitive line","Learning style","Self-confidence"],1,"كلما زاد اختلاف المعلومات، اقتربت أكثر من:"],
+      [12,"Threat-rigidity response is the tendency to become:",["Rigid, conservative, and self-protective","Flexible, predictable, and controllable","Open, social, and productive","Confident, healthy, and effective"],0,"استجابة الجمود الناتج عن التهديد هي الميل إلى أن يصبح الفرد:"],
+      [13,"Which information is less likely to cross the sensitive line?",["Information that is unpredictable","Information that is uncontrollable","Information that is verifiable, predictable, and controllable","Information that is inconsistent"],2,"أي نوع من المعلومات أقل احتمالًا لتجاوز خط الحساسية؟"],
+      [13,"Self-disclosure allows others to provide:",["Social barriers","Insights into our behavior","New distinctions","Personal values"],1,"يتيح الإفصاح عن الذات للآخرين تقديم:"],
+      [14,"One way to manage the enigma of self-awareness is to exercise some control over:",["Other people's behavior","When and what kind of information you receive about yourself","Coworkers' education levels","Organizational structures"],1,"إحدى طرق التعامل مع إشكالية الوعي الذاتي هي التحكم جزئيًا في:"],
+      [14,"Support and feedback from others during self-disclosure can help increase:",["Social barriers","Self-awareness","Distinctions","Threats"],1,"يمكن للدعم والتغذية الراجعة من الآخرين أثناء الإفصاح عن الذات أن يزيدا:"],
+      [15,"One important reason for focusing on self-awareness is to develop the ability to:",["Diagnose important differences among others","Exclude different individuals","Create social barriers","Avoid interactions"],0,"من الأسباب المهمة للتركيز على الوعي الذاتي تنمية القدرة على:"],
+      [15,"According to the chapter, coworkers could differ in:",["Region, gender, and education level","Self-control, time, and stress","Goals, priorities, and motivation only","Self-assessment and self-confidence only"],0,"وفقًا للشابتر، قد يختلف الزملاء في:"],
+      [15,"Most people have a tendency to interact with individuals who are:",["Different from themselves","Like themselves","Less productive","More defensive"],1,"يميل معظم الناس إلى التفاعل مع أشخاص:"],
+      [15,"According to the chapter, we observe differences but do not have to create:",["Feedback","Self-awareness","Distinctions","Self-knowledge"],2,"وفقًا للشابتر، نلاحظ الاختلافات لكن ليس علينا أن نصنع:"],
+      [15,"What do distinctions create between people?",["Personal growth","Social barriers","Self-confidence","Self-management"],1,"ماذا تُنشئ التصنيفات بين الناس؟"],
+      [16,"Self-knowledge requires:",["Creating distinctions","Understanding and valuing differences","Avoiding differences","Eliminating self-awareness"],1,"تتطلب معرفة الذات:"],
+      [17,"Which of the following is one of the five critical areas of self-awareness?",["Managing stress","Emotional intelligence","Self-control","Self-disclosure"],1,"أي مما يلي أحد المجالات الخمسة الأساسية للوعي الذاتي؟"],
+      [17,"Which of the following is NOT listed as one of the five areas of self-awareness?",["Personal values","Learning style","Managing time","Orientation toward change"],2,"أي مما يلي ليس ضمن المجالات الخمسة للوعي الذاتي؟"]
+    ];
+
+    const optionAr = {
+      "Manage stress":"إدارة الضغوط","Master oneself":"إتقان الذات","Manage time":"إدارة الوقت","Clarify priorities":"توضيح الأولويات",
+      "Self-awareness":"الوعي الذاتي","Managing time":"إدارة الوقت","Managing stress":"إدارة الضغوط","Personal values":"القيم الشخصية",
+      "Clarifying priorities and goals":"توضيح الأولويات والأهداف","Self-disclosure":"الإفصاح عن الذات",
+      "Self-control and self-awareness":"ضبط النفس والوعي الذاتي","Managing time and managing stress":"إدارة الوقت وإدارة الضغوط",
+      "Personal values and learning style":"القيم الشخصية وأسلوب التعلم","Priorities and goals":"الأولويات والأهداف",
+      "Surroundings only":"البيئة المحيطة فقط","Personality":"الشخصية","Coworkers":"زملاء العمل","Organization":"المنظمة",
+      "Strengths and weaknesses":"نقاط القوة والضعف","Regions and gender":"المنطقة والجنس","Social barriers":"الحواجز الاجتماعية","Organizations":"المنظمات",
+      "Avoid all feedback":"تجنّب جميع أشكال التغذية الراجعة","Improve relationships":"تحسين العلاقات","Create distinctions":"إنشاء تصنيفات","Avoid self-assessment":"تجنّب التقييم الذاتي",
+      "Self-control":"ضبط النفس","Self-confidence":"الثقة بالنفس","Self-concept":"مفهوم الذات",
+      "How others behave":"كيفية تصرف الآخرين","What level of capability we currently possess":"مستوى قدراتنا الحالي","How to manage stress":"كيفية إدارة الضغوط","Our coworkers' education level":"المستوى التعليمي لزملائنا",
+      "Personal growth":"النمو الشخصي","Creating distinctions":"إنشاء تصنيفات",
+      "To improve relationships":"لتحسين العلاقات","To increase feedback":"لزيادة التغذية الراجعة","To protect their self-esteem or self-respect":"لحماية تقديرهم لذاتهم أو احترامهم لأنفسهم","To understand differences":"لفهم الاختلافات",
+      "More productive":"أكثر إنتاجية","Defensive":"دفاعيين","More flexible":"أكثر مرونة","More self-confident":"أكثر ثقة بأنفسهم",
+      "Learning style":"أسلوب التعلم","Management skills":"مهارات الإدارة",
+      "Very high":"كبير جدًا","Very serious":"خطير جدًا","Relatively minor":"بسيط نسبيًا","Completely predictable":"يمكن التنبؤ به تمامًا",
+      "Reexamine and change their self-concept":"إعادة فحص مفهومهم عن ذواتهم وتغييره",
+      "Self-assessment":"التقييم الذاتي","Sensitive line":"خط الحساسية",
+      "Rigid, conservative, and self-protective":"جامدًا ومحافظًا ومدافعًا عن ذاته","Flexible, predictable, and controllable":"مرنًا ويمكن التنبؤ به والتحكم فيه","Open, social, and productive":"منفتحًا واجتماعيًا ومنتجًا","Confident, healthy, and effective":"واثقًا وسليمًا وفعّالًا",
+      "Information that is unpredictable":"معلومات لا يمكن التنبؤ بها","Information that is uncontrollable":"معلومات لا يمكن التحكم فيها","Information that is verifiable, predictable, and controllable":"معلومات يمكن التحقق منها والتنبؤ بها والتحكم فيها","Information that is inconsistent":"معلومات متضاربة",
+      "Insights into our behavior":"رؤى حول سلوكنا","New distinctions":"تصنيفات جديدة",
+      "Other people's behavior":"سلوك الآخرين","When and what kind of information you receive about yourself":"توقيت ونوع المعلومات التي تتلقاها عن نفسك","Coworkers' education levels":"المستويات التعليمية لزملائك","Organizational structures":"الهياكل التنظيمية",
+      "Distinctions":"التصنيفات","Threats":"التهديدات",
+      "Diagnose important differences among others":"تمييز الاختلافات المهمة بين الآخرين","Exclude different individuals":"استبعاد الأفراد المختلفين","Avoid interactions":"تجنب التفاعلات",
+      "Region, gender, and education level":"المنطقة والجنس والمستوى التعليمي","Self-control, time, and stress":"ضبط النفس والوقت والضغوط","Goals, priorities, and motivation only":"الأهداف والأولويات والدوافع فقط","Self-assessment and self-confidence only":"التقييم الذاتي والثقة بالنفس فقط",
+      "Different from themselves":"مختلفين عنهم","Like themselves":"يشبهونهم","Less productive":"أقل إنتاجية","More defensive":"أكثر دفاعية",
+      "Feedback":"التغذية الراجعة","Self-knowledge":"معرفة الذات",
+      "Understanding and valuing differences":"فهم الاختلافات وتقديرها","Avoiding differences":"تجنب الاختلافات","Eliminating self-awareness":"إلغاء الوعي الذاتي",
+      "Emotional intelligence":"الذكاء العاطفي","Orientation toward change":"التوجه نحو التغيير"
+    };
+
+    const questions = [
+      ...tf.map(([page, text, answer, ar], i) => ({
+        id: i + 1, page, text, ar, type: "tf", answer: answer ? 0 : 1,
+        options: ["True", "False"], optionAr: ["صح", "خطأ"]
+      })),
+      ...mc.map(([page, text, options, answer, ar], i) => ({
+        id: i + 31, page, text, ar, type: "mc", answer,
+        options, optionAr: options.map(o => optionAr[o] || o)
+      }))
+    ];
+
+    let current = 0;
+    let translated = false;
+    let soundOn = true;
+    let answers = Array(questions.length).fill(null);
+    let wrongAttempts = Array(questions.length).fill(0);
+    let audioCtx;
+
+    const $ = id => document.getElementById(id);
+    const startScreen = $("startScreen");
+    const questionScreen = $("questionScreen");
+    const reportScreen = $("reportScreen");
+    const progressFill = $("progressFill");
+    const progressTrack = document.querySelector(".progress-track");
+
+    $("startBtn").addEventListener("click", () => {
+      startScreen.hidden = true;
+      questionScreen.hidden = false;
+      renderQuestion();
+      window.scrollTo({ top: document.querySelector(".quiz-wrap").offsetTop - 20, behavior: "smooth" });
+    });
+
+    $("soundToggle").addEventListener("click", () => {
+      soundOn = !soundOn;
+      $("soundToggle").innerHTML = `${soundOn ? "🔊" : "🔇"} <span>${soundOn ? "الصوت يعمل" : "الصوت متوقف"}</span>`;
+    });
+
+    $("translateBtn").addEventListener("click", () => {
+      translated = !translated;
+      $("translateBtn").setAttribute("aria-pressed", String(translated));
+      $("translateBtn").innerHTML = translated ? "文A <span>عرض بالإنجليزية</span>" : "文A <span>ترجم</span>";
+      renderQuestion(false);
+    });
+
+    function renderQuestion(resetFeedback = true) {
+      const q = questions[current];
+      if (resetFeedback) {
+        $("feedback").className = "feedback";
+        $("feedback").innerHTML = "";
+        $("explanation").classList.remove("show");
+      }
+      $("sectionTag").textContent = q.id <= 30 ? "الجزء الأول · صح أو خطأ" : "الجزء الثاني · اختيار من متعدد";
+      $("counter").textContent = `${String(current + 1).padStart(2,"0")} / ${questions.length}`;
+      $("questionKicker").textContent = `السؤال ${q.id} · صفحة ${q.page}`;
+      $("questionText").textContent = translated ? q.ar : q.text;
+      $("questionText").classList.toggle("arabic", translated);
+      $("questionText").dir = translated ? "rtl" : "ltr";
+      const progress = current / questions.length * 100;
+      progressFill.style.width = `${progress}%`;
+      progressTrack.setAttribute("aria-valuenow", current);
+      $("nextBtn").disabled = answers[current] === null;
+      $("nextBtn").textContent = current === questions.length - 1 ? "عرض النتيجة ←" : "السؤال التالي ←";
+      $("footerHint").textContent = "اختر الإجابة التي تراها صحيحة.";
+      $("answers").innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `answer-option${translated ? " arabic" : ""}`;
+        btn.setAttribute("aria-label", translated ? q.optionAr[i] : opt);
+        const displayed = translated ? q.optionAr[i] : opt;
+        const key = q.type === "tf" ? (i === 0 ? "✓" : "✕") : String.fromCharCode(65 + i);
+        btn.innerHTML = `<span class="option-key">${key}</span><span class="option-label"></span>`;
+        btn.querySelector(".option-label").textContent = displayed;
+        btn.addEventListener("click", () => chooseAnswer(i));
+        $("answers").appendChild(btn);
+      });
+      if (answers[current] !== null) showResolvedAnswer(answers[current]);
+    }
+
+    function chooseAnswer(index) {
+      const q = questions[current];
+      const optionButtons = [...$("answers").children];
+      if (index === q.answer) {
+        answers[current] = index;
+        optionButtons.forEach((b, i) => {
+          b.disabled = true;
+          if (i === index) b.classList.add("correct");
+        });
+        showFeedback(true);
+        showExplanation(q);
+        $("nextBtn").disabled = false;
+        $("footerHint").textContent = "رائع! جاهز للسؤال التالي.";
+        playSuccess();
+        launchConfetti();
+      } else {
+        wrongAttempts[current]++;
+        optionButtons[index].classList.add("incorrect");
+        optionButtons[index].disabled = true;
+        showFeedback(false);
+        $("footerHint").textContent = "يمكنك المحاولة مرة أخرى، أو اعتماد الإجابة للمتابعة.";
+        if (!$("finalizeBtn")) {
+          const finalize = document.createElement("button");
+          finalize.id = "finalizeBtn";
+          finalize.type = "button";
+          finalize.className = "secondary-btn";
+          finalize.textContent = "اعتمادها كإجابة خاطئة";
+          finalize.addEventListener("click", () => {
+            answers[current] = index;
+            optionButtons.forEach(b => b.disabled = true);
+            finalize.remove();
+            showExplanation(q);
+            $("nextBtn").disabled = false;
+            $("footerHint").textContent = "تم تسجيل إجابتك. راجع الإجابة النموذجية أدناه.";
+          });
+          $("quizFooterPlaceholder");
+          $("quizInner").querySelector(".quiz-footer").insertBefore(finalize, $("nextBtn"));
+        }
+      }
+    }
+
+    function showFeedback(correct) {
+      const box = $("feedback");
+      box.className = `feedback show ${correct ? "success" : "retry"}`;
+      box.innerHTML = correct
+        ? `<p class="feedback-title">احسنت عبدالله كمل يابطل ✨</p><p class="feedback-copy">إجابة صحيحة! استمر بهذا الأداء الرائع.</p>`
+        : `<p class="feedback-title">حاول مرة أخرى</p><p class="feedback-copy">خذ لحظة للتفكير في الفكرة الأساسية، ثم اختر إجابتك من جديد.</p>`;
+    }
+
+    function showExplanation(q) {
+      const answer = translated ? q.optionAr[q.answer] : q.options[q.answer];
+      const explanation = translated
+        ? `تتفق هذه الإجابة مع مفهوم الشابتر في هذا السؤال. تذكّر أن فهم الوعي الذاتي يساعد على تطبيق مهارات إدارة الذات بصورة أفضل.`
+        : `This is the chapter-aligned answer. Remember that understanding self-awareness helps you apply self-management concepts more effectively.`;
+      $("explanationText").innerHTML = "";
+      const text = document.createElement("span");
+      text.textContent = explanation;
+      const model = document.createElement("span");
+      model.className = "model-answer";
+      model.textContent = `${translated ? "الإجابة النموذجية: " : "Model answer: "}${answer}`;
+      $("explanationText").append(text, model);
+      $("explanation").classList.add("show");
+    }
+
+    function showResolvedAnswer(selected) {
+      const q = questions[current];
+      const buttons = [...$("answers").children];
+      buttons.forEach((b, i) => {
+        b.disabled = true;
+        if (i === q.answer) b.classList.add("correct");
+        if (i === selected && selected !== q.answer) b.classList.add("incorrect");
+      });
+      showFeedback(selected === q.answer);
+      showExplanation(q);
+    }
+
+    $("nextBtn").addEventListener("click", () => {
+      if (answers[current] === null) return;
+      $("finalizeBtn")?.remove();
+      if (current < questions.length - 1) {
+        current++;
+        translated = false;
+        $("translateBtn").setAttribute("aria-pressed", "false");
+        $("translateBtn").innerHTML = "文A <span>ترجم</span>";
+        renderQuestion();
+        document.querySelector(".quiz-card").scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        finishQuiz();
+      }
+    });
+
+    function finishQuiz() {
+      questionScreen.hidden = true;
+      reportScreen.classList.add("show");
+      progressFill.style.width = "100%";
+      progressTrack.setAttribute("aria-valuenow", questions.length);
+      const correct = answers.filter((a, i) => a === questions[i].answer).length;
+      const wrong = questions.length - correct;
+      $("scoreTotal").textContent = `${Math.round(correct / questions.length * 100)}%`;
+      $("scoreCorrect").textContent = correct;
+      $("scoreWrong").textContent = wrong;
+      $("reportIcon").textContent = correct === questions.length ? "👑" : correct / questions.length >= .7 ? "🏆" : "✦";
+      $("reportTitle").textContent = correct === questions.length ? "علامة كاملة يا عبدالله!" : "أحسنت يا عبدالله!";
+      $("reportSubtitle").textContent = `أنهيت مراجعتك وأجبت إجابة صحيحة عن ${correct} من أصل ${questions.length} سؤالًا.`;
+      const list = $("reportList");
+      list.innerHTML = "";
+      questions.forEach((q, i) => {
+        const isCorrect = answers[i] === q.answer;
+        const item = document.createElement("div");
+        item.className = `report-item ${isCorrect ? "is-correct" : "is-wrong"}`;
+        const prompt = document.createElement("div");
+        prompt.className = "report-q";
+        prompt.textContent = `${q.id}. ${q.text}`;
+        const ans = document.createElement("div");
+        ans.className = "report-answer";
+        const your = answers[i] === null ? "لم تتم الإجابة" : q.options[answers[i]];
+        ans.innerHTML = "";
+        const status = document.createElement("span");
+        status.textContent = isCorrect ? "✓ صحيحة" : "✕ تحتاج مراجعة";
+        const yourLine = document.createElement("div");
+        yourLine.textContent = `إجابتك: ${your}`;
+        const modelLine = document.createElement("div");
+        modelLine.textContent = `الإجابة النموذجية: ${q.options[q.answer]}`;
+        const bold = document.createElement("b");
+        bold.textContent = ` ${status.textContent}`;
+        ans.append(bold, yourLine, modelLine);
+        item.append(prompt, ans);
+        list.appendChild(item);
+      });
+      $("reportList").hidden = true;
+      $("toggleReport").textContent = "عرض جميع الإجابات والتفاصيل ↓";
+      document.querySelector(".quiz-card").scrollIntoView({ behavior: "smooth", block: "start" });
+      if (correct === questions.length) launchConfetti();
+    }
+
+    $("toggleReport").addEventListener("click", () => {
+      const list = $("reportList");
+      list.hidden = !list.hidden;
+      $("toggleReport").textContent = list.hidden ? "عرض جميع الإجابات والتفاصيل ↓" : "إخفاء التفاصيل ↑";
+    });
+
+    $("restartBtn").addEventListener("click", () => {
+      current = 0;
+      translated = false;
+      answers = Array(questions.length).fill(null);
+      wrongAttempts = Array(questions.length).fill(0);
+      $("finalizeBtn")?.remove();
+      reportScreen.classList.remove("show");
+      reportScreen.style.display = "";
+      reportScreen.classList.remove("show");
+      questionScreen.hidden = true;
+      startScreen.hidden = false;
+      progressFill.style.width = "0%";
+      progressTrack.setAttribute("aria-valuenow", "0");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    function playSuccess() {
+      if (!soundOn) return;
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        const now = audioCtx.currentTime;
+        [[523.25,0],[659.25,.12],[783.99,.24],[1046.5,.39]].forEach(([freq, delay], i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = i === 3 ? "sine" : "triangle";
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(.0001, now + delay);
+          gain.gain.exponentialRampToValueAtTime(.11, now + delay + .025);
+          gain.gain.exponentialRampToValueAtTime(.0001, now + delay + .22);
+          osc.connect(gain); gain.connect(audioCtx.destination);
+          osc.start(now + delay); osc.stop(now + delay + .23);
+        });
+      } catch(e) {}
+    }
+
+    const canvas = $("confetti");
+    const ctx = canvas.getContext("2d");
+    let particles = [], animationId;
+    function launchConfetti() {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const colors = ["#f3d795","#c99844","#fff0c7","#8dd6a6","#e5b84f"];
+      for (let i = 0; i < 85; i++) {
+        particles.push({
+          x: Math.random() * window.innerWidth,
+          y: -20 - Math.random() * 150,
+          size: 3 + Math.random() * 5,
+          speed: 2 + Math.random() * 4,
+          drift: (Math.random() - .5) * 2.5,
+          rotation: Math.random() * 6,
+          spin: (Math.random() - .5) * .2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          life: 115 + Math.random() * 45
+        });
+      }
+      cancelAnimationFrame(animationId);
+      drawConfetti();
+    }
+    function drawConfetti() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      particles = particles.filter(p => p.life > 0 && p.y < window.innerHeight + 20);
+      particles.forEach(p => {
+        p.x += p.drift; p.y += p.speed; p.rotation += p.spin; p.life--;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color; ctx.globalAlpha = Math.min(1, p.life / 25);
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.7);
+        ctx.restore();
+      });
+      if (particles.length) animationId = requestAnimationFrame(drawConfetti);
+      else ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+  </script>
+</body>
+</html>
