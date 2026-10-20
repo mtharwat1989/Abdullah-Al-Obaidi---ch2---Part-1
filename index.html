@@ -1,1071 +1,591 @@
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مراجعة مهارات الإدارة | عبدالله العبيدي</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>منصة عبدالله العبيدي | مراجعة مهارات إدارية – الشابتر 2 (الجزء الأول)</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = { theme:{ extend:{ colors:{ gold:{DEFAULT:'#D4AF37',light:'#F5D67B',dark:'#8C6A00'}, royal:{900:'#080D29',800:'#0E1642',700:'#162066',600:'#1E2C8A'} }, fontFamily:{ cairo:['Cairo','sans-serif'], taj:['Tajawal','sans-serif'], pop:['Poppins','sans-serif'] } } } }
+</script>
 <style>
-  :root{
-    --gold:#d4af37;
-    --gold-l:#f7e9a8;
-    --gold-d:#a67c00;
-    --ink:#0a0612;
-    --royal:#2a1240;
-    --ok:#3ddc97;
-    --bad:#ff5c7a;
-    --amber:#ffc107;
-  }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;padding:0}
-  body{
-    font-family:'Tajawal',system-ui,sans-serif;
-    color:#f5eee0;
-    min-height:100vh;
-    background:
-      radial-gradient(circle at 12% -5%, rgba(212,175,55,.18), transparent 42%),
-      radial-gradient(circle at 88% 4%, rgba(124,58,237,.20), transparent 45%),
-      radial-gradient(circle at 50% 108%, rgba(212,175,55,.13), transparent 48%),
-      linear-gradient(165deg,#160c22 0%,#0a0612 45%,#0d0714 100%);
-    background-attachment:fixed;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-    background-image:radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
-    background-size:26px 26px;
-    mask-image:radial-gradient(circle at 50% 30%, #000 10%, transparent 75%);
-    -webkit-mask-image:radial-gradient(circle at 50% 30%, #000 10%, transparent 75%);
-  }
-  .wrap{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:0 16px 90px}
+*{font-family:'Cairo','Tajawal',sans-serif}
+body{background:#070B24;color:#fff;overflow-x:hidden}
+.gold-text{background:linear-gradient(135deg,#FFF6C8 0%,#F5D67B 20%,#D4AF37 45%,#FFF0A0 60%,#B8860B 80%,#F5D67B 100%);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% auto;animation:shine 4s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+.glass{background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.03));backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(212,175,55,.28)}
+.gold-border{position:relative;border:1px solid rgba(212,175,55,.5)}
+.gold-border::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#F5D67B,#8C6A00,#FFF6C8,#B8860B);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:.9}
+.btn-gold{background:linear-gradient(135deg,#F8E28A 0%,#D4AF37 35%,#A67C00 70%,#F5D67B 100%);background-size:200% auto;color:#1a1400;font-weight:900;box-shadow:0 8px 30px rgba(212,175,55,.4),inset 0 1px 0 rgba(255,255,255,.7);transition:.35s}
+.btn-gold:hover{background-position:left center;transform:translateY(-2px) scale(1.02);box-shadow:0 15px 45px rgba(212,175,55,.6)}
+.btn-ghost{border:1px solid rgba(212,175,55,.4);transition:.3s}
+.btn-ghost:hover{background:rgba(212,175,55,.12);border-color:#D4AF37}
+.blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.35;pointer-events:none;z-index:0;animation:float 12s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-40px) scale(1.08)}}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.opt{transition:.25s;text-align:right;width:100%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;position:relative;overflow:hidden}
+.opt:hover:not(:disabled){border-color:#D4AF37;background:rgba(212,175,55,.1);transform:translateY(-2px)}
+.opt:disabled{cursor:default}
+.opt.correct{border-color:#22c55e!important;background:linear-gradient(135deg,rgba(34,197,94,.25),rgba(34,197,94,.1))!important;box-shadow:0 0 25px rgba(34,197,94,.4)}
+.opt.wrong{border-color:#ef4444!important;background:linear-gradient(135deg,rgba(239,68,68,.25),rgba(239,68,68,.1))!important;box-shadow:0 0 25px rgba(239,68,68,.35)}
+.opt.dim{opacity:.45}
+.opt-letter{flex-shrink:0;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;background:linear-gradient(135deg,#D4AF37,#8C6A00);color:#1a1400}
+.shake{animation:shake .5s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
+.pop{animation:pop .5s cubic-bezier(.68,-.55,.265,1.55)}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+.glow-pulse{animation:glowP 2s infinite}
+@keyframes glowP{0%,100%{box-shadow:0 0 20px rgba(212,175,55,.4)}50%{box-shadow:0 0 45px rgba(212,175,55,.8)}}
+.progress-gold{background:linear-gradient(90deg,#8C6A00,#D4AF37,#FFF6C8,#D4AF37);background-size:200% auto;animation:shine 2.5s linear infinite}
+.pal-btn{width:42px;height:42px;border-radius:12px;font-weight:800;font-size:14px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);transition:.25s}
+.pal-btn:hover{transform:scale(1.1);border-color:#D4AF37}
+.pal-btn.current{border:2px solid #F5D67B;box-shadow:0 0 18px rgba(212,175,55,.7);transform:scale(1.12)}
+.pal-btn.ok{background:linear-gradient(135deg,#16a34a,#15803d);border-color:#22c55e}
+.pal-btn.bad{background:linear-gradient(135deg,#dc2626,#991b1b);border-color:#ef4444}
+.pal-btn.skip{background:rgba(245,214,123,.2);border-color:#D4AF37}
+.ar-box{background:linear-gradient(135deg,rgba(212,175,55,.16),rgba(212,175,55,.06));border:1px dashed rgba(212,175,55,.6);border-radius:14px}
+.feedback-ok{background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(34,197,94,.08));border:1px solid #22c55e}
+.feedback-bad{background:linear-gradient(135deg,rgba(239,68,68,.2),rgba(239,68,68,.08));border:1px solid #ef4444}
+.score-ring{transform:rotate(-90deg)}
+.score-ring circle{transition:stroke-dashoffset 2s ease}
+.trophy-float{animation:trophyF 3s ease-in-out infinite}
+@keyframes trophyF{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+#celebrateOverlay{transition:.4s}
+.crown-shine{position:relative;overflow:hidden}
+.crown-shine::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);animation:sheen 3s infinite}
+@keyframes sheen{0%{left:-80%}60%,100%{left:130%}}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:#0E1642}
+::-webkit-scrollbar-thumb{background:linear-gradient(#D4AF37,#8C6A00);border-radius:10px}
+.toast{animation:slideIn .4s cubic-bezier(.68,-.55,.265,1.55)}
+@keyframes slideIn{from{transform:translateY(30px) scale(.9);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+@media print{body *{visibility:hidden}#reportSection,#reportSection *{visibility:visible}#reportSection{position:absolute;top:0;right:0;left:0;background:#fff!important;color:#000!important} .no-print{display:none!important}}
+.chapter-badge{background:linear-gradient(135deg,rgba(212,175,55,.2),rgba(212,175,55,.05));border:1px solid rgba(212,175,55,.4)}
+.hero-pattern{background-image:radial-gradient(rgba(212,175,55,.15) 1px,transparent 1px);background-size:22px 22px}
+.streak-fire{animation:fire .8s infinite alternate}
+@keyframes fire{from{transform:scale(1)}to{transform:scale(1.15) rotate(-5deg)}}
 
-  /* ============ SHARED ============ */
-  .gold-text{
-    background:linear-gradient(180deg,#fffbe6 0%,#f7e9a8 28%,#d4af37 62%,#a67c00 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .card{
-    position:relative;
-    background:linear-gradient(160deg, rgba(51,28,78,.72), rgba(15,9,25,.9));
-    border:1px solid rgba(212,175,55,.28);
-    border-radius:26px;
-    box-shadow:0 34px 70px -34px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,240,200,.09), 0 0 0 1px rgba(255,255,255,.02);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-  }
-  .card::after{
-    content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;
-    background:linear-gradient(120deg, rgba(255,255,255,.06), transparent 38%, transparent 62%, rgba(212,175,55,.07));
-  }
-  .btn-gold{
-    border:none;cursor:pointer;font-family:inherit;font-weight:800;
-    background:linear-gradient(135deg,#f7e9a8,#d4af37 45%,#a67c00);
-    color:#2a1c00;border-radius:14px;padding:13px 26px;font-size:1rem;
-    box-shadow:0 14px 30px -14px rgba(212,175,55,.9), inset 0 1px 0 rgba(255,255,255,.6);
-    transition:transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s;
-    letter-spacing:.2px;
-  }
-  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 20px 38px -14px rgba(212,175,55,1), inset 0 1px 0 rgba(255,255,255,.7)}
-  .btn-gold:active{transform:translateY(0) scale(.985)}
-  .btn-ghost{
-    cursor:pointer;font-family:inherit;font-weight:700;font-size:.92rem;
-    background:rgba(212,175,55,.07);color:#e9dcbb;
-    border:1px solid rgba(212,175,55,.35);border-radius:12px;padding:10px 18px;
-    transition:.22s;
-  }
-  .btn-ghost:hover{background:rgba(212,175,55,.16);border-color:rgba(212,175,55,.7);color:#fff6d8}
-
-  /* ============ HERO ============ */
-  .hero{position:relative;z-index:2;text-align:center;padding:44px 16px 26px}
-  .crown{
-    width:76px;height:76px;margin:0 auto 14px;border-radius:50%;
-    display:grid;place-items:center;font-size:2rem;
-    background:radial-gradient(circle at 40% 30%, rgba(247,233,168,.28), rgba(212,175,55,.06) 70%);
-    border:1px solid rgba(212,175,55,.45);
-    box-shadow:0 0 44px -6px rgba(212,175,55,.55), inset 0 0 22px rgba(212,175,55,.18);
-    animation:floaty 4.5s ease-in-out infinite;
-  }
-  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-  .kicker{
-    display:inline-block;font-size:.76rem;font-weight:700;letter-spacing:3px;
-    color:#d9c78e;border:1px solid rgba(212,175,55,.35);border-radius:999px;
-    padding:6px 18px;margin-bottom:16px;background:rgba(212,175,55,.06);
-  }
-  .hero h1{
-    font-family:'Amiri',serif;
-    font-size:clamp(1.9rem,6vw,3.3rem);font-weight:700;margin:0 0 6px;line-height:1.25;
-  }
-  .hero h1 span{
-    display:block;font-family:'Tajawal',sans-serif;font-size:clamp(.8rem,2.6vw,1.05rem);
-    letter-spacing:5px;font-weight:600;color:#a99a76;margin-top:8px;text-transform:uppercase;
-  }
-  .hero .sub{color:#c8bda3;font-size:clamp(.9rem,2.6vw,1.05rem);margin:14px auto 0;max-width:560px}
-  .student-badge{
-    display:inline-flex;align-items:center;gap:12px;margin-top:22px;
-    padding:10px 22px 10px 14px;border-radius:999px;
-    background:linear-gradient(135deg, rgba(212,175,55,.16), rgba(124,58,237,.14));
-    border:1px solid rgba(212,175,55,.42);
-    box-shadow:0 16px 40px -22px rgba(212,175,55,.9);
-  }
-  .student-badge .av{
-    width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:900;
-    background:linear-gradient(135deg,#f7e9a8,#d4af37 50%,#a67c00);color:#241800;font-size:1.15rem;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-  }
-  .student-badge small{display:block;font-size:.68rem;color:#b8ac90;letter-spacing:1.5px}
-  .student-badge strong{font-size:1.02rem;color:#fff4d4;letter-spacing:.4px;font-weight:800}
-
-  /* ============ TOP BAR ============ */
-  .topbar{
-    position:sticky;top:0;z-index:40;padding:10px 0 12px;
-    background:linear-gradient(180deg, rgba(10,6,18,.96) 30%, rgba(10,6,18,.72) 75%, rgba(10,6,18,0));
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  }
-  .topbar-inner{
-    max-width:960px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-    border-radius:20px;background:rgba(28,17,44,.72);border:1px solid rgba(212,175,55,.24);
-    box-shadow:0 20px 40px -30px #000;
-  }
-  .icon-btn{
-    width:42px;height:42px;flex:none;border-radius:12px;cursor:pointer;font-size:1.05rem;
-    background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.35);color:#f0e4c2;
-    transition:.2s;display:grid;place-items:center;
-  }
-  .icon-btn:hover{background:rgba(212,175,55,.2);border-color:rgba(212,175,55,.75)}
-  .icon-btn.off{opacity:.42}
-  .tb-mid{flex:1 1 220px;min-width:180px}
-  .tb-text{display:flex;justify-content:space-between;font-size:.8rem;color:#bfb191;margin-bottom:6px;font-weight:600}
-  .tb-text b{color:#f7e9a8;font-size:.95rem}
-  .track{height:10px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;box-shadow:inset 0 2px 6px rgba(0,0,0,.6)}
-  .fill{height:100%;width:0;border-radius:999px;transition:width .7s cubic-bezier(.2,.8,.2,1);
-    background:linear-gradient(90deg,#8a6500,#d4af37,#f7e9a8,#d4af37,#8a6500);
-    background-size:220% 100%;animation:slide 3.4s linear infinite;
-    box-shadow:0 0 16px rgba(212,175,55,.85)}
-  @keyframes slide{to{background-position:220% 0}}
-  .chips{display:flex;gap:8px;flex:none}
-  .chip{
-    display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:800;
-    padding:8px 13px;border-radius:11px;border:1px solid transparent;
-  }
-  .chip.ok{background:rgba(61,220,151,.13);border-color:rgba(61,220,151,.45);color:#8ff0c5}
-  .chip.bad{background:rgba(255,92,122,.12);border-color:rgba(255,92,122,.42);color:#ffa8b8}
-
-  /* ============ QUESTION CARD ============ */
-  .qcard{padding:clamp(18px,4vw,34px);animation:fadeUp .5s cubic-bezier(.2,.8,.2,1)}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-  .qmeta{display:flex;gap:8px;flex-wrap:wrap}
-  .badge{
-    font-size:.74rem;font-weight:700;padding:6px 13px;border-radius:999px;letter-spacing:.4px;
-    border:1px solid rgba(212,175,55,.32);background:rgba(212,175,55,.07);color:#dcc878;
-  }
-  .badge.type{background:rgba(124,58,237,.18);border-color:rgba(160,120,255,.4);color:#d5c2ff}
-  .badge.num{background:rgba(255,255,255,.05);color:#cfc3a5}
-  .tr-btn{
-    cursor:pointer;font-family:inherit;font-weight:800;font-size:.85rem;
-    padding:9px 16px;border-radius:12px;color:#2a1c00;
-    background:linear-gradient(135deg,#f7e9a8,#d4af37 55%,#bb9010);
-    border:none;box-shadow:0 12px 26px -14px rgba(212,175,55,.95);
-    transition:.22s;display:flex;align-items:center;gap:6px;
-  }
-  .tr-btn:hover{transform:translateY(-2px)}
-  .tr-btn.active{background:linear-gradient(135deg,#5b3fa8,#7c3aed);color:#f3ecff;box-shadow:0 12px 26px -14px rgba(124,58,237,.9)}
-  .q-en{
-    font-size:clamp(1.05rem,3.1vw,1.4rem);line-height:1.75;font-weight:600;color:#fdf6e3;
-    margin:0 0 6px;text-align:left;direction:ltr;
-  }
-  .q-ar{
-    font-size:clamp(.98rem,2.9vw,1.15rem);line-height:1.9;color:#e3d29b;margin:12px 0 0;
-    padding:14px 18px;border-radius:16px;border-right:3px solid var(--gold);
-    background:rgba(212,175,55,.07);animation:fadeUp .35s ease;
-  }
-  .divider{
-    height:1px;margin:22px 0;border:0;
-    background:linear-gradient(90deg, transparent, rgba(212,175,55,.55), transparent);
-  }
-
-  /* ============ OPTIONS ============ */
-  .options{display:grid;gap:12px}
-  .option{
-    display:flex;align-items:flex-start;gap:14px;width:100%;text-align:right;
-    padding:16px 18px;border-radius:18px;font-family:inherit;font-size:1rem;font-weight:600;
-    border:1px solid rgba(212,175,55,.22);
-    background:linear-gradient(180deg, rgba(255,246,208,.055), rgba(255,255,255,.012));
-    color:#f0e7d4;cursor:pointer;transition:.26s cubic-bezier(.2,.8,.2,1);position:relative;
-  }
-  .option:hover:not(:disabled){transform:translateY(-3px);border-color:rgba(212,175,55,.7);
-    box-shadow:0 16px 34px -18px rgba(212,175,55,.85), inset 0 0 22px rgba(212,175,55,.07)}
-  .option:disabled{cursor:default}
-  .opt-key{
-    width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;
-    font-weight:900;font-size:.95rem;
-    background:linear-gradient(135deg, rgba(247,233,168,.22), rgba(212,175,55,.12));
-    border:1px solid rgba(212,175,55,.45);color:#f7e9a8;
-  }
-  .opt-body{flex:1;display:flex;flex-direction:column;gap:4px;padding-top:4px}
-  .opt-en{direction:ltr;text-align:left;line-height:1.5}
-  .opt-ar{font-size:.88rem;color:#cbbf9e;font-weight:600;line-height:1.6}
-  .opt-mark{font-size:1.1rem;font-weight:900;padding-top:4px}
-  .option.correct{background:linear-gradient(180deg, rgba(61,220,151,.22), rgba(61,220,151,.06));
-    border-color:rgba(61,220,151,.75);box-shadow:0 0 34px -10px rgba(61,220,151,.75)}
-  .option.correct .opt-key{background:linear-gradient(135deg,#3ddc97,#1f9c68);color:#04281a;border-color:transparent}
-  .option.wrong{background:linear-gradient(180deg, rgba(255,92,122,.2), rgba(255,92,122,.05));
-    border-color:rgba(255,92,122,.75);animation:shake .5s}
-  .option.wrong .opt-key{background:linear-gradient(135deg,#ff5c7a,#b81f3c);color:#fff;border-color:transparent}
-  .option.dim{opacity:.4}
-  @keyframes shake{10%,90%{transform:translateX(-3px)}20%,80%{transform:translateX(5px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
-
-  /* ============ FEEDBACK ============ */
-  .feedback{
-    margin-top:20px;padding:20px 22px;border-radius:20px;display:flex;align-items:center;gap:16px;
-    animation:pop .5s cubic-bezier(.2,1.4,.4,1);
-  }
-  @keyframes pop{0%{opacity:0;transform:scale(.9) translateY(10px)}100%{opacity:1;transform:none}}
-  .feedback.good{
-    background:linear-gradient(120deg, rgba(212,175,55,.24), rgba(255,215,0,.08));
-    border:1px solid rgba(212,175,55,.75);
-    box-shadow:0 0 46px -14px rgba(212,175,55,.95), inset 0 0 30px rgba(212,175,55,.12);
-  }
-  .feedback.bad{
-    background:linear-gradient(120deg, rgba(255,92,122,.18), rgba(255,92,122,.05));
-    border:1px solid rgba(255,92,122,.6);
-  }
-  .feedback.reveal{
-    background:linear-gradient(120deg, rgba(255,193,7,.16), rgba(255,193,7,.04));
-    border:1px solid rgba(255,193,7,.55);
-  }
-  .fb-ico{font-size:2rem;flex:none;animation:floaty 2.4s ease-in-out infinite}
-  .fb-title{font-size:clamp(1.05rem,3.4vw,1.4rem);font-weight:900;letter-spacing:.3px}
-  .fb-title.gold{
-    background:linear-gradient(180deg,#fffbe6,#f7e9a8 40%,#d4af37 80%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    text-shadow:0 0 26px rgba(212,175,55,.35);
-  }
-  .fb-title.red{color:#ff97a9}
-  .fb-sub{font-size:.86rem;color:#c9bc9d;margin-top:4px;font-weight:600}
-
-  .explain{
-    margin-top:16px;padding:20px 22px;border-radius:20px;
-    background:linear-gradient(160deg, rgba(124,58,237,.14), rgba(212,175,55,.06));
-    border:1px solid rgba(212,175,55,.3);
-    animation:fadeUp .45s ease;
-  }
-  .explain .ttl{
-    display:flex;align-items:center;gap:8px;font-weight:900;color:#f7e9a8;font-size:.95rem;margin-bottom:10px;
-    letter-spacing:.4px;
-  }
-  .explain p{margin:0;line-height:1.95;color:#e7dcc2;font-size:.96rem}
-  .explain .model{
-    margin-top:12px;padding:11px 16px;border-radius:12px;font-weight:800;font-size:.9rem;
-    background:rgba(61,220,151,.12);border:1px solid rgba(61,220,151,.4);color:#8ff0c5;
-    display:inline-block;direction:ltr;
-  }
-
-  .qfoot{display:flex;justify-content:space-between;gap:12px;margin-top:26px;flex-wrap:wrap}
-
-  /* ============ MODAL ============ */
-  .modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:18px;
-    background:rgba(6,3,12,.82);backdrop-filter:blur(8px)}
-  .modal.open{display:flex;animation:fadeIn .25s ease}
-  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-  .modal-box{width:100%;max-width:680px;max-height:82vh;overflow:auto;padding:26px;
-    border-radius:24px;background:linear-gradient(160deg,#241338,#110a1c);
-    border:1px solid rgba(212,175,55,.4);box-shadow:0 40px 90px -30px #000}
-  .modal-box h3{margin:0 0 6px;font-family:'Amiri',serif;font-size:1.5rem}
-  .modal-box .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:9px}
-  .nav-item{
-    aspect-ratio:1;border-radius:12px;font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer;
-    border:1px solid rgba(212,175,55,.22);background:rgba(255,255,255,.03);color:#cfc3a8;transition:.18s;
-  }
-  .nav-item:hover{transform:translateY(-2px);border-color:var(--gold)}
-  .nav-item.good{background:rgba(61,220,151,.22);border-color:rgba(61,220,151,.7);color:#a9f7d3}
-  .nav-item.half{background:rgba(255,193,7,.2);border-color:rgba(255,193,7,.7);color:#ffe08a}
-  .nav-item.bad{background:rgba(255,92,122,.2);border-color:rgba(255,92,122,.7);color:#ffb3c1}
-  .nav-item.current{outline:2px solid var(--gold);outline-offset:2px;color:#fff6d8}
-  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:20px;font-size:.78rem;color:#bdb09a}
-  .legend span{display:flex;align-items:center;gap:6px}
-  .dot{width:11px;height:11px;border-radius:4px;display:inline-block}
-
-  /* ============ REPORT ============ */
-  .report{padding:clamp(20px,4vw,38px);animation:fadeUp .6s ease}
-  .report-hero{text-align:center;padding-bottom:26px}
-  .score-ring{
-    --p:0;width:200px;height:200px;border-radius:50%;margin:14px auto 20px;position:relative;
-    display:grid;place-items:center;
-    background:conic-gradient(from -90deg, #f7e9a8 0%, #d4af37 calc(var(--p) * .6%), #a67c00 calc(var(--p) * 1%), rgba(255,255,255,.07) 0);
-    box-shadow:0 0 70px -18px rgba(212,175,55,.9);
-    transition:background 1.2s ease;
-  }
-  .score-ring::before{content:"";position:absolute;inset:11px;border-radius:50%;
-    background:radial-gradient(circle at 50% 30%, #1e1130, #0d0716);
-    border:1px solid rgba(212,175,55,.3)}
-  .ring-inner{position:relative;text-align:center}
-  .ring-inner b{display:block;font-size:2.9rem;font-weight:900;line-height:1;
-    background:linear-gradient(180deg,#fffbe6,#f7e9a8 40%,#d4af37);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .ring-inner small{display:block;font-size:.74rem;color:#bdb09a;margin-top:8px;letter-spacing:1.4px;font-weight:700}
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:8px}
-  .stat{padding:16px;border-radius:18px;text-align:center;border:1px solid rgba(212,175,55,.22);background:rgba(255,255,255,.03)}
-  .stat b{display:block;font-size:1.7rem;font-weight:900}
-  .stat small{display:block;font-size:.76rem;color:#b6a98f;margin-top:5px;font-weight:700}
-  .stat.s1 b{color:#8ff0c5}.stat.s2 b{color:#ffd970}.stat.s3 b{color:#ff97a9}
-  .filters{display:flex;gap:9px;justify-content:center;margin:30px 0 18px;flex-wrap:wrap}
-  .filter{
-    cursor:pointer;font-family:inherit;font-weight:800;font-size:.85rem;padding:9px 20px;border-radius:999px;
-    border:1px solid rgba(212,175,55,.3);background:rgba(255,255,255,.03);color:#cfc3a8;transition:.2s
-  }
-  .filter:hover{border-color:var(--gold);color:#fff6d8}
-  .filter.active{background:linear-gradient(135deg,#f7e9a8,#d4af37 55%,#bb9010);color:#2a1c00;border-color:transparent}
-  .rev-item{
-    display:flex;gap:14px;padding:16px;border-radius:18px;margin-bottom:11px;
-    background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.07);
-    animation:fadeUp .35s ease;
-  }
-  .rev-item.good{border-color:rgba(61,220,151,.35);background:rgba(61,220,151,.055)}
-  .rev-item.half{border-color:rgba(255,193,7,.35);background:rgba(255,193,7,.05)}
-  .rev-item.bad{border-color:rgba(255,92,122,.35);background:rgba(255,92,122,.05)}
-  .rev-num{
-    width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;font-weight:900;font-size:.9rem;
-    background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.35);color:#f7e9a8
-  }
-  .rev-body{flex:1;min-width:0}
-  .rev-q{font-size:.93rem;color:#eadfc6;line-height:1.7;margin:0 0 8px;direction:ltr;text-align:left}
-  .rev-row{font-size:.85rem;line-height:1.8;display:flex;gap:7px;flex-wrap:wrap}
-  .rev-row .k{color:#a99d83;font-weight:700}
-  .rev-row .v-good{color:#8ff0c5;font-weight:800}
-  .rev-row .v-bad{color:#ff97a9;font-weight:800}
-  .rev-exp{font-size:.83rem;color:#bdb09a;margin-top:8px;line-height:1.75;padding-top:8px;border-top:1px dashed rgba(212,175,55,.2)}
-
-  .hidden{display:none !important}
-  .fade-in{animation:fadeUp .55s ease}
-
-  ::-webkit-scrollbar{width:10px}
-  ::-webkit-scrollbar-track{background:#0d0716}
-  ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#d4af37,#8a6500);border-radius:10px}
-
-  @media (max-width:640px){
-    .topbar-inner{gap:10px}
-    .chips{order:3;width:100%;justify-content:center}
-    .tb-mid{order:2;flex:1 1 100%}
-    .hero{padding-top:26px}
-    .q-en{font-size:1.05rem}
-    .option{padding:14px}
-    .score-ring{width:165px;height:165px}
-    .ring-inner b{font-size:2.3rem}
-  }
+.cm-node{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:10px 12px;transition:.25s}
+.cm-node:hover{border-color:#D4AF37;background:rgba(212,175,55,.1);transform:translateY(-2px)}
+.cm-node b{display:block;color:#F5D67B;font-family:'Poppins','Cairo',sans-serif;font-size:13.5px;direction:ltr;text-align:left}
+.cm-node span{display:block;font-size:12.5px;line-height:1.75;color:rgba(255,255,255,.82);margin-top:2px}
+.cm-card{position:relative;border-radius:22px;padding:18px;transition:.3s}
+.cm-card::before{content:'';position:absolute;top:-22px;right:50%;width:2px;height:22px;background:linear-gradient(#D4AF37,transparent);opacity:.7}
+.cm-card.done{box-shadow:0 0 30px rgba(34,197,94,.35);border-color:#22c55e!important}
+.cm-flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;direction:ltr;font-family:'Poppins',sans-serif;font-weight:600;font-size:12.5px}
+.cm-flow .st{padding:7px 12px;border-radius:12px;background:linear-gradient(135deg,#1E2C8A,#162066);border:1px solid rgba(212,175,55,.5)}
+.cm-flow .ar{color:#F5D67B;font-weight:900}
+@keyframes pulseLine{0%,100%{opacity:.5}50%{opacity:1}}
+header{padding-top:env(safe-area-inset-top,0px)}body{padding-bottom:env(safe-area-inset-bottom,0px)}
+/* LIGHT MODE */
+.glass{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:linear-gradient(145deg,rgba(24,32,84,.92),rgba(12,18,56,.92))!important}
+.blob,#stars{display:none!important}
+body{background:radial-gradient(circle at 90% -5%,rgba(212,175,55,.22),transparent 45%),radial-gradient(circle at -5% 80%,rgba(30,44,138,.45),transparent 50%),#070B24!important}
+.gold-text{animation:none!important;background-size:100% auto!important}
+.progress-gold,.trophy-float,.glow-pulse,.crown-shine::after{animation:none!important}
 </style>
 </head>
 <body>
+<canvas id="stars"></canvas>
+<div class="blob" style="width:520px;height:520px;background:#D4AF37;top:-150px;right:-150px"></div>
+<div class="blob" style="width:420px;height:420px;background:#1E2C8A;bottom:10%;left:-120px;animation-delay:2s"></div>
+<div class="blob" style="width:300px;height:300px;background:#7C3AED;top:40%;right:30%;opacity:.2;animation-delay:4s"></div>
 
-<div class="wrap">
-
-  <!-- ============ HERO ============ -->
-  <header class="hero" id="hero">
-    <div class="crown">👑</div>
-    <span class="kicker">مراجعة تفاعلية · مهارات الإدارة</span>
-    <h1 class="gold-text">شابتر الوعي الذاتي <span>Self-Awareness</span></h1>
-    <p class="sub">راجع الشابتر كاملًا بـ 59 سؤالًا تفاعليًا قبل الكويز، مع شرح لكل إجابة وتقرير نهائي بأدائك.</p>
-    <div class="student-badge">
-      <span class="av">ع</span>
-      <div>
-        <small>الطالب</small>
-        <strong>عبدالله العبيدي</strong>
-      </div>
-    </div>
-  </header>
-
-  <!-- ============ TOP BAR ============ -->
-  <div class="topbar" id="topbar">
-    <div class="topbar-inner">
-      <div style="display:flex;gap:8px">
-        <button class="icon-btn" id="navBtn" title="قائمة الأسئلة">☰</button>
-        <button class="icon-btn" id="soundBtn" title="تشغيل/إيقاف الصوت">🔊</button>
-      </div>
-      <div class="tb-mid">
-        <div class="tb-text">
-          <span>السؤال <b id="qNow">1</b> من <b id="qTotal">59</b></span>
-          <span id="pctTxt">0%</span>
-        </div>
-        <div class="track"><div class="fill" id="fill"></div></div>
-      </div>
-      <div class="chips">
-        <span class="chip ok">✔ <b id="cOk">0</b></span>
-        <span class="chip bad">✖ <b id="cBad">0</b></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ QUIZ ============ -->
-  <main id="quizArea">
-    <section class="card qcard" id="qcard"></section>
-  </main>
-
-  <!-- ============ REPORT ============ -->
-  <main id="reportArea" class="hidden"></main>
-
+<!-- PRELOADER -->
+<div id="preloader" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#070B24] transition-opacity duration-700">
+<div class="w-24 h-24 rounded-3xl btn-gold flex items-center justify-center text-5xl glow-pulse">👑</div>
+<h1 class="mt-6 text-2xl font-black gold-text">منصة عبدالله العبيدي الذهبية</h1>
+<p class="text-white/60 mt-2">جاري تجهيز تجربة ملكية تليق ببطل الإدارة...</p>
+<div class="w-64 h-2 mt-6 rounded-full bg-white/10 overflow-hidden"><div id="loadBar" class="h-full progress-gold rounded-full" style="width:0%"></div></div>
 </div>
 
-<!-- ============ NAV MODAL ============ -->
-<div class="modal" id="navModal">
-  <div class="modal-box">
-    <div class="mh">
-      <div>
-        <h3 class="gold-text">خريطة الأسئلة</h3>
-        <p style="margin:0;font-size:.82rem;color:#b5a88e">اضغط على أي رقم للانتقال إليه مباشرة</p>
-      </div>
-      <button class="btn-ghost" id="closeNav">إغلاق ✕</button>
-    </div>
-    <div class="nav-grid" id="navGrid"></div>
-    <div class="legend">
-      <span><i class="dot" style="background:rgba(61,220,151,.8)"></i> صحيح من أول مرة</span>
-      <span><i class="dot" style="background:rgba(255,193,7,.85)"></i> صحيح بعد محاولات</span>
-      <span><i class="dot" style="background:rgba(255,92,122,.85)"></i> تم كشف الإجابة</span>
-      <span><i class="dot" style="background:rgba(255,255,255,.16)"></i> لم يُجب بعد</span>
-    </div>
-  </div>
+<!-- HEADER -->
+<header class="sticky top-0 z-50 glass border-b border-[#D4AF37]/30">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl btn-gold flex items-center justify-center text-2xl crown-shine">👑</div>
+<div><div class="font-black text-lg leading-none">عبدالله <span class="gold-text">العبيدي</span></div><div class="text-[12px] text-white/60">مهارات إدارية • الشابتر 2 الجزء الأول • كويز التفوق</div></div>
+</div>
+<div class="hidden md:flex items-center gap-2 text-sm">
+<a href="#home" class="px-4 py-2 rounded-xl hover:bg-white/10 transition">الرئيسية</a>
+<a href="#summary" class="px-4 py-2 rounded-xl hover:bg-white/10 transition">الملخص</a>
+<a href="#quizSection" class="px-4 py-2 rounded-xl hover:bg-white/10 transition">الاختبار</a>
+<a href="#reportSection" class="px-4 py-2 rounded-xl hover:bg-white/10 transition">التقرير</a>
+</div>
+<div class="flex items-center gap-2">
+<div class="hidden sm:flex items-center gap-2 glass rounded-xl px-3 py-2 text-sm">⚡<span id="hdrScore" class="font-black">0</span><span class="text-white/40">نقطة</span></div>
+<button onclick="toggleSound()" id="soundBtn" class="w-11 h-11 rounded-xl btn-ghost flex items-center justify-center text-xl">🔊</button>
+</div>
+</div>
+<div class="h-1 bg-white/10"><div id="topProgress" class="h-full progress-gold transition-all duration-500" style="width:0%"></div></div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="relative z-10 max-w-7xl mx-auto px-4 pt-8 pb-2">
+<div class="grid lg:grid-cols-2 gap-6 items-stretch">
+<div class="glass gold-border rounded-3xl p-7 md:p-10 relative overflow-hidden hero-pattern flex flex-col justify-center">
+<div class="absolute top-0 left-0 w-full h-1 progress-gold"></div>
+<div class="inline-flex items-center gap-2 chapter-badge rounded-full px-4 py-2 text-sm font-bold text-[#F5D67B] self-start"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Developing Self-Awareness • 60 سؤالًا (30 اختر + 30 صح/خطأ)</div>
+<h1 class="text-3xl md:text-5xl font-black leading-[1.25] mt-5">أهلًا بالبطل <span class="gold-text">عبدالله العبيدي</span> 🏆</h1>
+<div class="flex flex-wrap gap-3 mt-6">
+<button onclick="scrollToQuiz()" class="btn-gold rounded-2xl px-8 py-4 text-lg">▶️ ابدأ الاختبار</button>
+<button onclick="translateAllToggle()" class="btn-ghost rounded-2xl px-6 py-4 font-bold">🌐 ترجمة الكل</button>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-7">
+<div class="rounded-2xl bg-white/5 border border-white/10 p-4 text-center"><div class="text-2xl font-black gold-text">60</div><div class="text-xs text-white/60 font-bold">سؤالًا (اختر + صح/خطأ)</div></div>
+<div class="rounded-2xl bg-white/5 border border-white/10 p-4 text-center"><div class="text-2xl font-black gold-text" id="bestScoreHero">0%</div><div class="text-xs text-white/60 font-bold">أفضل نتيجة لك</div></div>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<div class="glass gold-border rounded-3xl p-6 text-center relative overflow-hidden crown-shine">
+<div class="trophy-float text-7xl">🏆</div>
+<h3 class="font-black text-xl mt-2">بطاقة البطل الذهبية</h3>
+<div class="flex items-center justify-center gap-3 mt-4">
+<div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black btn-gold">ع</div>
+<div class="text-right"><div class="font-black">عبدالله العبيدي</div><div class="text-xs text-[#F5D67B] font-bold">⭐ المستوى <span id="levelNum">1</span> • <span id="xpNum">0</span> XP</div><div class="w-40 h-2 bg-white/10 rounded-full mt-2 overflow-hidden"><div id="xpBar" class="h-full progress-gold" style="width:0%"></div></div></div>
+</div>
+<div class="grid grid-cols-3 gap-2 mt-5 text-sm">
+<div class="rounded-xl bg-black/30 border border-white/10 p-3"><div class="font-black text-lg" id="statCorrect">0</div><div class="text-green-400 text-xs font-bold">✅ صحيحة</div></div>
+<div class="rounded-xl bg-black/30 border border-white/10 p-3"><div class="font-black text-lg" id="statWrong">0</div><div class="text-red-400 text-xs font-bold">❌ خاطئة</div></div>
+<div class="rounded-xl bg-black/30 border border-white/10 p-3"><div class="font-black text-lg" id="statStreak">0 🔥</div><div class="text-orange-300 text-xs font-bold">سلسلة التوهج</div></div>
+</div>
+<div class="mt-4 flex items-center justify-center gap-2 text-sm bg-black/30 rounded-xl p-3 border border-[#D4AF37]/30">🕒 الوقت: <b id="timerHero">00:00</b> <span class="text-white/40">|</span> <span>السؤال <b id="heroQpos" class="text-[#F5D67B]">1</b> / 60</span></div>
+</div>
+
+<div class="grid grid-cols-2 gap-4">
+<button onclick="setMode('train')" id="modeTrain" class="glass rounded-2xl p-5 text-right border-2 border-[#D4AF37] transition hover:scale-[1.02]">
+<div class="text-2xl">🎓</div><div class="font-black mt-1">وضع التدريب البطولي</div><div class="text-xs text-white/60 mt-1 leading-5">محاولات للتعلم + شرح + التقييم على أول إجابة</div><div class="text-[11px] mt-2 font-black text-green-400">● مُفعّل الآن</div>
+</button>
+<button onclick="setMode('exam')" id="modeExam" class="glass rounded-2xl p-5 text-right border-2 border-transparent transition hover:scale-[1.02]">
+<div class="text-2xl">⏱️</div><div class="font-black mt-1">وضع الكويز الحقيقي</div><div class="text-xs text-white/60 mt-1 leading-5">محاولة واحدة فقط بدون رجعة مثل الاختبار</div><div class="text-[11px] mt-2 font-black text-white/40" id="examLabel">○ اضغط للتفعيل</div>
+</button>
+</div>
+</div>
+</div>
+
+</section>
+
+<!-- SUMMARY -->
+<section id="summary" class="relative z-10 max-w-7xl mx-auto px-4 pt-6 pb-2">
+<div class="glass gold-border rounded-3xl p-5 md:p-8 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 progress-gold"></div>
+<div class="flex flex-wrap items-center justify-between gap-3">
+<div><div class="text-sm font-black text-[#F5D67B]">📚 قبل ما تبدأ الأسئلة</div><h2 class="text-2xl md:text-4xl font-black mt-1">ملخص الشابتر <span class="gold-text">Developing Self-Awareness</span></h2><p class="text-white/70 font-bold mt-2 text-base md:text-lg">9 بطاقات فيها أهم النقاط. اضغط «ترجم» جنب أي فقرة وهتظهر الترجمة العربية بجانبها والنص الأصلي يفضل مكانه.</p></div>
+<button onclick="sumAll()" id="sumAllBtn" class="btn-gold rounded-2xl px-6 py-3 font-black text-base">🌐 ترجمة كل الفقرات</button>
+</div>
+<div id="sumList" class="grid gap-5 mt-6"></div>
+</div></section>
+
+<!-- QUIZ -->
+<section id="quizSection" class="relative z-10 max-w-7xl mx-auto px-4 py-6">
+<div class="grid lg:grid-cols-[1fr_300px] gap-6 items-start">
+
+<div class="glass gold-border rounded-3xl overflow-hidden">
+<div class="p-4 md:p-5 flex flex-wrap items-center justify-between gap-3 bg-black/20 border-b border-[#D4AF37]/20">
+<div class="flex items-center gap-2 flex-wrap">
+<span id="qCounter" class="btn-gold rounded-xl px-4 py-2 text-sm">السؤال 1 / 60</span>
+<span id="qPageBadge" class="rounded-xl px-3 py-2 text-sm font-bold bg-white/10 border border-white/15">📘 الشابتر 1</span>
+<span id="qTypeBadge" class="rounded-xl px-3 py-2 text-sm font-bold bg-purple-500/20 border border-purple-400/40 text-purple-200">صح / خطأ</span>
+<span id="attemptBadge" class="rounded-xl px-3 py-2 text-sm font-bold bg-white/10 border border-white/15 hidden">المحاولة 2</span>
+</div>
+<div class="flex items-center gap-2">
+<button onclick="toggleBookmark()" id="bmBtn" class="w-10 h-10 rounded-xl btn-ghost flex items-center justify-center" title="حفظ في المفضلة">🤍</button>
+<button onclick="toggleTranslateCurrent()" id="trBtn" class="rounded-xl px-4 py-2.5 font-black text-sm btn-gold">🌐 ترجم</button>
+</div>
+</div>
+
+<div class="h-2 bg-white/10"><div id="quizProgress" class="h-full progress-gold transition-all duration-500" style="width:2%"></div></div>
+
+<div id="qCard" class="p-5 md:p-8">
+<div class="flex items-center gap-2 text-xs text-white/40 font-bold mb-3">📖 مراجعة مهارات إدارية: الشابتر 2 (الجزء الأول) — أجب لتكمل التحدي</div>
+<h2 id="qEn" dir="ltr" class="text-left font-pop font-semibold text-lg md:text-2xl leading-9 bg-black/30 border border-white/10 rounded-2xl p-5"></h2>
+<div id="qArBox" class="ar-box p-4 mt-3 hidden pop"><div class="text-[11px] font-black text-[#F5D67B] mb-1">🇸🇦 الترجمة العربية المباشرة:</div><div id="qAr" class="font-bold leading-8 text-[15px] md:text-lg"></div></div>
+<div id="optsGrid" class="grid gap-3 mt-5"></div>
+<div id="feedbackBox" class="mt-5 hidden rounded-2xl p-5 text-center font-black text-lg pop"></div>
+<div id="explainBox" class="mt-3 hidden rounded-2xl p-5 bg-blue-500/10 border border-blue-400/40 text-lg md:text-xl leading-9"></div>
+<div class="flex flex-wrap items-center justify-between gap-3 mt-6">
+<div class="flex gap-2">
+<button onclick="prevQ()" class="btn-ghost rounded-xl px-5 py-3 font-bold">→ السابق</button>
+<button onclick="nextQ()" class="btn-gold rounded-xl px-7 py-3">التالي ←</button>
+</div>
+<div class="flex gap-2">
+<button onclick="skipQ()" class="btn-ghost rounded-xl px-4 py-3 text-sm font-bold">⏭️ تخطي</button>
+<button onclick="confirmFinish()" class="rounded-xl px-5 py-3 text-sm font-black bg-gradient-to-l from-red-500 to-orange-500 hover:scale-105 transition shadow-lg">🏁 إنهاء و عرض النتيجة</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="flex flex-col gap-5">
+<div id="paletteCard" class="glass rounded-3xl p-5 gold-border">
+<h3 class="font-black flex items-center gap-2"><span class="text-xl">🗺️</span> خريطة المعركة <span class="text-xs font-bold text-white/40">(60 سؤالًا)</span></h3>
+<div class="flex flex-wrap gap-2 mt-3 text-[11px] font-bold">
+<button onclick="setFilter('all')" class="filter-btn px-3 py-1.5 rounded-lg bg-[#D4AF37] text-black" data-f="all">الكل</button>
+<button onclick="setFilter('un')" class="filter-btn px-3 py-1.5 rounded-lg bg-white/10" data-f="un">غير مجاب</button>
+<button onclick="setFilter('ok')" class="filter-btn px-3 py-1.5 rounded-lg bg-white/10" data-f="ok">صح</button>
+<button onclick="setFilter('bad')" class="filter-btn px-3 py-1.5 rounded-lg bg-white/10" data-f="bad">خطأ</button>
+<button onclick="setFilter('bm')" class="filter-btn px-3 py-1.5 rounded-lg bg-white/10" data-f="bm">⭐ مفضلة</button>
+</div>
+<div id="palette" class="grid grid-cols-5 gap-2 mt-4 max-h-[380px] overflow-y-auto p-1"></div>
+<div class="mt-4 text-xs leading-6 text-white/60 bg-black/30 rounded-xl p-3 border border-white/10">🟩 صح من أول مرة • 🟥 يحتاج مراجعة • 🟨 متخطّى • ✨ الذهبي = سؤالك الحالي<br>💡 التقييم النهائي يعتمد على <b class="text-[#F5D67B]">أول إجابة</b> في وضع التدريب.</div>
+<button onclick="confirmFinish()" class="btn-gold w-full rounded-xl py-3 mt-3 font-black">📊 اعرض تقرير عبدالله النهائي</button>
+</div>
+
+<div class="glass rounded-3xl p-5">
+<h3 class="font-black">⚔️ أسلحة البطل</h3>
+<div class="grid grid-cols-2 gap-2 mt-3 text-sm font-bold">
+<button onclick="translateAllToggle()" class="btn-ghost rounded-xl py-3">🌐 ترجمة الكل</button>
+<button onclick="toggleSound()" class="btn-ghost rounded-xl py-3">🔊 الصوت</button>
+<button onclick="restartQuiz()" class="btn-ghost rounded-xl py-3">🔄 من جديد</button>
+<button onclick="reviewBookmarks()" class="btn-ghost rounded-xl py-3">⭐ المفضلة</button>
+</div>
+<div class="mt-3 rounded-xl bg-black/30 border border-[#D4AF37]/30 p-3 text-xs leading-6"><b class="text-[#F5D67B]">نصيحة ذهبية يا عبدالله:</b> استخدم لوحة المفاتيح: <b>1-4</b> للإجابة • <b>T</b> للترجمة • <b>→ ←</b> للتنقل.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- REPORT -->
+<section id="reportSection" class="relative z-10 max-w-7xl mx-auto px-4 py-8 hidden">
+<div class="glass gold-border rounded-3xl p-6 md:p-10 text-center relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1.5 progress-gold"></div>
+<div class="trophy-float text-8xl">🏆</div>
+<h2 class="text-3xl md:text-4xl font-black mt-3">تقرير البطل <span class="gold-text">عبدالله العبيدي</span></h2>
+<p id="reportSubtitle" class="text-white/60 mt-2 font-bold"></p>
+<div class="grid md:grid-cols-3 gap-6 mt-8 items-center">
+<div class="flex flex-col items-center">
+<div class="relative w-52 h-52">
+<svg class="score-ring w-52 h-52" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="12"/><circle id="scoreCircle" cx="60" cy="60" r="52" fill="none" stroke="url(#gg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"/><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F5D67B"/><stop offset="50%" stop-color="#D4AF37"/><stop offset="100%" stop-color="#FFF6C8"/></linearGradient></defs></svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center"><div id="finalPct" class="text-4xl font-black gold-text">0%</div><div class="text-xs text-white/40 font-bold">النسبة النهائية</div></div>
+</div>
+<div id="gradeBadge" class="mt-3 px-6 py-2 rounded-full font-black btn-gold"></div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="rounded-2xl bg-green-500/10 border border-green-500/40 p-5"><div class="text-3xl font-black text-green-400" id="rCorrect">0</div><div class="text-xs font-bold text-green-300">✅ إجابات صحيحة</div></div>
+<div class="rounded-2xl bg-red-500/10 border border-red-500/40 p-5"><div class="text-3xl font-black text-red-400" id="rWrong">0</div><div class="text-xs font-bold text-red-300">❌ تحتاج مراجعة</div></div>
+<div class="rounded-2xl bg-white/5 border border-white/15 p-5"><div class="text-3xl font-black gold-text" id="rTime">00:00</div><div class="text-xs font-bold text-white/60">⏱️ زمن الإنجاز</div></div>
+<div class="rounded-2xl bg-white/5 border border-white/15 p-5"><div class="text-3xl font-black gold-text" id="rStreak">0</div><div class="text-xs font-bold text-white/60">🔥 أفضل سلسلة</div></div>
+</div>
+<div class="glass rounded-2xl p-4">
+<canvas id="chartDoughnut" height="220"></canvas>
+<div class="mt-2 text-xs text-white/40 font-bold">توزيع الأداء: صح / خطأ / متخطّى</div>
+<hr class="border-white/10 my-3">
+<canvas id="chartBars" height="220"></canvas>
+<div class="mt-2 text-xs text-white/40 font-bold">الأداء حسب أجزاء الشابتر (حسب رقم الصفحة)</div>
+</div>
+</div>
+<div id="finalMessage" class="mt-6 text-xl font-black leading-9 rounded-2xl p-5 feedback-ok"></div>
+<div class="mt-6 rounded-2xl p-5 border border-green-500/60 bg-green-500/10 text-center no-print">
+<div class="font-black text-lg">📲 إرسال تقرير الإجابات للدكتور محمد</div>
+<p class="text-white/70 text-sm mt-1 leading-7">اضغط الزر لفتح واتساب برسالة جاهز فيها نتيجتك وأخطائك، ثم اضغط «إرسال».</p>
+<button onclick="sendWhatsApp()" class="rounded-2xl px-8 py-4 mt-3 font-black text-lg text-white hover:scale-105 transition shadow-lg" style="background:linear-gradient(135deg,#25D366,#128C7E)">📲 أرسل التقرير للدكتور محمد عبر واتساب</button>
+</div>
+
+<div class="flex flex-wrap justify-center gap-3 mt-6 no-print">
+<button onclick="showOnlyWrong=false;renderReportList();toggleWrongBtn(this)" class="btn-gold rounded-xl px-6 py-3 font-black">📋 عرض الكل (60)</button>
+<button onclick="showOnlyWrong=true;renderReportList();toggleWrongBtn(this)" class="btn-ghost rounded-xl px-6 py-3 font-bold">❌ مراجعة الأخطاء فقط</button>
+<button onclick="restartQuiz()" class="btn-ghost rounded-xl px-6 py-3 font-bold">🔄 إعادة الاختبار</button>
+<button onclick="window.print()" class="btn-ghost rounded-xl px-6 py-3 font-bold">🖨️ طباعة التقرير</button>
+<button onclick="shareResult()" class="btn-ghost rounded-xl px-6 py-3 font-bold">📤 مشاركة النتيجة</button>
+<button onclick="sendWhatsApp()" class="rounded-xl px-6 py-3 font-black text-white" style="background:linear-gradient(135deg,#25D366,#128C7E)">📲 واتساب الدكتور محمد</button>
+</div>
+</div>
+
+<div class="mt-6 flex items-center gap-3">
+<div class="flex-1 h-px bg-gradient-to-l from-transparent via-[#D4AF37] to-transparent"></div>
+<h3 class="font-black text-xl whitespace-nowrap">📝 كشف الدرجات التفصيلي <span class="text-sm text-white/40">مع الإجابات النموذجية</span></h3>
+<div class="flex-1 h-px bg-gradient-to-l from-transparent via-[#D4AF37] to-transparent"></div>
+</div>
+<div id="reportList" class="grid gap-4 mt-5"></div>
+</section>
+
+<footer class="relative z-10 max-w-7xl mx-auto px-4 pb-10 pt-4 text-center text-white/40 text-sm">
+<div class="glass rounded-2xl p-5">صُنع بفخر 👑 للبطل <b class="gold-text">عبدالله العبيدي</b> • مراجعة مهارات إدارية (الشابتر 2 • الجزء الأول) • بالتوفيق في الكويز يا بطل 🚀<br><span class="text-xs">60 سؤالًا بالترتيب حسب صفحات الشابتر مع ترجمة فورية وتقرير ذكي</span></div>
+</footer>
+
+<!-- CELEBRATION TOAST -->
+<div id="toastWrap" class="fixed bottom-6 right-1/2 translate-x-1/2 z-[90] flex flex-col items-center gap-2 pointer-events-none w-[92%] max-w-md"></div>
+<div id="bigCheer" class="fixed inset-0 z-[95] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+<div class="glass gold-border rounded-3xl p-8 text-center max-w-md w-full pop crown-shine">
+<div class="text-7xl trophy-float" id="bigCheerEmoji">🎉</div>
+<h2 id="bigCheerTitle" class="text-2xl font-black gold-text mt-3">أحسنت عبدالله كمّل يا بطل! 🏆</h2>
+<p id="bigCheerSub" class="text-white/70 font-bold mt-2 text-sm leading-7"></p>
+<button onclick="closeCheer()" class="btn-gold rounded-xl px-8 py-3 mt-5 font-black">واصل يا بطل 🚀</button>
+</div>
 </div>
 
 <script>
-/* =========================================================
-   البيانات — 59 سؤالًا (30 صح/خطأ + 29 اختيار من متعدد)
-   ========================================================= */
-const TF_OPTS = [{en:"True", ar:"صح"}, {en:"False", ar:"خطأ"}];
+/* ================= DATA - 40 MCQ FROM RECURSION CHAPTER ================= */
+const QUESTIONS = [{"id": 1, "page": "صفحة 2", "pg": 2, "type": "mcq", "en": "Which of the following is NOT one of the chapter's learning objectives?", "ar": "أي مما يلي ليس من أهداف التعلم في الشابتر؟", "opts": {"en": ["Understand your sensitivity line", "Develop your negotiation tactics", "Apply your personal learning style", "Discover your orientation toward change"], "ar": ["فهم خط الحساسية لديك", "تطوير تكتيكات التفاوض لديك", "تطبيق أسلوب التعلم الخاص بك", "اكتشاف توجهك نحو التغيير"]}, "correct": 1, "ex": "الأهداف المذكورة: فهم خط الحساسية، توضيح القيم ومستوى النضج الأخلاقي، تطبيق أسلوب تعلمك، اكتشاف توجهك نحو التغيير، وتحديد أسلوبك في التعامل مع الناس. <b>التفاوض مش منها.</b> <span style=\"opacity:.7\">(صفحة 2)</span>"}, {"id": 2, "page": "صفحة 2", "pg": 2, "type": "tf", "en": "One of the learning objectives is to clarify personal values and moral maturity level.", "ar": "من أهداف التعلم توضيح القيم الشخصية ومستوى النضج الأخلاقي.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> توضيح قيمك ومستوى نضجك الأخلاقي هدف مكتوب حرفيًا في بداية الشابتر. <span style=\"opacity:.7\">(صفحة 2)</span>"}, {"id": 3, "page": "صفحة 2", "pg": 2, "type": "tf", "en": "One of the learning objectives is to identify your interpersonal style.", "ar": "من أهداف التعلم تحديد أسلوبك في التعامل مع الآخرين (Interpersonal style).", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> آخر الأهداف: تحديد أسلوبك في التعامل مع الآخرين (Interpersonal style). <span style=\"opacity:.7\">(صفحة 2)</span>"}, {"id": 4, "page": "صفحة 3", "pg": 3, "type": "tf", "en": "Self-management depends first and foremost on self-awareness.", "ar": "الإدارة الذاتية (Self-management) تعتمد أولًا وقبل كل شيء على الوعي الذاتي (Self-awareness).", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> زي البيت: الأساس (الوعي الذاتي) لازم يكون قوي قبل ما تبني فوقه إدارة الوقت والضغوط والأهداف. <span style=\"opacity:.7\">(صفحة 3)</span>"}, {"id": 5, "page": "صفحة 3", "pg": 3, "type": "mcq", "en": "Self-awareness lies at the heart of the ability to master oneself, but it is:", "ar": "الوعي الذاتي في قلب القدرة على إتقان النفس، لكنه:", "opts": {"en": ["Sufficient by itself", "Unrelated to self-management", "Only needed by top managers", "Not sufficient by itself"], "ar": ["كافٍ وحده", "لا علاقة له بالإدارة الذاتية", "مطلوب فقط للمديرين الكبار", "غير كافٍ وحده"]}, "correct": 3, "ex": "<b>الإجابة: غير كافٍ وحده.</b> الوعي الذاتي مهم وفي قلب إتقان النفس، لكن محتاج مهارات تانية معاه. مثال: تعرف إنك بتتأخر (ده وعي)، لكن لازم تنظم وقتك عشان تتحسن. <span style=\"opacity:.7\">(صفحة 3)</span>"}, {"id": 6, "page": "صفحة 3", "pg": 3, "type": "tf", "en": "The chapter's emphasis is on personal opinions about self-awareness rather than scientifically validated information.", "ar": "تركيز الشابتر على الآراء الشخصية حول الوعي الذاتي لا على المعلومات المثبتة علميًا.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> الشابتر بيركز على معلومات مثبتة علميًا عن علاقة الوعي الذاتي بسلوك المديرين، مش آراء شخصية. <span style=\"opacity:.7\">(صفحة 3)</span>"}, {"id": 7, "page": "صفحة 3", "pg": 3, "type": "mcq", "en": "For more than 300 years, knowledge of the self has been considered to be at the very core of:", "ar": "لأكثر من 300 عام اعتُبرت معرفة الذات في جوهر:", "opts": {"en": ["Human behavior", "Organizational structure", "Financial planning", "Technical training"], "ar": ["السلوك الإنساني", "الهيكل التنظيمي", "التخطيط المالي", "التدريب التقني"]}, "correct": 0, "ex": "<b>الإجابة: السلوك الإنساني.</b> معرفة الذات اعتُبرت من أكثر من 300 سنة أساس تصرفات الإنسان. <span style=\"opacity:.7\">(صفحة 3)</span>"}, {"id": 8, "page": "صفحة 3", "pg": 3, "type": "tf", "en": "Self-awareness alone is sufficient to master oneself.", "ar": "الوعي الذاتي وحده كافٍ لإتقان النفس.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> الوعي الذاتي لوحده مش كفاية. هو الأساس، ولازم تبني عليه باقي المهارات. <span style=\"opacity:.7\">(صفحة 3)</span>"}, {"id": 9, "page": "صفحة 4", "pg": 4, "type": "mcq", "en": "In the Hierarchy of Personal Self-Management Skills, which skill sits at the innermost core?", "ar": "في هرم مهارات الإدارة الذاتية الشخصية (Hierarchy of Personal Self-Management Skills)، أي مهارة تقع في المركز الداخلي؟", "opts": {"en": ["Managing Stress", "Managing Time", "Self-Awareness", "Setting Priorities and Goals"], "ar": ["إدارة الضغوط", "إدارة الوقت", "الوعي الذاتي", "تحديد الأولويات والأهداف"]}, "correct": 2, "ex": "<b>الإجابة: الوعي الذاتي (Self-Awareness).</b> هو في قلب الرسم، وباقي المهارات ملفوفة حواليه. <span style=\"opacity:.7\">(صفحة 4)</span>"}, {"id": 10, "page": "صفحة 4", "pg": 4, "type": "tf", "en": "In the hierarchy diagram, Managing Stress is associated with Symptom and Tactical, while Self-Awareness is associated with Problem and Strategic.", "ar": "في رسم الهرم، ترتبط إدارة الضغوط بالعَرَض (Symptom) والتكتيكي (Tactical)، بينما يرتبط الوعي الذاتي بالمشكلة (Problem) والاستراتيجي (Strategic).", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> الطبقة الخارجية (إدارة الضغوط) بتعالج الأعراض بحلول سريعة (تكتيكية)، والقلب (الوعي الذاتي) بيعالج أصل المشكلة (استراتيجي). مثال: المسكن يخفف الألم، لكن معرفة السبب تعالجه. <span style=\"opacity:.7\">(صفحة 4)</span>"}, {"id": 11, "page": "صفحة 4", "pg": 4, "type": "mcq", "en": "What is the correct order of the layers in the hierarchy, from the center outward?", "ar": "ما الترتيب الصحيح لطبقات الهرم من المركز إلى الخارج؟", "opts": {"en": ["Managing Stress → Managing Time → Setting Priorities and Goals → Self-Awareness", "Self-Awareness → Setting Priorities and Goals → Managing Time → Managing Stress", "Self-Awareness → Managing Time → Setting Priorities and Goals → Managing Stress", "Setting Priorities and Goals → Self-Awareness → Managing Stress → Managing Time"], "ar": ["إدارة الضغوط ← إدارة الوقت ← تحديد الأولويات والأهداف ← الوعي الذاتي", "الوعي الذاتي ← تحديد الأولويات والأهداف ← إدارة الوقت ← إدارة الضغوط", "الوعي الذاتي ← إدارة الوقت ← تحديد الأولويات والأهداف ← إدارة الضغوط", "تحديد الأولويات والأهداف ← الوعي الذاتي ← إدارة الضغوط ← إدارة الوقت"]}, "correct": 1, "ex": "<b>الترتيب من القلب للخارج:</b> الوعي الذاتي ← الأولويات والأهداف ← إدارة الوقت ← إدارة الضغوط. <span style=\"opacity:.7\">(صفحة 4)</span>"}, {"id": 12, "page": "صفحة 5", "pg": 5, "type": "tf", "en": "Managing time and managing stress are the skills that help individuals create direction in their own lives.", "ar": "إدارة الوقت وإدارة الضغوط هما المهارتان اللتان تساعدان الأفراد على خلق اتجاه في حياتهم.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> اللي بيدّي الاتجاه هو ضبط النفس وتوضيح الأولويات والأهداف. أما الوقت والضغوط فبيساعدوك تتكيف مع محيطك وتنظمه. <span style=\"opacity:.7\">(صفحة 5)</span>"}, {"id": 13, "page": "صفحة 5", "pg": 5, "type": "mcq", "en": "Which of the following is NOT listed as a self-management skill closely linked to and built upon self-awareness?", "ar": "أي مما يلي غير مذكور كمهارة إدارة ذاتية مرتبطة بالوعي الذاتي وتبني عليه؟", "opts": {"en": ["Developing self-control", "Managing time", "Managing stress", "Building external networks"], "ar": ["تطوير ضبط النفس", "إدارة الوقت", "إدارة الضغوط", "بناء الشبكات الخارجية"]}, "correct": 3, "ex": "<b>الإجابة: بناء الشبكات الخارجية.</b> المهارات المذكورة: ضبط النفس، الأولويات والأهداف، إدارة الوقت، إدارة الضغوط. <span style=\"opacity:.7\">(صفحة 5)</span>"}, {"id": 14, "page": "صفحة 5", "pg": 5, "type": "mcq", "en": "Which skills help individuals create direction in their own lives?", "ar": "أي المهارات تساعد الأفراد على خلق اتجاه في حياتهم؟", "opts": {"en": ["Managing time and managing stress", "Self-awareness and managing stress", "Developing self-control and clarifying priorities and goals", "Managing time and developing self-control"], "ar": ["إدارة الوقت وإدارة الضغوط", "الوعي الذاتي وإدارة الضغوط", "تطوير ضبط النفس وتوضيح الأولويات والأهداف", "إدارة الوقت وتطوير ضبط النفس"]}, "correct": 2, "ex": "<b>الإجابة: ضبط النفس + توضيح الأولويات والأهداف.</b> مثال: طالب حدد هدفه (دخول الكلية) وضبط نفسه عن اللعب، فبقى ماشي في اتجاه واضح. <span style=\"opacity:.7\">(صفحة 5)</span>"}, {"id": 15, "page": "صفحة 5", "pg": 5, "type": "tf", "en": "Managing time and managing stress make it possible for individuals to adapt to and organize their surroundings.", "ar": "إدارة الوقت وإدارة الضغوط تمكّنان الأفراد من التكيّف مع محيطهم وتنظيمه.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> إدارة الوقت والضغوط بتساعدك تتأقلم مع بيئتك وتنظمها، زي ترتيب جدولك وقت الامتحانات. <span style=\"opacity:.7\">(صفحة 5)</span>"}, {"id": 16, "page": "صفحة 6", "pg": 6, "type": "mcq", "en": "Self-awareness is best defined as:", "ar": "يُعرَّف الوعي الذاتي (Self-awareness) على أفضل وجه بأنه:", "opts": {"en": ["Having a clear knowledge and awareness of your personality, including strengths, weaknesses, thoughts, beliefs, motivation, and emotions", "Knowing the personalities of the people around you", "Controlling your emotions in every situation", "Setting priorities and goals for your career"], "ar": ["امتلاك معرفة ووعي واضحَين بشخصيتك، بما فيها نقاط القوة والضعف والأفكار والمعتقدات والدافعية والمشاعر", "معرفة شخصيات من حولك", "التحكم في مشاعرك في كل موقف", "وضع الأولويات والأهداف لمسارك المهني"]}, "correct": 0, "ex": "<b>الإجابة:</b> معرفة ووعي واضحان بشخصيتك: نقاط القوة والضعف، الأفكار، المعتقدات، الدافعية، والمشاعر. <span style=\"opacity:.7\">(صفحة 6)</span>"}, {"id": 17, "page": "صفحة 6", "pg": 6, "type": "tf", "en": "Self-awareness means knowing only your strengths, not your weaknesses.", "ar": "الوعي الذاتي يعني معرفة نقاط قوتك فقط وليس نقاط ضعفك.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> الوعي الذاتي يشمل نقاط القوة <b>ونقاط الضعف</b> معًا، مش القوة بس. <span style=\"opacity:.7\">(صفحة 6)</span>"}, {"id": 18, "page": "صفحة 6", "pg": 6, "type": "tf", "en": "Self-awareness is a knowledge of one's own personality and individuality.", "ar": "الوعي الذاتي هو معرفة بشخصية الفرد وفرديته.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> هو معرفة الإنسان بشخصيته وفرديته، يعني إيه اللي بيميزه. <span style=\"opacity:.7\">(صفحة 6)</span>"}, {"id": 19, "page": "صفحة 7", "pg": 7, "type": "tf", "en": "With better self-awareness, we can improve our relationships and reach our goals more effectively.", "ar": "مع وعي ذاتي أفضل، يمكننا تحسين علاقاتنا وبلوغ أهدافنا بفعالية أكبر.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> لما تفهم نفسك تفهم الناس وتتعامل معاهم أحسن وتوصل لأهدافك أسهل. مثال: لو عرفت إنك بتتعصب بسرعة، هتهدى قبل ما تكلم زميلك. <span style=\"opacity:.7\">(صفحة 7)</span>"}, {"id": 20, "page": "صفحة 7", "pg": 7, "type": "mcq", "en": "According to the chapter, self-awareness leads to better self-assessment and finally to:", "ar": "حسب الشابتر، يؤدي الوعي الذاتي إلى تقييم ذاتي أفضل وفي النهاية إلى:", "opts": {"en": ["Higher defensiveness", "Greater self-confidence", "Less need for feedback", "Stronger threat-rigidity"], "ar": ["زيادة الدفاعية", "ثقة أكبر بالنفس", "قلة الحاجة للتغذية الراجعة", "استجابة جمود-التهديد أقوى"]}, "correct": 1, "ex": "<b>الإجابة: ثقة أكبر بالنفس.</b> تعرف نفسك ← تقيّمها صح ← تثق فيها أكتر. <span style=\"opacity:.7\">(صفحة 7)</span>"}, {"id": 21, "page": "صفحة 7", "pg": 7, "type": "tf", "en": "Self-awareness leads to better self-assessment and finally to lower self-confidence.", "ar": "الوعي الذاتي يؤدي إلى تقييم ذاتي أفضل وفي النهاية إلى ثقة أقل بالنفس.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> النتيجة النهائية ثقة <b>أكبر</b> بالنفس، مش أقل. <span style=\"opacity:.7\">(صفحة 7)</span>"}, {"id": 22, "page": "صفحة 7", "pg": 7, "type": "mcq", "en": "Self-awareness allows you to understand:", "ar": "الوعي الذاتي يتيح لك أن تفهم:", "opts": {"en": ["Only your own strengths", "Only the organization's goals", "Other people, how they perceive you, and your attitude and responses to them in the moment", "Only how to manage your time"], "ar": ["نقاط قوتك فقط", "أهداف المنظمة فقط", "الآخرين، وكيف يرونك، واتجاهك وردود أفعالك معهم في اللحظة", "كيفية إدارة وقتك فقط"]}, "correct": 2, "ex": "<b>الإجابة:</b> تفهم الآخرين، وإزاي بيشوفوك، وإزاي بتتصرف معاهم في اللحظة. <span style=\"opacity:.7\">(صفحة 7)</span>"}, {"id": 23, "page": "صفحة 7", "pg": 7, "type": "tf", "en": "Self-awareness prevents you from understanding how other people perceive you.", "ar": "الوعي الذاتي يمنعك من فهم كيف يراك الآخرون.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> العكس: الوعي الذاتي بيساعدك تعرف نظرة الآخرين ليك. <span style=\"opacity:.7\">(صفحة 7)</span>"}, {"id": 24, "page": "صفحة 8", "pg": 8, "type": "tf", "en": "Seeking self knowledge is a prerequisite for personal growth.", "ar": "السعي نحو معرفة الذات شرط مسبق للنمو الشخصي.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> مش هتتطور قبل ما تعرف مستواك الحالي. زي اللي بيعمل دايت: لازم يعرف وزنه الأول. <span style=\"opacity:.7\">(صفحة 8)</span>"}, {"id": 25, "page": "صفحة 8", "pg": 8, "type": "mcq", "en": "Why may self knowledge also inhibit growth and improvement?", "ar": "لماذا قد تعيق معرفة الذات النمو والتحسّن أيضًا؟", "opts": {"en": ["Because it makes us less healthy", "Fear of knowing more may lead to stagnation, so we avoid new self-knowledge to protect our self-esteem", "Because it reduces productivity at work", "Because it eliminates the need for feedback"], "ar": ["لأنها تجعلنا أقل صحة", "الخوف من معرفة المزيد قد يؤدي للركود، فنتجنب المعرفة الجديدة بالذات لحماية احترام الذات", "لأنها تقلل الإنتاجية في العمل", "لأنها تلغي الحاجة للتغذية الراجعة"]}, "correct": 1, "ex": "<b>الإجابة: الخوف من معرفة المزيد بيوقف التطور.</b> بنتجنب المعلومة لأنها ممكن تحسسنا بالنقص أو الخجل، فنحمي نفسنا ونفضل مكاننا. <span style=\"opacity:.7\">(صفحة 8)</span>"}, {"id": 26, "page": "صفحة 8", "pg": 8, "type": "mcq", "en": "According to the chapter, individuals who are more self-aware are:", "ar": "حسب الشابتر، الأفراد الأكثر وعيًا بذاتهم يكونون:", "opts": {"en": ["Less productive but more confident", "More defensive but healthier", "Equal in performance to less self-aware individuals", "More healthy, perform better in managerial and leadership roles, and are more productive at work"], "ar": ["أقل إنتاجية لكن أكثر ثقة", "أكثر دفاعية لكن أصح", "مساوين في الأداء لغير الواعين بذاتهم", "أصح، وأداؤهم أفضل في الأدوار الإدارية والقيادية، وأكثر إنتاجية"]}, "correct": 3, "ex": "<b>الإجابة:</b> الأكثر وعيًا بذاتهم أصح، وأداؤهم أحسن في الإدارة والقيادة، وأكثر إنتاجية. <span style=\"opacity:.7\">(صفحة 8)</span>"}, {"id": 27, "page": "صفحة 8", "pg": 8, "type": "tf", "en": "Self knowledge never inhibits growth and improvement.", "ar": "معرفة الذات لا تعيق النمو والتحسن أبدًا.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> معرفة الذات ممكن تعطل النمو أحيانًا لو خفنا منها وتجنبناها. ده اللغز (Enigma). <span style=\"opacity:.7\">(صفحة 8)</span>"}, {"id": 28, "page": "صفحة 8", "pg": 8, "type": "mcq", "en": "Why can't we improve ourselves or develop new capabilities?", "ar": "متى لا نستطيع تحسين أنفسنا أو تطوير قدرات جديدة؟", "opts": {"en": ["Unless and until we know what level of capability we currently possess", "Unless we avoid feedback", "Unless we protect our self-esteem", "Unless we reach the sensitivity line"], "ar": ["ما لم نعرف مستوى قدرتنا الحالي", "ما لم نتجنب التغذية الراجعة", "ما لم نحمِ احترام الذات", "ما لم نصل إلى خط الحساسية"]}, "correct": 0, "ex": "<b>الإجابة: إلا لما نعرف مستوى قدرتنا الحالي.</b> لازم تعرف نقطة البداية عشان تتحسن. <span style=\"opacity:.7\">(صفحة 8)</span>"}, {"id": 29, "page": "صفحة 8", "pg": 8, "type": "tf", "en": "We avoid new self-knowledge to protect our self-esteem or self respect.", "ar": "نتجنب معرفة جديدة عن ذاتنا لحماية احترامنا لذاتنا.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> بنتهرب من المعلومة اللي تحسسنا بالضعف عشان نحافظ على احترامنا لذاتنا. زي طالب يتجنب يشوف درجته. <span style=\"opacity:.7\">(صفحة 8)</span>"}, {"id": 30, "page": "صفحة 9", "pg": 9, "type": "mcq", "en": "Which concept answers the question: how can management skills be developed if the necessary self-knowledge is resisted?", "ar": "أي مفهوم يجيب عن سؤال: كيف تُنمّى المهارات الإدارية إذا قوومت معرفة الذات اللازمة لها؟", "opts": {"en": ["Threat-rigidity response", "Core self-evaluation", "The sensitivity line", "Orientation toward change"], "ar": ["استجابة جمود-التهديد", "التقييم الذاتي الجوهري", "خط الحساسية", "التوجه نحو التغيير"]}, "correct": 2, "ex": "<b>الإجابة: خط الحساسية (Sensitivity line).</b> هو الحل اللي الشابتر بيقدمه للغز. <span style=\"opacity:.7\">(صفحة 9)</span>"}, {"id": 31, "page": "صفحة 10", "pg": 10, "type": "mcq", "en": "The sensitivity line is:", "ar": "خط الحساسية (Sensitivity line) هو:", "opts": {"en": ["The level of self-awareness a manager must reach", "The point at which individuals become defensive when encountering information inconsistent with their self-concept or pressure to alter their behavior", "The point where feedback becomes verifiable and controllable", "The tendency to become rigid when facing a threat"], "ar": ["مستوى الوعي الذاتي الذي يجب أن يبلغه المدير", "النقطة التي يصبح عندها الأفراد دفاعيين عند مواجهة معلومات غير متسقة مع مفهومهم الذاتي أو ضغط لتغيير سلوكهم", "النقطة التي تصبح عندها التغذية الراجعة قابلة للتحقق والتحكم", "الميل للتصلب عند مواجهة تهديد"]}, "correct": 1, "ex": "<b>الإجابة:</b> النقطة اللي بتبقى عندها دفاعي لما تسمع معلومة مش متفقة مع صورتك عن نفسك أو يُضغط عليك تغير سلوكك. <span style=\"opacity:.7\">(صفحة 10)</span>"}, {"id": 32, "page": "صفحة 10", "pg": 10, "type": "tf", "en": "The sensitivity line is the point at which individuals become more open to information that is consistent with their self-concept.", "ar": "خط الحساسية هو النقطة التي ينفتح عندها الأفراد أكثر على معلومات متسقة مع مفهومهم الذاتي.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> عند الخط بتبقى <b>دفاعي</b>، مش منفتح. <span style=\"opacity:.7\">(صفحة 10)</span>"}, {"id": 33, "page": "صفحة 11", "pg": 11, "type": "tf", "en": "A marginally inconsistent piece of information, such as a friend saying you look tired when you feel fine, would probably require you to reexamine and change your self-concept.", "ar": "معلومة غير متسقة بشكل طفيف، مثل قول صديق إنك تبدو متعبًا وأنت بخير، ستتطلب غالبًا إعادة فحص وتغيير مفهومك الذاتي.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> الاختلاف البسيط ما بيحتاج تغيير صورتك عن نفسك. <span style=\"opacity:.7\">(صفحة 11)</span>"}, {"id": 34, "page": "صفحة 11", "pg": 11, "type": "mcq", "en": "In Situation 1 (a friend says you look tired but you feel fine), why would you probably not react defensively?", "ar": "في الموقف 1 (صديق يقول إنك تبدو متعبًا وأنت بخير)، لماذا غالبًا لن ترد دفاعيًا؟", "opts": {"en": ["Because the information is very serious", "Because it threatens your self-concept", "Because it crosses the sensitive line", "Because the discrepancy is relatively minor"], "ar": ["لأن المعلومة خطيرة جدًا", "لأنها تهدد مفهومك الذاتي", "لأنها تتخطى خط الحساسية", "لأن الاختلاف طفيف نسبيًا"]}, "correct": 3, "ex": "<b>الإجابة: لأن الاختلاف بسيط.</b> صاحبك قال إنك باين عليك التعب وإنت حاسس إنك كويس، فتعدّيها. <span style=\"opacity:.7\">(صفحة 11)</span>"}, {"id": 35, "page": "صفحة 12", "pg": 12, "type": "mcq", "en": "The threat-rigidity response is:", "ar": "استجابة جمود-التهديد (Threat-rigidity response) هي:", "opts": {"en": ["The tendency of individuals only to avoid feedback", "The willingness to self-disclose under pressure", "The tendency of almost all individuals, groups, and organizations to become rigid, meaning conservative and self-protective, when faced with a threat", "The ability to predict and control information about yourself"], "ar": ["ميل الأفراد فقط لتجنب التغذية الراجعة", "الاستعداد للإفصاح الذاتي تحت الضغط", "ميل كل الأفراد والجماعات والمنظمات تقريبًا إلى التصلب، أي المحافظة وحماية الذات، عند مواجهة تهديد", "القدرة على توقع المعلومات عن نفسك والتحكم بها"]}, "correct": 2, "ex": "<b>الإجابة:</b> الأفراد والجماعات والمنظمات بيتصلبوا ويبقوا محافظين ويحموا أنفسهم لما يحسوا بتهديد. <span style=\"opacity:.7\">(صفحة 12)</span>"}, {"id": 36, "page": "صفحة 12", "pg": 12, "type": "tf", "en": "The more discrepant the information, or the more serious its implications for your self-concept, the closer it approaches your sensitivity line.", "ar": "كلما زاد اختلاف المعلومة أو خطورة تبعاتها على مفهومك الذاتي، اقتربت أكثر من خط حساسيتك.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> كل ما كانت المعلومة أبعد عن صورتك وأخطر، اقتربت من خط الحساسية. <span style=\"opacity:.7\">(صفحة 12)</span>"}, {"id": 37, "page": "صفحة 12", "pg": 12, "type": "mcq", "en": "In Example 2 (a coworker judges you incompetent despite your good job), why would you feel a need to defend yourself?", "ar": "في المثال 2 (زميل يحكم بعدم كفاءتك رغم أدائك الجيد)، لماذا تشعر بحاجة للدفاع عن نفسك؟", "opts": {"en": ["The discrepancy is very high or its implications are very serious for your self-concept", "The information is verifiable and controllable", "The discrepancy is relatively minor", "You have already disclosed it to others"], "ar": ["لأن الاختلاف كبير جدًا أو تبعاته خطيرة جدًا على مفهومك الذاتي", "لأن المعلومة قابلة للتحقق والتحكم", "لأن الاختلاف طفيف نسبيًا", "لأنك أفصحت عنها للآخرين مسبقًا"]}, "correct": 0, "ex": "<b>الإجابة: الاختلاف كبير جدًا وتبعاته خطيرة على صورتك.</b> زميل قال إنك غير كفء رغم شغلك الجيد، فبتدافع. <span style=\"opacity:.7\">(صفحة 12)</span>"}, {"id": 38, "page": "صفحة 12", "pg": 12, "type": "tf", "en": "Threat-rigidity response applies to individuals only, not to groups or organizations.", "ar": "استجابة جمود-التهديد تنطبق على الأفراد فقط وليس على الجماعات أو المنظمات.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> بتنطبق على الأفراد والجماعات والمنظمات كلها. <span style=\"opacity:.7\">(صفحة 12)</span>"}, {"id": 39, "page": "صفحة 12", "pg": 12, "type": "tf", "en": "In Situation 2 (a coworker judges you incompetent despite a good job), the discrepancy is minor.", "ar": "في الموقف 2 (زميل يحكم بعدم كفاءتك رغم أداء جيد)، الاختلاف طفيف.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> الاختلاف في الموقف 2 كبير جدًا وتبعاته خطيرة. <span style=\"opacity:.7\">(صفحة 12)</span>"}, {"id": 40, "page": "صفحة 13", "pg": 13, "type": "mcq", "en": "Which type of information is less likely to cross the sensitive line?", "ar": "أي نوع من المعلومات أقل احتمالًا لتخطي خط الحساسية؟", "opts": {"en": ["Information that is sudden and unverifiable", "Information that is verifiable, predictable, and controllable", "Information that comes only from critics", "Information that contradicts your self-concept strongly"], "ar": ["معلومات مفاجئة وغير قابلة للتحقق", "معلومات قابلة للتحقق والتوقع والتحكم", "معلومات تأتي من الناقدين فقط", "معلومات تناقض مفهومك الذاتي بقوة"]}, "correct": 1, "ex": "<b>الإجابة:</b> المعلومة اللي يمكن التحقق منها وتوقعها والتحكم فيها. زي تقييم معروف معاييره مسبقًا. <span style=\"opacity:.7\">(صفحة 13)</span>"}, {"id": 41, "page": "صفحة 13", "pg": 13, "type": "mcq", "en": "How can increased self-knowledge and personal change occur despite defensiveness?", "ar": "كيف يمكن أن تحدث زيادة معرفة الذات والتغيير الشخصي رغم الدفاعية؟", "opts": {"en": ["When we avoid all feedback and rely on ourselves", "When information is sudden and strongly threatening", "When information is verifiable, predictable, and controllable, and when we self-disclose so others can provide insights", "When we ignore the sensitivity line"], "ar": ["عندما نتجنب كل تغذية راجعة ونعتمد على أنفسنا", "عندما تكون المعلومات مفاجئة ومهددة بقوة", "عندما تكون المعلومات قابلة للتحقق والتوقع والتحكم، وعندما نفصح عن ذواتنا ليقدّم الآخرون رؤى", "عندما نتجاهل خط الحساسية"]}, "correct": 2, "ex": "<b>الإجابة:</b> لما تكون المعلومة قابلة للتحقق والتوقع والتحكم، ولما نفصح عن أنفسنا للآخرين ليقدموا رؤيتهم. <span style=\"opacity:.7\">(صفحة 13)</span>"}, {"id": 42, "page": "صفحة 13", "pg": 13, "type": "tf", "en": "Self-disclosure allows others to provide insights into our behavior.", "ar": "الإفصاح الذاتي يتيح للآخرين تقديم رؤى حول سلوكنا.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> لما تحكي عن نفسك لحد بتثق فيه ويقولك رأيه، بتستفيد. <span style=\"opacity:.7\">(صفحة 13)</span>"}, {"id": 43, "page": "صفحة 14", "pg": 14, "type": "mcq", "en": "Which of the following helps manage the enigma of self-awareness?", "ar": "أي مما يلي يساعد في إدارة لغز الوعي الذاتي؟", "opts": {"en": ["Avoiding all feedback", "Involving others in your pursuit of self-understanding", "Ignoring information that is inconsistent with your self-concept", "Waiting for others to decide what you should learn about yourself"], "ar": ["تجنب كل تغذية راجعة", "إشراك الآخرين في سعيك لفهم ذاتك", "تجاهل المعلومات غير المتسقة مع مفهومك الذاتي", "انتظار الآخرين ليقرروا ما يجب أن تعرفه عن نفسك"]}, "correct": 1, "ex": "<b>الإجابة: إشراك الآخرين</b> في رحلة فهم نفسك. دعمهم بيخلي المعلومة أسهل في التقبل. <span style=\"opacity:.7\">(صفحة 14)</span>"}, {"id": 44, "page": "صفحة 14", "pg": 14, "type": "tf", "en": "The support and feedback individuals receive from others during self-disclosure help information contribute to greater self-awareness without crossing the sensitive line.", "ar": "الدعم والتغذية الراجعة التي يتلقاها الأفراد من الآخرين أثناء الإفصاح الذاتي تساعد المعلومات على زيادة الوعي الذاتي دون تخطي خط الحساسية.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> دعم الناس وملاحظاتهم وقت الإفصاح بتزوّد وعيك من غير ما توصل للدفاعية. <span style=\"opacity:.7\">(صفحة 14)</span>"}, {"id": 45, "page": "صفحة 14", "pg": 14, "type": "mcq", "en": "Which is one way to manage the enigma of self-awareness?", "ar": "ما إحدى طرق إدارة لغز الوعي الذاتي؟", "opts": {"en": ["Rejecting all information about yourself", "Receiving all information at once", "Avoiding people who disagree with you", "Exercising some control over when and what kind of information you receive about yourself"], "ar": ["رفض كل المعلومات عن نفسك", "تلقي كل المعلومات دفعة واحدة", "تجنب من يختلفون معك", "ممارسة بعض التحكم في وقت ونوع المعلومات التي تتلقاها عن نفسك"]}, "correct": 3, "ex": "<b>الإجابة:</b> التحكم في وقت ونوع المعلومات اللي تستقبلها عن نفسك. مثال: تطلب رأي صديقك وإنت مستعد. <span style=\"opacity:.7\">(صفحة 14)</span>"}, {"id": 46, "page": "صفحة 14", "pg": 14, "type": "tf", "en": "The enigma of self-awareness is best managed by avoiding feedback from others entirely.", "ar": "يُدار لغز الوعي الذاتي بأفضل شكل بتجنب تغذية الآخرين الراجعة تمامًا.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> تجنب الملاحظات بيحرمك من الفهم. الصح هو إشراك الآخرين. <span style=\"opacity:.7\">(صفحة 14)</span>"}, {"id": 47, "page": "صفحة 15", "pg": 15, "type": "mcq", "en": "According to the chapter, what creates social barriers between people?", "ar": "حسب الشابتر، ما الذي يخلق حواجز اجتماعية بين الناس؟", "opts": {"en": ["Distinctions", "Observing differences", "Self-disclosure", "Appreciating individual differences"], "ar": ["التمييز (Distinctions)", "ملاحظة الاختلافات", "الإفصاح الذاتي", "تقدير الفروق الفردية"]}, "correct": 0, "ex": "<b>الإجابة: التمييزات (Distinctions).</b> بنلاحظ الاختلافات لكن لا نحولها لتصنيفات تفرّق الناس. <span style=\"opacity:.7\">(صفحة 15)</span>"}, {"id": 48, "page": "صفحة 15", "pg": 15, "type": "mcq", "en": "What is an important reason for focusing on self-awareness, according to Appreciating Individual Differences?", "ar": "ما سبب مهم للتركيز على الوعي الذاتي حسب فقرة تقدير الفروق الفردية؟", "opts": {"en": ["To avoid interacting with different people", "To create distinctions between coworkers", "To develop the ability to diagnose important differences among others", "To eliminate the need for feedback"], "ar": ["لتجنب التعامل مع المختلفين", "لخلق تمييزات بين الزملاء", "لتنمية القدرة على تشخيص الفروق المهمة بين الآخرين", "لإلغاء الحاجة للتغذية الراجعة"]}, "correct": 2, "ex": "<b>الإجابة:</b> القدرة على تشخيص الاختلافات المهمة بين الآخرين، لأن زملاء العمل النهارده مختلفون. <span style=\"opacity:.7\">(صفحة 15)</span>"}, {"id": 49, "page": "صفحة 15", "pg": 15, "type": "tf", "en": "Most people tend to interact with individuals who are like themselves and to exclude others who seem different.", "ar": "معظم الناس يميلون إلى التفاعل مع من يشبهونهم واستبعاد من يبدون مختلفين.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> الناس بتميل لمن يشبهها، والشابتر بيعتبر ده كارثي. مثال: شلة تقصي الجديد لأنه مختلف. <span style=\"opacity:.7\">(صفحة 15)</span>"}, {"id": 50, "page": "صفحة 15", "pg": 15, "type": "tf", "en": "By observing differences, we create social barriers between people.", "ar": "بملاحظة الاختلافات نخلق حواجز اجتماعية بين الناس.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> ملاحظة الاختلاف بتزيل الحواجز، والتمييزات هي اللي تصنعها. <span style=\"opacity:.7\">(صفحة 15)</span>"}, {"id": 51, "page": "صفحة 16", "pg": 16, "type": "tf", "en": "Self-knowledge requires the creation of distinctions between ourselves and others.", "ar": "معرفة الذات تتطلب خلق تمييزات بيننا وبين الآخرين.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> معرفة الذات تحتاج فهم الاختلافات وتقديرها، مش خلق تمييزات. <span style=\"opacity:.7\">(صفحة 16)</span>"}, {"id": 52, "page": "صفحة 16", "pg": 16, "type": "mcq", "en": "Self-knowledge requires an understanding and valuing of differences, not the creation of:", "ar": "معرفة الذات تتطلب فهم الاختلافات وتقديرها، لا خلق:", "opts": {"en": ["Feedback", "Distinctions", "Goals", "Self-confidence"], "ar": ["التغذية الراجعة", "التمييزات (Distinctions)", "الأهداف", "الثقة بالنفس"]}, "correct": 1, "ex": "<b>الإجابة: التمييزات.</b> المطلوب هو تقدير الاختلاف. <span style=\"opacity:.7\">(صفحة 16)</span>"}, {"id": 53, "page": "صفحة 17", "pg": 17, "type": "mcq", "en": "Which of the following is NOT one of the five areas of self-awareness?", "ar": "أي مما يلي ليس من المجالات الخمسة للوعي الذاتي؟", "opts": {"en": ["Emotional intelligence", "Learning style", "Core self-evaluation", "Time management"], "ar": ["الذكاء العاطفي", "أسلوب التعلم", "التقييم الذاتي الجوهري", "إدارة الوقت"]}, "correct": 3, "ex": "<b>الإجابة: إدارة الوقت.</b> هي مهارة إدارة ذاتية، لكنها ليست من المجالات الخمسة. <span style=\"opacity:.7\">(صفحة 17)</span>"}, {"id": 54, "page": "صفحة 17", "pg": 17, "type": "mcq", "en": "Which list correctly names the five areas of self-awareness?", "ar": "أي قائمة تذكر المجالات الخمسة للوعي الذاتي بشكل صحيح؟", "opts": {"en": ["Time management, stress management, personal values, learning style, goals", "Self-control, priorities, emotional intelligence, values, motivation", "Emotional intelligence, personal values, learning style, orientation toward change, core self-evaluation", "Interpersonal style, time, stress, change, goals"], "ar": ["إدارة الوقت، إدارة الضغوط، القيم الشخصية، أسلوب التعلم، الأهداف", "ضبط النفس، الأولويات، الذكاء العاطفي، القيم، الدافعية", "الذكاء العاطفي، القيم الشخصية، أسلوب التعلم، التوجه نحو التغيير، التقييم الذاتي الجوهري", "أسلوب التعامل، الوقت، الضغط، التغيير، الأهداف"]}, "correct": 2, "ex": "<b>الإجابة:</b> الذكاء العاطفي، القيم الشخصية، أسلوب التعلم، التوجه نحو التغيير، التقييم الذاتي الجوهري. <span style=\"opacity:.7\">(صفحة 17)</span>"}, {"id": 55, "page": "صفحة 17", "pg": 17, "type": "tf", "en": "The five areas of self-awareness are those found to be key in developing successful management.", "ar": "المجالات الخمسة للوعي الذاتي هي التي ثبت أنها مفتاح لتطوير إدارة ناجحة.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> هذه المجالات الخمسة وُجد أنها مفاتيح لإدارة ناجحة. <span style=\"opacity:.7\">(صفحة 17)</span>"}, {"id": 56, "page": "صفحة 18", "pg": 18, "type": "tf", "en": "In the five areas diagram, Values identifies adaptability and responsibility.", "ar": "في شكل المجالات الخمسة، تحدد القيم (Values) القابلية للتكيف والمسؤولية.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 1, "ex": "<b>خطأ ❌</b> القيم = المعايير الشخصية والحكم الأخلاقي. أما القابلية للتكيف والمسؤولية فللاتجاهات نحو التغيير. <span style=\"opacity:.7\">(صفحة 18)</span>"}, {"id": 57, "page": "صفحة 18", "pg": 18, "type": "mcq", "en": "In the five areas diagram, Learning Style identifies:", "ar": "في شكل المجالات الخمسة، يحدد أسلوب التعلم (Learning Style):", "opts": {"en": ["Information acquisition and evaluation", "Emotional awareness and control", "Personal standards and moral judgment", "Adaptability and responsibility"], "ar": ["اكتساب المعلومات وتقييمها", "الوعي العاطفي والتحكم فيه", "المعايير الشخصية والحكم الأخلاقي", "القابلية للتكيف والمسؤولية"]}, "correct": 0, "ex": "<b>الإجابة: اكتساب المعلومات وتقييمها،</b> يعني إزاي تتعلم وتحكم على اللي تعلمته. <span style=\"opacity:.7\">(صفحة 18)</span>"}, {"id": 58, "page": "صفحة 18", "pg": 18, "type": "tf", "en": "In the five areas diagram, Attitudes Toward Change identifies adaptability and responsibility.", "ar": "في شكل المجالات الخمسة، تحدد الاتجاهات نحو التغيير (Attitudes Toward Change) القابلية للتكيف والمسؤولية.", "opts": {"en": ["True", "False"], "ar": ["صح", "خطأ"]}, "correct": 0, "ex": "<b>صح ✅</b> الاتجاهات نحو التغيير = القابلية للتكيف والمسؤولية. <span style=\"opacity:.7\">(صفحة 18)</span>"}, {"id": 59, "page": "صفحة 18", "pg": 18, "type": "mcq", "en": "In the five areas diagram, Emotional Intelligence identifies:", "ar": "في شكل المجالات الخمسة، يحدد الذكاء العاطفي (Emotional Intelligence):", "opts": {"en": ["Personal standards and moral judgment", "Emotional awareness and control", "Underlying personality attributes", "Adaptability and responsibility"], "ar": ["المعايير الشخصية والحكم الأخلاقي", "الوعي العاطفي والتحكم فيه", "السمات الشخصية الكامنة", "القابلية للتكيف والمسؤولية"]}, "correct": 1, "ex": "<b>الإجابة: الوعي العاطفي والتحكم فيه.</b> <span style=\"opacity:.7\">(صفحة 18)</span>"}, {"id": 60, "page": "صفحة 18", "pg": 18, "type": "mcq", "en": "In the five areas diagram, Core Self-Evaluation identifies:", "ar": "في شكل المجالات الخمسة، يحدد التقييم الذاتي الجوهري (Core Self-Evaluation):", "opts": {"en": ["Information acquisition and evaluation", "Emotional awareness and control", "Underlying personality attributes", "Personal standards and moral judgment"], "ar": ["اكتساب المعلومات وتقييمها", "الوعي العاطفي والتحكم فيه", "السمات الشخصية الكامنة", "المعايير الشخصية والحكم الأخلاقي"]}, "correct": 2, "ex": "<b>الإجابة: السمات الشخصية الكامنة،</b> يعني الصفات الأساسية في شخصيتك. <span style=\"opacity:.7\">(صفحة 18)</span>"}];
+const N=QUESTIONS.length;
 
-const DATA = [
-/* ---------- PART 1 : TRUE / FALSE ---------- */
-{n:1,p:3,t:"tf",en:"Self-awareness lies at the heart of the ability to master oneself.",ar:"يقع الوعي الذاتي في قلب القدرة على إتقان السيطرة على الذات.",ans:0,e:"الإجابة صحيحة ✔ — الوعي الذاتي (Self-awareness) هو الأساس الذي يمنح الفرد القدرة على فهم نفسه، وبالتالي إتقان إدارة ذاته والتحكم فيها."},
-{n:2,p:3,t:"tf",en:"Self-awareness alone is sufficient for effective self-management.",ar:"الوعي الذاتي وحده كافٍ لتحقيق إدارة ذاتية فعّالة.",ans:1,e:"الإجابة خطأ ✘ — الوعي الذاتي ضروري لكنه ليس كافيًا؛ فالإدارة الذاتية تحتاج أيضًا إلى تطبيق مهارات مثل ضبط النفس، وإدارة الوقت، وإدارة الضغط."},
-{n:3,p:3,t:"tf",en:"Self-management depends first and foremost on self-awareness.",ar:"تعتمد إدارة الذات أولًا وقبل كل شيء على الوعي الذاتي.",ans:0,e:"الإجابة صحيحة ✔ — إدارة الذات تنطلق أولًا من معرفة الذات، فالوعي الذاتي هو نقطة البداية لكل سلوك إداري فعّال."},
-{n:4,p:5,t:"tf",en:"Developing self-control is one of the self-management skills linked to self-awareness.",ar:"يُعد تطوير ضبط النفس أحد مهارات إدارة الذات المرتبطة بالوعي الذاتي.",ans:0,e:"الإجابة صحيحة ✔ — ضبط النفس (Self-control) من المهارات التنفيذية المرتبطة مباشرة بالوعي الذاتي."},
-{n:5,p:5,t:"tf",en:"Managing time and managing stress make it possible for individuals to adapt to and organize their surroundings.",ar:"تمكّن إدارة الوقت وإدارة الضغط الأفراد من التكيف مع محيطهم وتنظيمه.",ans:0,e:"الإجابة صحيحة ✔ — إدارة الوقت وإدارة الضغط مهارتان تتيحان للفرد التكيّف مع بيئته وتنظيمها بفاعلية."},
-{n:6,p:5,t:"tf",en:"Clarifying priorities and goals helps individuals create direction in their own lives.",ar:"يساعد توضيح الأولويات والأهداف الأفراد على خلق اتجاه واضح في حياتهم.",ans:0,e:"الإجابة صحيحة ✔ — تحديد الأولويات والأهداف يمنح الفرد بوصلة واتجاهًا في حياته."},
-{n:7,p:6,t:"tf",en:"Self-awareness includes knowledge of strengths and weaknesses.",ar:"يشمل الوعي الذاتي معرفة نقاط القوة ونقاط الضعف.",ans:0,e:"الإجابة صحيحة ✔ — معرفة نقاط القوة والضعف جزء أساسي من الوعي الذاتي."},
-{n:8,p:6,t:"tf",en:"Self-awareness includes thoughts, beliefs, motivation, and emotions.",ar:"يشمل الوعي الذاتي الأفكار والمعتقدات والدوافع والمشاعر.",ans:0,e:"الإجابة صحيحة ✔ — الوعي الذاتي يمتد ليشمل الأفكار والمعتقدات والدوافع والمشاعر."},
-{n:9,p:6,t:"tf",en:"Self-awareness is only a knowledge of other people's personalities.",ar:"الوعي الذاتي هو مجرد معرفة بشخصيات الآخرين.",ans:1,e:"الإجابة خطأ ✘ — الوعي الذاتي هو معرفة الفرد بنفسه وذاته، وليس معرفة شخصيات الآخرين."},
-{n:10,p:7,t:"tf",en:"Self-awareness can help you understand how other people perceive you.",ar:"يمكن أن يساعدك الوعي الذاتي على فهم الكيفية التي ينظر بها الآخرون إليك.",ans:0,e:"الإجابة صحيحة ✔ — الوعي الذاتي يمنحك صورة أوضح عن انطباع الآخرين عنك."},
-{n:11,p:7,t:"tf",en:"Better self-awareness can improve relationships and help individuals reach their goals more effectively.",ar:"الوعي الذاتي الأفضل يحسّن العلاقات ويساعد الأفراد على تحقيق أهدافهم بفعالية أكبر.",ans:0,e:"الإجابة صحيحة ✔ — الوعي الذاتي ينعكس إيجابًا على العلاقات وعلى تحقيق الأهداف."},
-{n:12,p:7,t:"tf",en:"Self-awareness leads to better self-assessment and greater self-confidence.",ar:"يؤدي الوعي الذاتي إلى تقييم أفضل للذات وثقة أكبر بالنفس.",ans:0,e:"الإجابة صحيحة ✔ — السلسلة: الوعي الذاتي ← تقييم أفضل للذات ← ثقة أكبر بالنفس."},
-{n:13,p:8,t:"tf",en:"Individuals can improve themselves without knowing their current level of capability.",ar:"يمكن للأفراد تحسين أنفسهم دون معرفة مستوى قدراتهم الحالي.",ans:1,e:"الإجابة خطأ ✘ — لا يمكن تحسين الذات دون معرفة المستوى الحالي للقدرات، فالتشخيص يسبق التطوير."},
-{n:14,p:8,t:"tf",en:"Individuals who are more self-aware are more productive at work.",ar:"الأفراد الأكثر وعيًا بذواتهم أكثر إنتاجية في العمل.",ans:0,e:"الإجابة صحيحة ✔ — الوعي الذاتي يرتبط بارتفاع الإنتاجية في العمل."},
-{n:15,p:8,t:"tf",en:"Seeking self-knowledge is a prerequisite for personal growth.",ar:"يُعد السعي إلى معرفة الذات شرطًا مسبقًا للنمو الشخصي.",ans:0,e:"الإجابة صحيحة ✔ — معرفة الذات شرط مسبق (prerequisite) للنمو والتطور الشخصي."},
-{n:16,p:8,t:"tf",en:"Self-knowledge can never inhibit growth and improvement.",ar:"لا يمكن لمعرفة الذات أبدًا أن تعيق النمو والتحسين.",ans:1,e:"الإجابة خطأ ✘ — قد تُعيق معرفة الذات النمو في بعض الحالات، لذا يجب استخدامها بحكمة."},
-{n:17,p:10,t:"tf",en:"The sensitivity line is the point at which individuals become defensive when encountering information inconsistent with their self-concept.",ar:"خط الحساسية هو النقطة التي يصبح عندها الأفراد دفاعيين عند مواجهة معلومات تتعارض مع مفهومهم الذاتي.",ans:0,e:"الإجابة صحيحة ✔ — هذا هو التعريف الدقيق لخط الحساسية (Sensitivity line)."},
-{n:18,p:10,t:"tf",en:"The sensitivity line refers to information that always agrees with an individual's self-concept.",ar:"يشير خط الحساسية إلى المعلومات التي تتفق دائمًا مع مفهوم الفرد عن ذاته.",ans:1,e:"الإجابة خطأ ✘ — العكس تمامًا؛ خط الحساسية يتعلق بالمعلومات التي تتعارض مع مفهوم الذات."},
-{n:19,p:11,t:"tf",en:"A relatively minor discrepancy is likely to evoke a strong defensive reaction.",ar:"من المرجح أن يُثير التباين البسيط نسبيًا رد فعل دفاعيًا قويًا.",ans:1,e:"الإجابة خطأ ✘ — التباين البسيط لا يُثير عادة رد فعل دفاعي قوي، بل يتم التعامل معه بسهولة."},
-{n:20,p:11,t:"tf",en:"A minor discrepancy would probably not require a person to reexamine and change their self-concept.",ar:"من المرجح ألّا يتطلب التباين البسيط من الشخص إعادة النظر في مفهومه الذاتي وتغييره.",ans:0,e:"الإجابة صحيحة ✔ — التباين الطفيف لا يستدعي عادة إعادة النظر في مفهوم الذات."},
-{n:21,p:12,t:"tf",en:"The more discrepant the information, the closer it approaches the sensitive line.",ar:"كلما زاد تباين المعلومات، اقتربت أكثر من خط الحساسية.",ans:0,e:"الإجابة صحيحة ✔ — العلاقة طردية: زيادة التباين = اقتراب من خط الحساسية."},
-{n:22,p:12,t:"tf",en:"Threat-rigidity response refers to becoming flexible and open when faced with a threat.",ar:"تشير استجابة التصلّب عند التهديد إلى أن يصبح الفرد مرنًا ومنفتحًا عند مواجهة التهديد.",ans:1,e:"الإجابة خطأ ✘ — استجابة التصلّب عند التهديد (Threat-rigidity) تعني أن يصبح الفرد متصلبًا ومتحفظًا ودفاعيًا عن ذاته، لا مرنًا ومنفتحًا."},
-{n:23,p:13,t:"tf",en:"Verifiable, predictable, and controllable information is less likely to cross the sensitive line.",ar:"المعلومات القابلة للتحقق والتي يمكن التنبؤ بها والتحكم فيها أقل احتمالًا لتجاوز خط الحساسية.",ans:0,e:"الإجابة صحيحة ✔ — الصفات الثلاث (قابلية التحقق، التنبؤ، التحكم) تقلل احتمالية تجاوز خط الحساسية."},
-{n:24,p:13,t:"tf",en:"Self-disclosure can allow others to provide insights into our behavior.",ar:"يمكن للإفصاح عن الذات أن يتيح للآخرين تقديم رؤى حول سلوكنا.",ans:0,e:"الإجابة صحيحة ✔ — الإفصاح عن الذات (Self-disclosure) يفتح المجال لتغذية راجعة ورؤى من الآخرين."},
-{n:25,p:14,t:"tf",en:"The enigma of self-awareness can be managed by exercising some control over when and what kind of information you receive about yourself.",ar:"يمكن إدارة لغز الوعي الذاتي من خلال ممارسة بعض التحكم في متى ونوع المعلومات التي تستقبلها عن نفسك.",ans:0,e:"الإجابة صحيحة ✔ — التحكم في توقيت ونوع المعلومات عن الذات يساعد في إدارة لغز الوعي الذاتي."},
-{n:26,p:14,t:"tf",en:"Support and feedback from others during self-disclosure can help increase self-awareness without crossing the sensitive line.",ar:"يمكن للدعم والتغذية الراجعة من الآخرين أثناء الإفصاح عن الذات أن يساعدا في زيادة الوعي الذاتي دون تجاوز خط الحساسية.",ans:0,e:"الإجابة صحيحة ✔ — الدعم والتغذية الراجعة يجعلان الإفصاح آمنًا وفعّالًا."},
-{n:27,p:15,t:"tf",en:"Self-awareness can help develop the ability to diagnose important differences among people with whom you interact.",ar:"يمكن أن يساعد الوعي الذاتي في تنمية القدرة على تشخيص الفروق المهمة بين الأشخاص الذين تتفاعل معهم.",ans:0,e:"الإجابة صحيحة ✔ — من أهم أسباب التركيز على الوعي الذاتي: القدرة على تشخيص الفروق بين الآخرين."},
-{n:28,p:15,t:"tf",en:"Distinctions between people help eliminate social barriers.",ar:"تساعد الفروق/التمييزات بين الأشخاص على إزالة الحواجز الاجتماعية.",ans:1,e:"الإجابة خطأ ✘ — إبراز الفروق (Distinctions) يخلق حواجز اجتماعية ولا يزيلها."},
-{n:29,p:16,t:"tf",en:"Self-knowledge requires understanding and valuing differences.",ar:"تتطلب معرفة الذات فهم الاختلافات وتقديرها.",ans:0,e:"الإجابة صحيحة ✔ — معرفة الذات تتطلب فهم الاختلافات بين الناس وتقديرها."},
-{n:30,p:17,t:"tf",en:"The five critical areas of self-awareness include Emotional intelligence, Personal values, Learning style, Orientation toward change, and Core self-evaluation.",ar:"تشمل المجالات الخمسة الحرجة للوعي الذاتي: الذكاء العاطفي، والقيم الشخصية، وأسلوب التعلم، والتوجه نحو التغيير، والتقييم الجوهري للذات.",ans:0,e:"الإجابة صحيحة ✔ — هذه هي المجالات الخمسة الحرجة للوعي الذاتي كما وردت في الشابتر."},
 
-/* ---------- PART 2 : MULTIPLE CHOICE ---------- */
-{n:31,p:3,en:"According to the chapter, self-awareness lies at the heart of the ability to:",ar:"وفقًا للشابتر، يقع الوعي الذاتي في قلب القدرة على:",
-o:[["Manage stress","إدارة الضغط النفسي"],["Master oneself","إتقان السيطرة على الذات"],["Manage time","إدارة الوقت"],["Clarify priorities","توضيح الأولويات"]],ans:1,
-e:"الإجابة الصحيحة B — إتقان الذات (Master oneself)، فالوعي الذاتي هو أساس إتقان الذات."},
-{n:32,p:3,en:"Self-management depends first and foremost on:",ar:"تعتمد إدارة الذات أولًا وقبل كل شيء على:",
-o:[["Self-awareness","الوعي الذاتي"],["Managing time","إدارة الوقت"],["Managing stress","إدارة الضغط"],["Personal values","القيم الشخصية"]],ans:0,
-e:"الإجابة الصحيحة A — الوعي الذاتي (Self-awareness) هو الأساس الأول لإدارة الذات."},
-{n:33,p:5,en:"Which skill helps individuals create direction in their own lives?",ar:"أي مهارة تساعد الأفراد على خلق اتجاه في حياتهم؟",
-o:[["Managing stress","إدارة الضغط"],["Managing time","إدارة الوقت"],["Clarifying priorities and goals","توضيح الأولويات والأهداف"],["Self-disclosure","الإفصاح عن الذات"]],ans:2,
-e:"الإجابة الصحيحة C — توضيح الأولويات والأهداف يمنح الحياة اتجاهًا واضحًا."},
-{n:34,p:5,en:"Which two skills make it possible for individuals to adapt to and organize their surroundings?",ar:"أي مهارتين تُمكّنان الأفراد من التكيف مع محيطهم وتنظيمه؟",
-o:[["Self-control and self-awareness","ضبط النفس والوعي الذاتي"],["Managing time and managing stress","إدارة الوقت وإدارة الضغط"],["Personal values and learning style","القيم الشخصية وأسلوب التعلم"],["Priorities and goals","الأولويات والأهداف"]],ans:1,
-e:"الإجابة الصحيحة B — إدارة الوقت وإدارة الضغط هما المهارتان المسؤولتان عن التكيف وتنظيم المحيط."},
-{n:35,p:6,en:"Self-awareness is having a clear knowledge of your:",ar:"الوعي الذاتي يعني امتلاك معرفة واضحة بـ:",
-o:[["Surroundings only","المحيط فقط"],["Personality","الشخصية"],["Coworkers","زملاء العمل"],["Organization","المنظمة"]],ans:1,
-e:"الإجابة الصحيحة B — الشخصية (Personality)، فالوعي الذاتي معرفة واضحة بشخصيتك."},
-{n:36,p:6,en:"Which of the following is included in self-awareness?",ar:"أي مما يلي يشمله الوعي الذاتي؟",
-o:[["Strengths and weaknesses","نقاط القوة والضعف"],["Regions and gender","المناطق والجنس"],["Social barriers","الحواجز الاجتماعية"],["Organizations","المنظمات"]],ans:0,
-e:"الإجابة الصحيحة A — معرفة نقاط القوة والضعف جزء من الوعي الذاتي."},
-{n:37,p:7,en:"Better self-awareness can help individuals:",ar:"يمكن للوعي الذاتي الأفضل أن يساعد الأفراد على:",
-o:[["Avoid all feedback","تجنّب كل التغذية الراجعة"],["Improve relationships","تحسين العلاقات"],["Create distinctions","خلق الفروق"],["Avoid self-assessment","تجنّب تقييم الذات"]],ans:1,
-e:"الإجابة الصحيحة B — تحسين العلاقات، فالوعي الذاتي يعزز جودة التعامل مع الآخرين."},
-{n:38,p:7,en:"Self-awareness leads to better self-assessment and finally to greater:",ar:"يؤدي الوعي الذاتي إلى تقييم أفضل للذات، وأخيرًا إلى زيادة:",
-o:[["Self-control","ضبط النفس"],["Self-disclosure","الإفصاح عن الذات"],["Self-confidence","الثقة بالنفس"],["Self-concept","مفهوم الذات"]],ans:2,
-e:"الإجابة الصحيحة C — الثقة بالنفس (Self-confidence) هي المحصلة النهائية لتقييم الذات الأفضل."},
-{n:39,p:8,en:"We cannot improve ourselves unless we know:",ar:"لا يمكننا تحسين أنفسنا إلا إذا عرفنا:",
-o:[["How others behave","كيف يتصرف الآخرون"],["What level of capability we currently possess","مستوى القدرة الذي نمتلكه حاليًا"],["How to manage stress","كيفية إدارة الضغط"],["Our coworkers' education level","المستوى التعليمي لزملائنا"]],ans:1,
-e:"الإجابة الصحيحة B — لا يمكن التحسين دون معرفة مستوى القدرة الحالي."},
-{n:40,p:8,en:"Seeking self-knowledge is a prerequisite for:",ar:"يُعد السعي إلى معرفة الذات شرطًا مسبقًا لـ:",
-o:[["Personal growth","النمو الشخصي"],["Managing time","إدارة الوقت"],["Creating distinctions","خلق الفروق"],["Social barriers","الحواجز الاجتماعية"]],ans:0,
-e:"الإجابة الصحيحة A — النمو الشخصي (Personal growth)."},
-{n:41,p:8,en:"Why might individuals avoid seeking information about themselves?",ar:"لماذا قد يتجنب الأفراد البحث عن معلومات عن أنفسهم؟",
-o:[["To improve relationships","لتحسين العلاقات"],["To increase feedback","لزيادة التغذية الراجعة"],["To protect their self-esteem or self-respect","لحماية تقديرهم لذاتهم أو احترامهم لها"],["To understand differences","لفهم الاختلافات"]],ans:2,
-e:"الإجابة الصحيحة C — حماية تقدير الذات واحترامها هو السبب الرئيسي للتجنّب."},
-{n:42,p:10,en:"The sensitivity line is the point at which individuals become:",ar:"خط الحساسية هو النقطة التي يصبح عندها الأفراد:",
-o:[["More productive","أكثر إنتاجية"],["Defensive","دفاعيين"],["More flexible","أكثر مرونة"],["More self-confident","أكثر ثقة بالنفس"]],ans:1,
-e:"الإجابة الصحيحة B — دفاعيين (Defensive) عند مواجهة معلومات تتعارض مع مفهوم الذات."},
-{n:43,p:10,en:"Individuals may become defensive when information about themselves is inconsistent with their:",ar:"قد يصبح الأفراد دفاعيين عندما تتعارض المعلومات عن أنفسهم مع:",
-o:[["Learning style","أسلوب التعلم"],["Self-concept","مفهوم الذات"],["Personal values","القيم الشخصية"],["Management skills","المهارات الإدارية"]],ans:1,
-e:"الإجابة الصحيحة B — مفهوم الذات (Self-concept)."},
-{n:44,p:11,en:"In Situation 1, the discrepancy is described as:",ar:"في الحالة الأولى، وُصف التباين بأنه:",
-o:[["Very high","مرتفع جدًا"],["Very serious","خطير جدًا"],["Relatively minor","بسيط نسبيًا"],["Completely predictable","قابل للتنبؤ تمامًا"]],ans:2,
-e:"الإجابة الصحيحة C — التباين في الحالة الأولى وُصف بأنه بسيط نسبيًا."},
-{n:45,p:11,en:"A relatively minor discrepancy would probably not require a person to:",ar:"من المرجح ألّا يتطلب التباين البسيط نسبيًا من الشخص أن:",
-o:[["Improve relationships","يحسّن العلاقات"],["Reexamine and change their self-concept","يعيد النظر في مفهومه الذاتي ويغيّره"],["Manage stress","يدير الضغط"],["Clarify priorities","يوضح الأولويات"]],ans:1,
-e:"الإجابة الصحيحة B — التباين البسيط لا يستدعي إعادة النظر في مفهوم الذات وتغييره."},
-{n:46,p:12,en:"The more discrepant the information, the closer it approaches the:",ar:"كلما زاد تباين المعلومات، اقتربت أكثر من:",
-o:[["Self-assessment","تقييم الذات"],["Sensitive line","خط الحساسية"],["Learning style","أسلوب التعلم"],["Self-confidence","الثقة بالنفس"]],ans:1,
-e:"الإجابة الصحيحة B — خط الحساسية (Sensitive line)."},
-{n:47,p:12,en:"Threat-rigidity response is the tendency to become:",ar:"استجابة التصلّب عند التهديد هي الميل إلى أن تصبح:",
-o:[["Rigid, conservative, and self-protective","متصلبًا ومتحفظًا ودفاعيًا عن ذاتك"],["Flexible, predictable, and controllable","مرنًا وقابلًا للتنبؤ والتحكم"],["Open, social, and productive","منفتحًا واجتماعيًا ومنتجًا"],["Confident, healthy, and effective","واثقًا وسليمًا وفعّالًا"]],ans:0,
-e:"الإجابة الصحيحة A — استجابة التصلّب تعني التصلب والتحفظ والدفاع عن الذات."},
-{n:48,p:13,en:"Which information is less likely to cross the sensitive line?",ar:"أي نوع من المعلومات أقل احتمالًا لتجاوز خط الحساسية؟",
-o:[["Information that is unpredictable","المعلومات غير القابلة للتنبؤ"],["Information that is uncontrollable","المعلومات غير القابلة للتحكم"],["Information that is verifiable, predictable, and controllable","المعلومات القابلة للتحقق والتنبؤ والتحكم"],["Information that is inconsistent","المعلومات المتعارضة"]],ans:2,
-e:"الإجابة الصحيحة C — المعلومات القابلة للتحقق والتنبؤ والتحكم."},
-{n:49,p:13,en:"Self-disclosure allows others to provide:",ar:"يتيح الإفصاح عن الذات للآخرين أن يقدموا:",
-o:[["Social barriers","حواجز اجتماعية"],["Insights into our behavior","رؤى حول سلوكنا"],["New distinctions","فروقًا جديدة"],["Personal values","قيمًا شخصية"]],ans:1,
-e:"الإجابة الصحيحة B — رؤى حول سلوكنا."},
-{n:50,p:14,en:"One way to manage the enigma of self-awareness is to exercise some control over:",ar:"إحدى طرق إدارة لغز الوعي الذاتي هي ممارسة بعض التحكم في:",
-o:[["Other people's behavior","سلوك الآخرين"],["When and what kind of information you receive about yourself","متى ونوع المعلومات التي تستقبلها عن نفسك"],["Coworkers' education levels","المستويات التعليمية للزملاء"],["Organizational structures","الهياكل التنظيمية"]],ans:1,
-e:"الإجابة الصحيحة B — التحكم في توقيت ونوع المعلومات عن الذات."},
-{n:51,p:14,en:"Support and feedback from others during self-disclosure can help increase:",ar:"يمكن للدعم والتغذية الراجعة من الآخرين أثناء الإفصاح عن الذات أن يساعدا في زيادة:",
-o:[["Social barriers","الحواجز الاجتماعية"],["Self-awareness","الوعي الذاتي"],["Distinctions","الفروق"],["Threats","التهديدات"]],ans:1,
-e:"الإجابة الصحيحة B — زيادة الوعي الذاتي."},
-{n:52,p:15,en:"One important reason for focusing on self-awareness is to develop the ability to:",ar:"أحد الأسباب المهمة للتركيز على الوعي الذاتي هو تنمية القدرة على:",
-o:[["Diagnose important differences among others","تشخيص الفروق المهمة بين الآخرين"],["Exclude different individuals","استبعاد الأفراد المختلفين"],["Create social barriers","خلق حواجز اجتماعية"],["Avoid interactions","تجنّب التفاعلات"]],ans:0,
-e:"الإجابة الصحيحة A — تشخيص الفروق المهمة بين الآخرين."},
-{n:53,p:15,en:"According to the chapter, coworkers could differ in:",ar:"وفقًا للشابتر، قد يختلف زملاء العمل في:",
-o:[["Region, gender, and education level","المنطقة والجنس والمستوى التعليمي"],["Self-control, time, and stress","ضبط النفس والوقت والضغط"],["Goals, priorities, and motivation only","الأهداف والأولويات والدوافع فقط"],["Self-assessment and self-confidence only","تقييم الذات والثقة بالنفس فقط"]],ans:0,
-e:"الإجابة الصحيحة A — المنطقة والجنس والمستوى التعليمي."},
-{n:54,p:15,en:"Most people have a tendency to interact with individuals who are:",ar:"يميل معظم الناس إلى التفاعل مع الأفراد الذين:",
-o:[["Different from themselves","يختلفون عنهم"],["Like themselves","يشبهونهم"],["Less productive","أقل إنتاجية"],["More defensive","أكثر دفاعية"]],ans:1,
-e:"الإجابة الصحيحة B — يميل الناس للتفاعل مع من يشبههم."},
-{n:55,p:15,en:"According to the chapter, we observe differences but do not have to create:",ar:"وفقًا للشابتر، نلاحظ الاختلافات ولكن ليس علينا أن نخلق:",
-o:[["Feedback","تغذية راجعة"],["Self-awareness","وعيًا ذاتيًا"],["Distinctions","الفروق (التمييزات)"],["Self-knowledge","معرفة بالذات"]],ans:2,
-e:"الإجابة الصحيحة C — الفروق أو التمييزات (Distinctions)."},
-{n:56,p:15,en:"What do distinctions create between people?",ar:"ماذا تُنشئ الفروق (التمييزات) بين الناس؟",
-o:[["Personal growth","نموًا شخصيًا"],["Social barriers","حواجز اجتماعية"],["Self-confidence","ثقة بالنفس"],["Self-management","إدارة الذات"]],ans:1,
-e:"الإجابة الصحيحة B — إبراز الفروق يخلق حواجز اجتماعية."},
-{n:57,p:16,en:"Self-knowledge requires:",ar:"تتطلب معرفة الذات:",
-o:[["Creating distinctions","خلق الفروق"],["Understanding and valuing differences","فهم الاختلافات وتقديرها"],["Avoiding differences","تجنّب الاختلافات"],["Eliminating self-awareness","إلغاء الوعي الذاتي"]],ans:1,
-e:"الإجابة الصحيحة B — فهم الاختلافات وتقديرها."},
-{n:58,p:17,en:"Which of the following is one of the five critical areas of self-awareness?",ar:"أي مما يلي يُعد أحد المجالات الخمسة الحرجة للوعي الذاتي؟",
-o:[["Managing stress","إدارة الضغط"],["Emotional intelligence","الذكاء العاطفي"],["Self-control","ضبط النفس"],["Self-disclosure","الإفصاح عن الذات"]],ans:1,
-e:"الإجابة الصحيحة B — الذكاء العاطفي (Emotional intelligence) من المجالات الخمسة الحرجة."},
-{n:59,p:17,en:"Which of the following is NOT listed as one of the five areas of self-awareness?",ar:"أي مما يلي لم يُذكر كأحد مجالات الوعي الذاتي الخمسة؟",
-o:[["Personal values","القيم الشخصية"],["Learning style","أسلوب التعلم"],["Managing time","إدارة الوقت"],["Orientation toward change","التوجه نحو التغيير"]],ans:2,
-e:"الإجابة الصحيحة C — إدارة الوقت ليست من المجالات الخمسة للوعي الذاتي (بل هي مهارة إدارة ذاتية)."}
-];
+const successPhrases = ["أحسنت عبدالله كمّل يا بطل! 🏆","ممتاز يا عبدالله! أنت نجم الإدارة 🌟","برافو عبدالله! استمر على هذا التألق 🚀","عاش يا وحش! إجابة ملكية 👑","أسطوري يا عبدالله! الكويز لك بإذن الله 💎","ما شاء الله عليك! عقلك تحليلي ذهبي ✨"];
+const failPhrases = ["حاول مرة أخرى يا عبدالله، أنت تقدر! 💪","لا بأس يا بطل، ركّز وحاول مجددًا 🔄","قريب جدًا! المحاولة القادمة لك يا عبدالله 🎯","الفشل أول خطوة للنجاح، حاول مرة أخرى ❤️‍🔥"];
+let qi=0;
+let state = QUESTIONS.map(()=>({chosen:null,first:null,attempts:0,done:false,skipped:false,firstCorrect:null}));
+let translated = new Set();
+let translateAll=false;
+let bookmarked=new Set();
+let mode='train';
+let soundOn=true;
+let xp=0, streak=0, bestStreak=0, correctFirst=0;
+let seconds=0, timerInt=null, started=false;
+let filter='all', showOnlyWrong=false;
+let audioCtx=null;
+let charts=[];
 
-/* =========================================================
-   الحالة
-   ========================================================= */
-const LETTERS = ["A","B","C","D"];
-const state = {
-  cur: 0,
-  translated: false,
-  sound: true,
-  recs: DATA.map(() => ({attempts:0, wrong:[], locked:false, firstTry:null, revealed:false}))
-};
+/* AUDIO */
+function ctx(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
+function tone(f,t,d,type='sine',v=.22,when=0){ if(!soundOn) return; try{ const c=ctx(),o=c.createOscillator(),g=c.createGain(); o.type=type;o.frequency.value=f; const s=c.currentTime+when; g.gain.setValueAtTime(0.0001,s); g.gain.exponentialRampToValueAtTime(v,s+.02); g.gain.exponentialRampToValueAtTime(0.0001,s+d); o.connect(g);g.connect(c.destination);o.start(s);o.stop(s+d+.05);}catch(e){} }
+function playClick(){ tone(600,0,.12,'sine',.12); }
+function playSuccess(){ if(!soundOn) return; [523,659,784,1046,1318].forEach((f,i)=>tone(f,0,.35,'triangle',.22,i*.09)); tone(2093,0,.5,'sine',.12,.5); setTimeout(()=>{ [1046,1318,1568].forEach((f,i)=>tone(f,0,.3,'sine',.15,i*.07)); },450); }
+function playFail(){ if(!soundOn) return; tone(220,0,.3,'sawtooth',.12); tone(174,0,.4,'sawtooth',.12,.15); }
+function playFinish(){ if(!soundOn) return; [523,523,523,659,784,1046,784,1046,1318,1568,2093].forEach((f,i)=>tone(f,0,.35,'triangle',.2,i*.13)); }
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇'; if(soundOn) playClick(); toast(soundOn?'🔊 تم تفعيل الأصوات التحفيزية':'🔇 تم كتم الصوت'); }
 
-const $ = id => document.getElementById(id);
+/* HELPERS */
+function scrollToQuiz(){ document.getElementById('quizSection').scrollIntoView({behavior:'smooth'}); if(!started) startTimer(); playClick(); }
+function setMode(m){ mode=m; playClick(); const t=document.getElementById('modeTrain'),e=document.getElementById('modeExam'); if(m==='train'){ t.classList.add('border-[#D4AF37]'); t.classList.remove('border-transparent'); e.classList.remove('border-[#D4AF37]'); e.classList.add('border-transparent'); t.querySelector('div:last-child').textContent='● مُفعّل الآن'; t.querySelector('div:last-child').className='text-[11px] mt-2 font-black text-green-400'; document.getElementById('examLabel').textContent='○ اضغط للتفعيل'; document.getElementById('examLabel').className='text-[11px] mt-2 font-black text-white/40'; toast('🎓 وضع التدريب: يمكنك المحاولة مجددًا للتعلم'); } else { e.classList.add('border-[#D4AF37]'); e.classList.remove('border-transparent'); t.classList.remove('border-[#D4AF37]'); t.classList.add('border-transparent'); document.getElementById('examLabel').textContent='● مُفعّل الآن'; document.getElementById('examLabel').className='text-[11px] mt-2 font-black text-green-400'; toast('⏱️ وضع الكويز الحقيقي: محاولة واحدة فقط يا بطل!'); } }
+function startTimer(){ if(started) return; started=true; timerInt=setInterval(()=>{ seconds++; const m=String(Math.floor(seconds/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0'); document.getElementById('timerHero').textContent=`${m}:${s}`; },1000); }
+function fmt(s){ return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }
+function toast(msg){ const w=document.getElementById('toastWrap'); const d=document.createElement('div'); d.className='toast pointer-events-auto glass gold-border rounded-2xl px-5 py-3 font-bold text-sm text-center shadow-2xl'; d.innerHTML=msg; w.appendChild(d); setTimeout(()=>{ d.style.opacity='0'; d.style.transform='translateY(10px)'; setTimeout(()=>d.remove(),400); },2600); }
+function goldConfettiBig(){ const end=Date.now()+1200; (function f(){ confetti({particleCount:3,angle:60,spread:60,origin:{x:0},colors:['#D4AF37','#F5D67B','#FFF6C8','#fff']}); confetti({particleCount:3,angle:120,spread:60,origin:{x:1},colors:['#D4AF37','#F5D67B','#FFF6C8','#fff']}); if(Date.now()<end) requestAnimationFrame(f); })(); confetti({particleCount:120,spread:100,origin:{y:.6},colors:['#D4AF37','#F5D67B','#ffffff','#22c55e']}); }
+function smallConfetti(){ confetti({particleCount:22,spread:70,origin:{y:.7},colors:['#D4AF37','#F5D67B','#fff','#22c55e']}); }
 
-/* =========================================================
-   الأصوات
-   ========================================================= */
-let actx = null;
-function AC(){
-  if(!actx){ try{ actx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } }
-  if(actx && actx.state === "suspended") actx.resume();
-  return actx;
-}
-function tone(freq, delay, dur, type, vol){
-  const ctx = AC(); if(!ctx || !state.sound) return;
-  const o = ctx.createOscillator(), g = ctx.createGain();
-  o.type = type || "sine";
-  o.frequency.value = freq;
-  const t = ctx.currentTime + delay;
-  g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(vol || .16, t + .015);
-  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
-  o.connect(g); g.connect(ctx.destination);
-  o.start(t); o.stop(t + dur + .05);
-}
-function sndCorrect(){
-  [523.25, 659.25, 783.99, 1046.5].forEach((f,i) => tone(f, i*0.085, .5, "triangle", .15));
-  tone(1567.98, .38, .6, "sine", .09);
-  tone(2093, .48, .7, "sine", .06);
-}
-function sndWrong(){
-  tone(233.08, 0, .22, "sawtooth", .09);
-  tone(174.61, .16, .35, "sawtooth", .09);
-}
-function sndClick(){ tone(920, 0, .07, "sine", .07); }
-function sndFanfare(){
-  const notes = [523.25,659.25,783.99,1046.5,783.99,1046.5,1318.51];
-  notes.forEach((f,i)=> tone(f, i*0.13, .55, "triangle", .13));
-  tone(261.63, 0, 1.4, "sine", .07);
-}
-function sndReveal(){ tone(392, 0, .3, "sine", .1); tone(329.63, .18, .4, "sine", .09); }
-
-let arVoice = null;
-function loadVoices(){
-  if(!("speechSynthesis" in window)) return;
-  try{
-    const vs = speechSynthesis.getVoices() || [];
-    arVoice = vs.find(v => /^ar/i.test(v.lang)) || null;
-  }catch(e){}
-}
-if("speechSynthesis" in window){
-  loadVoices();
-  window.speechSynthesis.onvoiceschanged = loadVoices;
-  setTimeout(loadVoices, 700);
-}
-function speak(text){
-  if(!state.sound || !("speechSynthesis" in window) || !arVoice) return;
-  try{
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = arVoice.lang || "ar-SA";
-    u.voice = arVoice;
-    u.rate = 1; u.pitch = 1.08; u.volume = 1;
-    speechSynthesis.speak(u);
-  }catch(e){}
-}
-
-/* =========================================================
-   الاحتفالات
-   ========================================================= */
-const GOLDS = ["#d4af37","#f7e9a8","#fff3c4","#b8860b","#ffd700","#ffffff"];
-function celebrate(){
-  try{
-    confetti({particleCount:130, spread:85, startVelocity:52, origin:{y:.72}, colors:GOLDS, scalar:1.08, ticks:220});
-    setTimeout(()=>confetti({particleCount:80, angle:62, spread:72, origin:{x:0.02,y:.66}, colors:GOLDS}),160);
-    setTimeout(()=>confetti({particleCount:80, angle:118, spread:72, origin:{x:0.98,y:.66}, colors:GOLDS}),260);
-    setTimeout(()=>confetti({particleCount:55, spread:110, startVelocity:32, origin:{y:.4}, colors:GOLDS, shapes:["star"], scalar:.95}),420);
-  }catch(e){}
-}
-function bigCelebrate(){
-  try{
-    const end = Date.now() + 1400;
-    (function frame(){
-      confetti({particleCount:6, angle:60, spread:60, origin:{x:0}, colors:GOLDS});
-      confetti({particleCount:6, angle:120, spread:60, origin:{x:1}, colors:GOLDS});
-      if(Date.now() < end) requestAnimationFrame(frame);
-    })();
-    confetti({particleCount:200, spread:120, origin:{y:.6}, colors:GOLDS, scalar:1.25, ticks:280});
-  }catch(e){}
-}
-
-/* =========================================================
-   العرض
-   ========================================================= */
-function qOptions(q){ return q.t === "tf" ? TF_OPTS : q.o.map(p => ({en:p[0], ar:p[1]})); }
-function qTypeLabel(q){ return q.t === "tf" ? "صح / خطأ" : "اختيار من متعدد"; }
-
+/* RENDER */
 function renderQuestion(){
-  const i = state.cur, q = DATA[i], rec = state.recs[i];
-  const opts = qOptions(q);
-  const card = $("qcard");
-
-  let optHtml = opts.map((o,k)=>{
-    let cls = "option";
-    let mark = "";
-    if(rec.locked){
-      if(k === q.ans){ cls += " correct"; mark = '<span class="opt-mark" style="color:#8ff0c5">✔</span>'; }
-      else if(rec.wrong.includes(k)){ cls += " wrong"; mark = '<span class="opt-mark" style="color:#ff97a9">✖</span>'; }
-      else cls += " dim";
-    } else if(rec.wrong.includes(k)){
-      cls += " wrong"; mark = '<span class="opt-mark" style="color:#ff97a9">✖</span>';
-    }
-    const disabled = (rec.locked || rec.wrong.includes(k)) ? "disabled" : "";
-    const key = q.t === "tf" ? (k === 0 ? "✓" : "✕") : LETTERS[k];
-    return `<button class="${cls}" data-k="${k}" ${disabled}>
-        <span class="opt-key">${key}</span>
-        <span class="opt-body">
-          <span class="opt-en">${o.en}</span>
-          ${state.translated ? `<span class="opt-ar">${o.ar}</span>` : ""}
-        </span>
-        ${mark}
-      </button>`;
-  }).join("");
-
-  let feedback = "";
-  if(rec.locked && !rec.revealed){
-    feedback = `<div class="feedback good">
-        <span class="fb-ico">🏆</span>
-        <div>
-          <div class="fb-title gold">أحسنت عبدالله كمل يابطل!</div>
-          <div class="fb-sub">إجابة صحيحة — استمر بهذه الروح الملكية 👑</div>
-        </div>
-      </div>`;
-  } else if(rec.revealed){
-    feedback = `<div class="feedback reveal">
-        <span class="fb-ico">💡</span>
-        <div>
-          <div class="fb-title" style="color:#ffd970">تم كشف الإجابة الصحيحة</div>
-          <div class="fb-sub">راجع الشرح جيدًا، وستتقنها في الكويز بإذن الله.</div>
-        </div>
-      </div>`;
-  } else if(rec.attempts > 0){
-    feedback = `<div class="feedback bad">
-        <span class="fb-ico">🔁</span>
-        <div>
-          <div class="fb-title red">حاول مرة أخرى</div>
-          <div class="fb-sub">لا بأس يا عبدالله، أعد القراءة وفكّر مرة ثانية.</div>
-        </div>
-      </div>`;
-  }
-
-  const revealBtn = (!rec.locked && rec.attempts >= 2)
-    ? `<button class="btn-ghost" id="revealBtn">👁️ اعرض الإجابة الصحيحة</button>` : "";
-
-  const explain = (rec.locked)
-    ? `<div class="explain">
-         <div class="ttl">📘 شرح الإجابة</div>
-         <p>${q.e}</p>
-         <div class="model">Model Answer: ${opts[q.ans].en}</div>
-       </div>` : "";
-
-  const prevBtn = state.cur > 0 ? `<button class="btn-ghost" id="prevBtn">→ السؤال السابق</button>` : `<span></span>`;
-  const nextBtn = (rec.locked)
-    ? `<button class="btn-gold" id="nextBtn">${state.cur === DATA.length-1 ? "🎉 عرض النتيجة النهائية" : "السؤال التالي ←"}</button>`
-    : "";
-
-  card.innerHTML = `
-    <div class="qhead">
-      <div class="qmeta">
-        <span class="badge page">📄 صفحة ${q.p}</span>
-        <span class="badge type">${qTypeLabel(q)}</span>
-        <span class="badge num">سؤال ${q.n} / ${DATA.length}</span>
-      </div>
-      <button class="tr-btn ${state.translated ? "active" : ""}" id="trBtn">🌐 ${state.translated ? "إخفاء الترجمة" : "ترجم"}</button>
-    </div>
-
-    <p class="q-en">${q.en}</p>
-    ${state.translated ? `<p class="q-ar">${q.ar}</p>` : ""}
-
-    <hr class="divider">
-    <div class="options">${optHtml}</div>
-
-    ${feedback}
-    ${explain}
-
-    <div class="qfoot">
-      ${prevBtn}
-      <div style="display:flex;gap:10px;flex-wrap:wrap">${revealBtn}${nextBtn}</div>
-    </div>
-  `;
-
-  // الأحداث
-  card.querySelectorAll(".option").forEach(b => {
-    b.addEventListener("click", () => handleSelect(parseInt(b.dataset.k,10)));
-  });
-  $("trBtn").addEventListener("click", () => { sndClick(); state.translated = !state.translated; renderQuestion(); });
-  if($("revealBtn")) $("revealBtn").addEventListener("click", revealAnswer);
-  if($("nextBtn")) $("nextBtn").addEventListener("click", nextQuestion);
-  if($("prevBtn")) $("prevBtn").addEventListener("click", prevQuestion);
-
-  updateTop();
-}
-
-/* =========================================================
-   التفاعل
-   ========================================================= */
-function handleSelect(k){
-  const i = state.cur, q = DATA[i], rec = state.recs[i];
-  if(rec.locked || rec.wrong.includes(k)) return;
-
-  if(k === q.ans){
-    rec.locked = true;
-    rec.firstTry = (rec.attempts === 0);
-    sndCorrect(); celebrate();
-    speak("أحسنت عبدالله، كمل يا بطل");
-    renderQuestion();
-  } else {
-    rec.attempts++;
-    rec.wrong.push(k);
-    sndWrong();
-    renderQuestion();
-    const f = document.querySelector(".feedback");
-    if(f) f.scrollIntoView({behavior:"smooth", block:"nearest"});
-  }
-}
-
-function revealAnswer(){
-  const i = state.cur, rec = state.recs[i];
-  rec.locked = true;
-  rec.revealed = true;
-  rec.firstTry = false;
-  sndReveal();
-  renderQuestion();
-}
-
-function nextQuestion(){
-  sndClick();
-  if(state.cur === DATA.length - 1){ showReport(); return; }
-  state.cur++;
-  state.translated = false;
-  renderQuestion();
-  window.scrollTo({top: 150, behavior:"smooth"});
-}
-
-function prevQuestion(){
-  sndClick();
-  if(state.cur > 0){
-    state.cur--;
-    state.translated = false;
-    renderQuestion();
-    window.scrollTo({top: 150, behavior:"smooth"});
-  }
-}
-
-function updateTop(){
-  const total = DATA.length;
-  const recs = state.recs;
-  const ok = recs.filter(r => r.locked && r.firstTry === true).length;
-  const bad = recs.filter(r => r.locked && r.firstTry === false).length;
-  const solved = recs.filter(r => r.locked).length;
-
-  $("qNow").textContent = state.cur + 1;
-  $("qTotal").textContent = total;
-  $("cOk").textContent = ok;
-  $("cBad").textContent = bad;
-  const pct = Math.round((solved / total) * 100);
-  $("fill").style.width = pct + "%";
-  $("pctTxt").textContent = pct + "% مكتمل";
-}
-
-/* =========================================================
-   قائمة الأسئلة
-   ========================================================= */
-function statusClass(r){
-  if(!r.locked) return "";
-  if(r.revealed) return "bad";
-  if(r.firstTry) return "good";
-  return "half";
-}
-function openNav(){
-  const grid = $("navGrid");
-  grid.innerHTML = DATA.map((q,i) => {
-    const r = state.recs[i];
-    const cls = statusClass(r) + (i === state.cur ? " current" : "");
-    return `<button class="nav-item ${cls}" data-i="${i}">${q.n}</button>`;
-  }).join("");
-  grid.querySelectorAll(".nav-item").forEach(b => {
-    b.addEventListener("click", () => {
-      sndClick();
-      state.cur = parseInt(b.dataset.i,10);
-      state.translated = false;
-      renderQuestion();
-      closeNav();
-      window.scrollTo({top:150, behavior:"smooth"});
-    });
-  });
-  $("navModal").classList.add("open");
-}
-function closeNav(){ $("navModal").classList.remove("open"); }
-
-/* =========================================================
-   التقرير النهائي
-   ========================================================= */
-function showReport(){
-  $("topbar").classList.add("hidden");
-  $("quizArea").classList.add("hidden");
-  const area = $("reportArea");
-  area.classList.remove("hidden");
-
-  const total = DATA.length;
-  const recs = state.recs;
-  const first = recs.filter(r => r.firstTry === true).length;
-  const retry = recs.filter(r => r.locked && r.firstTry === false && !r.revealed).length;
-  const revealed = recs.filter(r => r.revealed).length;
-  const acc = Math.round((first / total) * 100);
-
-  let msg, emoji;
-  if(acc >= 90){ msg = "أداء ملكي 👑 أنت جاهز للكويز بثقة تامة يا عبدالله!"; emoji = "👑"; }
-  else if(acc >= 75){ msg = "أداء ممتاز! تحتاج مراجعة سريعة فقط، وستكون في القمة."; emoji = "🏆"; }
-  else if(acc >= 60){ msg = "أداء جيد جدًا، راجع الأسئلة الخاطئة وستتقن الشابتر بالكامل."; emoji = "💪"; }
-  else if(acc >= 40){ msg = "بداية جيدة يا عبدالله، ركّز على الشرح وراجع الأخطاء جيدًا."; emoji = "📚"; }
-  else { msg = "لا بأس، كل بطل يبدأ من هنا. أعد المراجعة وستتحسن بسرعة بإذن الله."; emoji = "🌱"; }
-
-  const html = `
-    <section class="card report">
-      <div class="report-hero">
-        <span class="kicker">التقرير النهائي</span>
-        <h2 class="gold-text" style="font-family:'Amiri',serif;font-size:clamp(1.6rem,5vw,2.5rem);margin:8px 0 0">نتيجة الطالب عبدالله العبيدي</h2>
-        <p style="color:#bfb191;font-size:.92rem;margin:10px 0 0">مهارات الإدارة — شابتر الوعي الذاتي (Self-Awareness)</p>
-
-        <div class="score-ring" id="ring" style="--p:0">
-          <div class="ring-inner">
-            <b id="ringNum">0%</b>
-            <small>دقة المحاولة الأولى</small>
-          </div>
-        </div>
-
-        <div style="font-size:1.05rem;font-weight:800;color:#f0e3bd;max-width:520px;margin:0 auto;line-height:1.9">
-          ${emoji} ${msg}
-        </div>
-      </div>
-
-      <div class="stats">
-        <div class="stat"><b class="gold-text">${total}</b><small>إجمالي الأسئلة</small></div>
-        <div class="stat s1"><b>${first}</b><small>صحيحة من أول محاولة</small></div>
-        <div class="stat s2"><b>${retry}</b><small>صحيحة بعد محاولات</small></div>
-        <div class="stat s3"><b>${revealed}</b><small>تم كشف إجابتها</small></div>
-      </div>
-
-      <div class="filters">
-        <button class="filter active" data-f="all">الكل (${total})</button>
-        <button class="filter" data-f="good">الصحيحة (${first})</button>
-        <button class="filter" data-f="half">بعد محاولات (${retry})</button>
-        <button class="filter" data-f="bad">الخاطئة (${revealed})</button>
-      </div>
-
-      <div id="revList"></div>
-
-      <div style="display:flex;gap:12px;justify-content:center;margin-top:30px;flex-wrap:wrap">
-        <button class="btn-gold" id="restartBtn">🔄 إعادة المراجعة من البداية</button>
-        <button class="btn-ghost" id="reviewMistakes">📌 راجع أخطائي فقط</button>
-      </div>
-    </section>
-  `;
-  area.innerHTML = html;
-
-  // تحريك حلقة النتيجة
-  setTimeout(() => {
-    const ring = $("ring");
-    if(!ring) return;
-    ring.style.setProperty("--p", acc);
-    let n = 0;
-    const t = setInterval(() => {
-      n += Math.max(1, Math.round(acc/28));
-      if(n >= acc){ n = acc; clearInterval(t); }
-      const rn = $("ringNum"); if(rn) rn.textContent = n + "%";
-    }, 34);
-  }, 250);
-
-  if(acc >= 60){ sndFanfare(); bigCelebrate(); setTimeout(bigCelebrate, 900); }
-  else { tone(523.25,0,.5,"sine",.12); tone(659.25,.18,.6,"sine",.12); }
-
-  renderReview("all");
-
-  area.querySelectorAll(".filter").forEach(b => {
-    b.addEventListener("click", () => {
-      area.querySelectorAll(".filter").forEach(x => x.classList.remove("active"));
-      b.classList.add("active");
-      sndClick();
-      renderReview(b.dataset.f);
-    });
-  });
-
-  $("restartBtn").addEventListener("click", restart);
-  $("reviewMistakes").addEventListener("click", () => {
-    area.querySelectorAll(".filter").forEach(x => x.classList.remove("active"));
-    const badFilter = area.querySelector('.filter[data-f="bad"]');
-    if(badFilter) badFilter.classList.add("active");
-    renderReview("bad");
-    const list = $("revList");
-    if(list) list.scrollIntoView({behavior:"smooth", block:"start"});
-  });
-
-  window.scrollTo({top:0, behavior:"smooth"});
-}
-
-function renderReview(filter){
-  const list = $("revList");
-  if(!list) return;
-  const items = [];
-
-  DATA.forEach((q,i) => {
-    const r = state.recs[i];
-    const cls = r.revealed ? "bad" : (r.firstTry ? "good" : "half");
-    if(filter !== "all" && filter !== cls) return;
-
-    const opts = qOptions(q);
-    const yourAns = r.revealed
-      ? (r.wrong.length ? opts[r.wrong[0]].en : "—")
-      : opts[q.ans].en;
-    const model = opts[q.ans].en;
-
-    let statusTxt, statusColor;
-    if(r.revealed){ statusTxt = "✖ احتاجت كشف الإجابة"; statusColor = "v-bad"; }
-    else if(r.firstTry){ statusTxt = "✔ إجابة صحيحة من أول محاولة"; statusColor = "v-good"; }
-    else { statusTxt = "✔ إجابة صحيحة بعد " + r.attempts + " محاولة خاطئة"; statusColor = ""; }
-
-    items.push(`
-      <div class="rev-item ${cls}">
-        <div class="rev-num">${q.n}</div>
-        <div class="rev-body">
-          <p class="rev-q">${q.en}</p>
-          <div class="rev-row" style="margin-bottom:6px">
-            <span class="k">الحالة:</span>
-            <span class="${statusColor}" style="${statusColor ? "" : "color:#ffd970;font-weight:800"}">${statusTxt}</span>
-          </div>
-          <div class="rev-row">
-            <span class="k">إجابتك:</span>
-            <span class="${r.revealed ? "v-bad" : "v-good"}">${yourAns}</span>
-            <span class="k" style="margin-inline-start:10px">الإجابة النموذجية:</span>
-            <span class="v-good">${model}</span>
-          </div>
-          <div class="rev-exp">📘 ${q.e}</div>
-        </div>
-      </div>
-    `);
-  });
-
-  list.innerHTML = items.length ? items.join("") :
-    `<div style="text-align:center;padding:34px;color:#b5a88e">لا توجد أسئلة في هذه الفئة 👑</div>`;
-}
-
-/* =========================================================
-   إعادة التشغيل
-   ========================================================= */
-function restart(){
-  state.cur = 0;
-  state.translated = false;
-  state.recs = DATA.map(() => ({attempts:0, wrong:[], locked:false, firstTry:null, revealed:false}));
-  $("reportArea").classList.add("hidden");
-  $("quizArea").classList.remove("hidden");
-  $("topbar").classList.remove("hidden");
-  renderQuestion();
-  window.scrollTo({top:0, behavior:"smooth"});
-  sndClick();
-}
-
-/* =========================================================
-   اختصارات لوحة المفاتيح
-   ========================================================= */
-document.addEventListener("keydown", (e) => {
-  if($("reportArea").classList.contains("hidden") === false) return;
-  const q = DATA[state.cur], rec = state.recs[state.cur];
-  if(!q) return;
-  const n = qOptions(q).length;
-  if(/^[1-9]$/.test(e.key)){
-    const idx = parseInt(e.key,10) - 1;
-    if(idx < n && !rec.locked) handleSelect(idx);
-  }
-  if(e.key === "Enter" && rec.locked && $("nextBtn")) nextQuestion();
-  if(e.key === "t" || e.key === "T"){ state.translated = !state.translated; renderQuestion(); }
+const q=QUESTIONS[qi], st=state[qi];
+document.getElementById('qCounter').textContent=`السؤال ${qi+1} / ${N}`;
+document.getElementById('heroQpos').textContent=qi+1;
+document.getElementById('qPageBadge').textContent=`📘 ${q.page}`;
+document.getElementById('qTypeBadge').textContent=q.type==='tf'?'صح / خطأ • True / False':'اختياري • Multiple Choice';
+document.getElementById('qEn').innerHTML=`<span class="text-[#F5D67B] font-black">Q${q.id}.</span> ${q.en}`;
+const showTr = translateAll || translated.has(qi);
+document.getElementById('qArBox').classList.toggle('hidden',!showTr);
+document.getElementById('qAr').textContent=q.ar;
+document.getElementById('trBtn').textContent=showTr?'🙈 إخفاء الترجمة':'🌐 ترجم';
+document.getElementById('trBtn').className=showTr?'rounded-xl px-4 py-2.5 font-black text-sm bg-white/15 border border-[#D4AF37]':'rounded-xl px-4 py-2.5 font-black text-sm btn-gold';
+document.getElementById('bmBtn').textContent=bookmarked.has(qi)?'⭐':'🤍';
+const ab=document.getElementById('attemptBadge');
+if(st.attempts>0 && !st.done){ ab.classList.remove('hidden'); ab.textContent=`🔄 المحاولة ${st.attempts+1}`; } else ab.classList.add('hidden');
+const grid=document.getElementById('optsGrid'); grid.innerHTML='';
+const letters=q.type==='tf'?['✓','✕']:['A','B','C','D'];
+q.opts.en.forEach((oe,i)=>{
+const b=document.createElement('button'); b.className='opt'; b.id=`opt${i}`;
+const isCorrectOpt = st.done && i===q.correct;
+const isWrongChosen = st.done && st.first!==null && st.chosen===i && i!==q.correct && mode==='exam';
+const isDisabledWrong = mode==='train' && st.wrongTried && st.wrongTried.includes(i);
+if(isCorrectOpt) b.classList.add('correct');
+if(isWrongChosen) b.classList.add('wrong');
+if(isDisabledWrong){ b.classList.add('dim'); b.disabled=true; }
+if(st.done && mode==='exam') b.disabled=true;
+if(st.done && mode==='train' && st.finalDone) b.disabled=true;
+b.innerHTML=`<span class="opt-letter">${letters[i]}</span><span class="flex-1"><span dir="ltr" class="block text-left font-pop font-semibold leading-7">${oe}</span><span class="block mt-1 text-[13px] font-bold ${showTr?'':'hidden'} text-[#F5D67B] opt-ar-trans">${q.opts.ar[i]}</span></span><span class="text-xl result-ico">${isCorrectOpt?'✅':(isWrongChosen?'❌':'')}</span>`;
+b.onclick=()=>answer(i);
+grid.appendChild(b);
 });
+// feedback
+const fb=document.getElementById('feedbackBox'), ex=document.getElementById('explainBox');
+fb.classList.add('hidden'); ex.classList.add('hidden');
+if(st.done){
+if(st.firstCorrect){ fb.classList.remove('hidden'); fb.className='mt-5 rounded-2xl p-5 text-center font-black text-lg pop feedback-ok'; fb.innerHTML=`🎉 ${st.successMsg||'أحسنت عبدالله كمّل يا بطل! 🏆'}<div class="text-xs font-bold text-green-200 mt-1">إجابة صحيحة من ${st.attempts===0?'أول محاولة':'المحاولة '+(st.attempts+1)} • +${st.attempts===0?10:5} XP</div>`; }
+else if(mode==='exam'){ fb.classList.remove('hidden'); fb.className='mt-5 rounded-2xl p-5 text-center font-black text-lg pop feedback-bad'; fb.innerHTML=`💪 حاول مرة أخرى يا عبدالله في السؤال القادم!<div class="text-sm mt-1">الإجابة الصحيحة: <b class="text-green-300">${q.opts.en[q.correct]}</b> • <b class="text-[#F5D67B]">${q.opts.ar[q.correct]}</b></div>`; }
+showExplain();
+if(st.finalDone && !st.firstCorrect){ fb.classList.remove('hidden'); fb.className='mt-5 rounded-2xl p-5 text-center font-black text-lg pop feedback-ok'; fb.innerHTML=`👏 أحسنت عبدالله! وصلت للصح بعد التعلم 💡<div class="text-xs mt-1 text-white/70">أول إجابة كانت خاطئة (محسوبة للمراجعة) لكن إصرارك بطولي — أكمل!</div>`; }
+} else if(st.attempts>0){
+fb.classList.remove('hidden'); fb.className='mt-5 rounded-2xl p-5 text-center font-black text-lg pop feedback-bad'; fb.innerHTML=`${failPhrases[st.attempts%failPhrases.length]}<div class="text-sm text-white/70 mt-1">اختر إجابة أخرى يا بطل — أنت تقدر! 🔥</div>`;
+}
+updateProgress(); renderPalette();
+document.getElementById('qCard').classList.remove('shake');
+}
+function showExplain(){ const q=QUESTIONS[qi]; const ex=document.getElementById('explainBox'); ex.classList.remove('hidden'); ex.innerHTML=`<b class="text-[#F5D67B]">💡 الشرح الذهبي:</b> ${q.ex}<div class="mt-1 text-xs text-white/60">النموذجية: <b dir="ltr" class="text-green-300">${q.opts.en[q.correct]}</b> — <b class="text-[#F5D67B]">${q.opts.ar[q.correct]}</b></div>`; }
 
-/* =========================================================
-   التشغيل
-   ========================================================= */
-$("navBtn").addEventListener("click", () => { sndClick(); openNav(); });
-$("closeNav").addEventListener("click", closeNav);
-$("navModal").addEventListener("click", (e) => { if(e.target.id === "navModal") closeNav(); });
+function answer(i){
+startTimer(); playClick();
+const q=QUESTIONS[qi], st=state[qi];
+if(st.done && (mode==='exam' || st.finalDone)) return;
+if(st.wrongTried && st.wrongTried.includes(i)) return;
+if(st.first===null){ st.first=i; st.attempts=0; }
+else { st.attempts++; }
+if(i===q.correct){
+// correct
+if(st.first===i){ st.firstCorrect=true; correctFirst++; streak++; bestStreak=Math.max(bestStreak,streak); xp+=10; st.successMsg=successPhrases[Math.floor(Math.random()*successPhrases.length)]; }
+else { st.firstCorrect=false; streak=0; xp+=5; if(!st.successMsg) st.successMsg=successPhrases[Math.floor(Math.random()*successPhrases.length)]; }
+st.chosen=i; st.done=true; st.finalDone=true;
+playSuccess(); smallConfetti();
+if(streak>0 && streak%5===0){ goldConfettiBig(); showCheer(`🔥 سلسلة نارية ${streak} إجابات!`,`واصل يا عبدالله! أنت تقترب من العلامة الكاملة بسرعة الصاروخ 🚀`); }
+else if(st.first===i && Math.random()<.28){ goldConfettiBig(); }
+toast(`✅ <span class="gold-text">أحسنت عبدالله كمّل يا بطل!</span> 🏆`);
+document.getElementById('qCard').classList.add('pop');
+} else {
+// wrong
+playFail();
+document.getElementById('qCard').classList.remove('shake'); void document.getElementById('qCard').offsetWidth; document.getElementById('qCard').classList.add('shake');
+if(mode==='exam'){ st.chosen=i; st.firstCorrect=false; st.done=true; st.finalDone=true; streak=0; toast(`❌ <b>حاول مرة أخرى</b> يا عبدالله في القادم! 💪`); }
+else {
+if(!st.wrongTried) st.wrongTried=[];
+st.wrongTried.push(i);
+if(st.first!==i || true){ if(st.wrongTried.length>= 2 && q.type!=='tf' && st.wrongTried.length>=3){ st.chosen=q.correct; st.done=true; st.finalDone=true; st.firstCorrect=false; streak=0; } }
+toast(`❌ <b>حاول مرة أخرى</b> يا عبدالله! 🔄`);
+if(q.type==='tf'){ /* second try will be correct */ }
+}
+}
+updateHUD(); renderQuestion();
+if(state[qi].done){ setTimeout(()=>{ if(qi<N-1 && document.getElementById('reportSection').classList.contains('hidden')){ /* stay, let user click next */ } },600); }
+}
+function nextQ(){ playClick(); if(qi<N-1){ qi++; renderQuestion(); document.getElementById('quizSection').scrollIntoView({behavior:'smooth',block:'start'}); } else toast('🏁 هذا آخر سؤال — اضغط إنهاء لعرض تقريرك الملكي'); }
+function prevQ(){ playClick(); if(qi>0){ qi--; renderQuestion(); } }
+function skipQ(){ playClick(); state[qi].skipped=true; toast('⏭️ تم تخطي السؤال — يمكنك العودة له من الخريطة'); if(qi<N-1){ qi++; renderQuestion(); } updateProgress(); renderPalette(); }
+function toggleTranslateCurrent(){ playClick(); if(translated.has(qi)) translated.delete(qi); else translated.add(qi); renderQuestion(); }
+function translateAllToggle(){ playClick(); translateAll=!translateAll; toast(translateAll?'🌐 تم تفعيل الترجمة العربية لجميع الأسئلة بجانب الإنجليزية':'🌐 تم إخفاء الترجمات'); renderQuestion(); }
+function toggleBookmark(){ playClick(); if(bookmarked.has(qi)) bookmarked.delete(qi); else { bookmarked.add(qi); toast('⭐ تمت الإضافة للمفضلة'); } renderQuestion(); renderPalette(); }
+function reviewBookmarks(){ playClick(); if(bookmarked.size===0){ toast('⭐ لا توجد أسئلة مفضلة بعد — اضغط 🤍 لحفظ سؤال'); return; } filter='bm'; renderPalette(); document.getElementById('paletteCard').scrollIntoView({behavior:'smooth'}); }
+function setFilter(f){ playClick(); filter=f; document.querySelectorAll('.filter-btn').forEach(b=>{ if(b.dataset.f===f){ b.className='filter-btn px-3 py-1.5 rounded-lg bg-[#D4AF37] text-black'; } else { b.className='filter-btn px-3 py-1.5 rounded-lg bg-white/10'; } }); renderPalette(); }
+function updateHUD(){ document.getElementById('hdrScore').textContent=xp; document.getElementById('statCorrect').textContent=correctFirst; const wrongFirst=state.filter(s=>s.firstCorrect===false).length; document.getElementById('statWrong').textContent=wrongFirst; document.getElementById('statStreak').textContent=streak+' 🔥'; document.getElementById('xpNum').textContent=xp; const lvl=Math.floor(xp/100)+1; document.getElementById('levelNum').textContent=lvl; document.getElementById('xpBar').style.width=((xp%100))+'%'; }
+function updateProgress(){ const answered=state.filter(s=>s.done).length; const pct=Math.round(answered/N*100); document.getElementById('quizProgress').style.width=Math.max(2,pct)+'%'; document.getElementById('topProgress').style.width=pct+'%'; }
+function renderPalette(){ const p=document.getElementById('palette'); p.innerHTML=''; QUESTIONS.forEach((q,idx)=>{ const st=state[idx]; let show=true; if(filter==='ok' && !(st.done&&st.firstCorrect)) show=false; if(filter==='bad' && !(st.done&&st.firstCorrect===false)) show=false; if(filter==='un' && st.done) show=false; if(filter==='bm' && !bookmarked.has(idx)) show=false; if(!show) return; const b=document.createElement('button'); b.textContent=idx+1; b.className='pal-btn'+(idx===qi?' current':'')+((st.done&&st.firstCorrect)?' ok':(st.done&&st.firstCorrect===false)?' bad':(st.skipped&&!st.done)?' skip':''); if(bookmarked.has(idx)) b.textContent+='•'; b.title=`Q${idx+1} - ${q.page}`; b.onclick=()=>{ playClick(); qi=idx; renderQuestion(); }; p.appendChild(b); }); }
 
-$("soundBtn").addEventListener("click", () => {
-  state.sound = !state.sound;
-  $("soundBtn").textContent = state.sound ? "🔊" : "🔇";
-  $("soundBtn").classList.toggle("off", !state.sound);
-  if(state.sound){ AC(); sndClick(); }
-  else if("speechSynthesis" in window){ try{ speechSynthesis.cancel(); }catch(e){} }
+/* CHEER */
+function showCheer(t,s){ document.getElementById('bigCheerTitle').textContent=t; document.getElementById('bigCheerSub').textContent=s; const o=document.getElementById('bigCheer'); o.classList.remove('hidden'); o.classList.add('flex'); }
+function closeCheer(){ const o=document.getElementById('bigCheer'); o.classList.add('hidden'); o.classList.remove('flex'); playClick(); }
+
+/* FINISH & REPORT */
+function confirmFinish(){ playClick(); const un=state.filter(s=>!s.done).length; if(un>0){ if(!confirm(`يا عبدالله، لديك ${un} سؤالًا غير مجاب. هل تريد إنهاء الاختبار وعرض النتيجة الآن؟`)) return; } finish(); }
+function finish(){ clearInterval(timerInt); playFinish(); goldConfettiBig(); setTimeout(goldConfettiBig,800);
+const correct=state.filter(s=>s.firstCorrect===true).length;
+const wrong=state.filter(s=>s.firstCorrect===false).length;
+const skipped=state.filter(s=>!s.done).length;
+const pct=Math.round(correct/N*100);
+document.getElementById('reportSection').classList.remove('hidden');
+document.getElementById('rCorrect').textContent=correct;
+document.getElementById('rWrong').textContent=wrong;
+document.getElementById('rTime').textContent=fmt(seconds);
+document.getElementById('rStreak').textContent=bestStreak+' 🔥';
+document.getElementById('finalPct').textContent=pct+'%';
+document.getElementById('reportSubtitle').textContent=`أكملت ${N} سؤالًا في ${fmt(seconds)} • صح من أول مرة: ${correct} • تحتاج مراجعة: ${wrong} • متخطّى: ${skipped}`;
+let grade,msg;
+if(pct>=90){ grade='🏆 ممتاز مع مرتبة الشرف'; msg=`أسطوري يا عبدالله! ${correct}/${N} من أول مرة — أحسنت كمّل يا بطل! أنت جاهز للكويز بنسبة 100% 👑🔥`; }
+else if(pct>=80){ grade='🌟 ممتاز'; msg=`رائع يا عبدالله! ${correct}/${N} — أحسنت كمّل يا بطل! مراجعة سريعة للأخطاء وستكون علامتك كاملة 💎`; }
+else if(pct>=70){ grade='👏 جيد جدًا'; msg=`أداء بطولي يا عبدالله! ${correct}/${N} — استمر! راجع الأسئلة الخاطئة بالأسفل وستتفوق 🚀`; }
+else if(pct>=60){ grade='💪 جيد'; msg=`بداية قوية يا عبدالله! ${correct}/${N} — حاول مرة أخرى وستتحسن كثيرًا! راجع الشرح لكل سؤال 📚`; }
+else { grade='📚 تحتاج تدريبًا'; msg=`لا تستسلم يا بطل! ${correct}/${N} — كل عظيم بدأ من هنا. راجع الأخطاء ثم أعد الاختبار وستبهر الجميع ❤️‍🔥`; }
+document.getElementById('gradeBadge').textContent=grade;
+const fm=document.getElementById('finalMessage'); fm.textContent=msg;
+const circ=document.getElementById('scoreCircle'); const off=326.7-(326.7*pct/100); setTimeout(()=>circ.style.strokeDashoffset=off,300);
+let best=parseInt(localStorage.getItem('abdullah_best_mgmt_ch2')||'0'); if(pct>best){ localStorage.setItem('abdullah_best_mgmt_ch2',pct); best=pct; toast('🎉 رقم قياسي جديد! best: '+pct+'%'); }
+document.getElementById('bestScoreHero').textContent=best+'%';
+showCheer(pct>=60?'أحسنت عبدالله كمّل يا بطل! 🏆':'حاول مرة أخرى يا بطل! 💪', msg);
+renderReportList(); drawCharts(correct,wrong,skipped);
+document.getElementById('reportSection').scrollIntoView({behavior:'smooth'});
+}
+function toggleWrongBtn(btn){ document.querySelectorAll('#reportSection .no-print button').forEach(b=>b.classList.replace('btn-gold','btn-ghost')); }
+function renderReportList(){
+const wrap=document.getElementById('reportList'); wrap.innerHTML='';
+QUESTIONS.forEach((q,idx)=>{
+const st=state[idx];
+const isOk=st.firstCorrect===true, isBad=st.firstCorrect===false, isSkip=!st.done;
+if(showOnlyWrong && !isBad) return;
+const userTxt = st.first===null?'— لم يُجب —':`${q.opts.en[st.first]} — ${q.opts.ar[st.first]}`;
+const modelTxt=`${q.opts.en[q.correct]} — ${q.opts.ar[q.correct]}`;
+const card=document.createElement('div');
+card.className=`glass rounded-2xl p-5 border-r-8 ${isOk?'!border-green-500':isBad?'!border-red-500':'!border-yellow-500'}`;
+card.innerHTML=`
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-black btn-gold rounded-lg px-3 py-1 text-sm">Q${q.id}</span>
+<span class="text-xs font-bold bg-white/10 rounded-lg px-3 py-1">📘 ${q.page}</span>
+<span class="text-xs font-bold rounded-lg px-3 py-1 ${q.type==='tf'?'bg-purple-500/20 text-purple-200':'bg-blue-500/20 text-blue-200'}">${q.type==='tf'?'صح / خطأ':'اختياري'}</span>
+${bookmarked.has(idx)?'<span class="text-xs">⭐</span>':''}
+</div>
+<span class="font-black text-sm px-4 py-1.5 rounded-full ${isOk?'bg-green-500/20 text-green-300 border border-green-500':isBad?'bg-red-500/20 text-red-300 border border-red-500':'bg-yellow-500/20 text-yellow-200 border border-yellow-500'}">${isOk?'✅ صح':'❌ خطأ / مراجعة'}</span>
+</div>
+<div dir="ltr" class="text-left font-pop font-semibold mt-3 leading-7 text-[15px]">${q.en}</div>
+<div class="ar-box p-3 mt-2 text-sm font-bold leading-7">🇸🇦 ${q.ar}</div>
+<div class="grid md:grid-cols-2 gap-3 mt-3 text-sm">
+<div class="rounded-xl p-3 border ${isOk?'bg-green-500/10 border-green-500/40':'bg-red-500/10 border-red-500/40'}"><div class="text-xs font-black opacity-70">إجابة عبدالله (أول محاولة):</div><div class="font-bold mt-1" dir="ltr">${st.first===null?'—':q.opts.en[st.first]}</div><div class="font-bold text-[#F5D67B]">${st.first===null?'لم يُجب':q.opts.ar[st.first]}</div></div>
+<div class="rounded-xl p-3 bg-green-500/10 border border-green-500/40"><div class="text-xs font-black text-green-300">✅ الإجابة النموذجية:</div><div class="font-bold mt-1" dir="ltr">${q.opts.en[q.correct]}</div><div class="font-bold text-[#F5D67B]">${q.opts.ar[q.correct]}</div></div>
+</div>
+<div class="mt-2 text-base md:text-lg leading-8 bg-black/30 rounded-xl p-4 border border-white/10">💡 <b>الشرح:</b> ${q.ex} ${st.attempts>0?`• عدد المحاولات: ${st.attempts+1}`:''}</div>
+<div class="flex gap-2 mt-3 no-print">
+<button onclick="goToQ(${idx})" class="btn-ghost rounded-lg px-4 py-2 text-xs font-bold">🔁 العودة للسؤال</button>
+<button onclick="toggleBmReport(${idx},this)" class="btn-ghost rounded-lg px-4 py-2 text-xs font-bold">${bookmarked.has(idx)?'⭐ مفضلة':'🤍 حفظ'}</button>
+</div>`;
+wrap.appendChild(card);
 });
+if(wrap.children.length===0){ wrap.innerHTML=`<div class="glass rounded-2xl p-10 text-center font-black text-green-300 text-xl">🎉 لا توجد أخطاء يا بطل! كل إجاباتك صحيحة — أحسنت عبدالله! 👑</div>`; }
+}
+function goToQ(i){ qi=i; renderQuestion(); document.getElementById('quizSection').scrollIntoView({behavior:'smooth'}); playClick(); }
+function toggleBmReport(i,btn){ if(bookmarked.has(i)) bookmarked.delete(i); else bookmarked.add(i); renderReportList(); renderPalette(); playClick(); }
+function drawCharts(c,w,s){ charts.forEach(ch=>ch.destroy()); charts=[]; charts.push(new Chart(document.getElementById('chartDoughnut'),{type:'doughnut',data:{labels:['صحيحة','تحتاج مراجعة','متخطّى'],datasets:[{data:[c,w,s],backgroundColor:['#22c55e','#ef4444','#D4AF37'],borderWidth:0}]},options:{plugins:{legend:{labels:{color:'#fff',font:{family:'Cairo',weight:'bold'}}}}}}));
+const G=[[0,29],[29,46],[46,60]]; const ok=G.map(g=>state.slice(g[0],g[1]).filter(x=>x.firstCorrect===true).length); const tot=G.map(g=>g[1]-g[0]);
+charts.push(new Chart(document.getElementById('chartBars'),{type:'bar',data:{labels:['صفحات 3–8 Q1-29','صفحات 10–14 Q30-46','صفحات 15–18 Q47-60'],datasets:[{label:'صحيحة',data:ok,backgroundColor:'#22c55e',borderRadius:10},{label:'خاطئة/متخطّى',data:tot.map((t,i)=>t-ok[i]),backgroundColor:'#ef4444',borderRadius:10}]},options:{scales:{x:{ticks:{color:'#fff'}},y:{ticks:{color:'#fff'},beginAtZero:true,max:25}},plugins:{legend:{labels:{color:'#fff'}}}}})); }
+function restartQuiz(){ if(!confirm('هل تريد إعادة الاختبار من جديد يا عبدالله؟')) return; state=QUESTIONS.map(()=>({chosen:null,first:null,attempts:0,done:false,skipped:false,firstCorrect:null})); qi=0; xp=0; streak=0; bestStreak=0; correctFirst=0; seconds=0; started=false; clearInterval(timerInt); document.getElementById('timerHero').textContent='00:00'; document.getElementById('reportSection').classList.add('hidden'); showOnlyWrong=false; updateHUD(); renderQuestion(); scrollToQuiz(); toast('🔄 بداية جديدة موفقة يا بطل!'); }
+function shareResult(){ const c=state.filter(s=>s.firstCorrect).length; const t=`🏆 نتيجة البطل عبدالله العبيدي في مراجعة مهارات إدارية – الشابتر 2: ${c}/${N} (${Math.round(c/N*100)}%) — أحسنت عبدالله كمّل يا بطل! 👑`; if(navigator.share){ navigator.share({title:'نتيجتي',text:t}).catch(()=>{}); } else { navigator.clipboard.writeText(t).then(()=>toast('📋 تم نسخ النتيجة للمشاركة!')); } }
 
-$("qTotal").textContent = DATA.length;
-renderQuestion();
+
+/* WHATSAPP REPORT TO DR. MOHAMMED */
+const DR_WA='966540058614';
+function sendWhatsApp(){
+ const c=state.filter(x=>x.firstCorrect===true).length;
+ const w=state.filter(x=>x.firstCorrect===false).length;
+ const sk=state.filter(x=>!x.done).length;
+ const total=QUESTIONS.length;
+ const pct=Math.round(c/total*100);
+ const L=['A','B','C','D'];
+ const sh=(q,i)=> i===null||i===undefined ? '—' : L[i];
+ const wrongLines=[];
+ QUESTIONS.forEach((q,idx)=>{ const st=state[idx]; if(st.firstCorrect!==true){ wrongLines.push('Q'+q.id+' ('+q.page+'): '+sh(q,st.first)+' ← الصحيح: '+sh(q,q.correct)); } });
+ let txt='السلام عليكم دكتور محمد 👋\n';
+ txt+='تقرير مراجعة مهارات إدارية – الشابتر 2 (الجزء الأول)\n';
+ txt+='الطالب: عبدالله العبيدي\n';
+ txt+='━━━━━━━━━━\n';
+ txt+='النتيجة (من أول إجابة): '+c+' / '+total+' ('+pct+'%)\n';
+ txt+='✅ صحيحة: '+c+'  ❌ خاطئة: '+w+'  ⏭️ متخطّاة: '+sk+'\n';
+ txt+='⏱️ الزمن: '+fmt(seconds)+'  🔥 أفضل سلسلة: '+bestStreak+'\n';
+ txt+='━━━━━━━━━━\n';
+ if(wrongLines.length){ txt+='الأسئلة التي تحتاج مراجعة ('+wrongLines.length+'):\n'+wrongLines.join('\n')+'\n'; }
+ else { txt+='🎉 أجبت على جميع الأسئلة بشكل صحيح من أول مرة!\n'; }
+ const url='https://wa.me/'+DR_WA+'?text='+encodeURIComponent(txt);
+ const win=window.open(url,'_blank');
+ if(!win){ location.href=url; }
+}
+
+
+/* KEYBOARD */
+document.addEventListener('keydown',e=>{ if(!document.getElementById('reportSection').classList.contains('hidden') && e.key==='Escape') closeCheer(); if(e.key>='1'&&e.key<='4'){ const q=QUESTIONS[qi]; const idx=parseInt(e.key)-1; if(idx<q.opts.en.length) answer(idx); } if(e.key==='t'||e.key==='T'||e.key==='f'||e.key==='F') toggleTranslateCurrent(); if(e.key==='ArrowLeft') nextQ(); if(e.key==='ArrowRight') prevQ(); });
+
+/* INIT */
+window.onload=function(){
+let p=0; const li=setInterval(()=>{ p+=12; document.getElementById('loadBar').style.width=Math.min(100,p)+'%'; if(p>=100){ clearInterval(li); setTimeout(()=>{ document.getElementById('preloader').style.opacity='0'; setTimeout(()=>document.getElementById('preloader').remove(),700); },300); } },120);
+document.getElementById('bestScoreHero').textContent=(localStorage.getItem('abdullah_best_mgmt_ch2')||'0')+'%';
+updateHUD(); renderQuestion(); renderPalette();
+setTimeout(()=>toast('👑 أهلًا عبدالله! اضغط <b>🌐 ترجم</b> بجانب أي سؤال لرؤية الترجمة العربية فورًا'),1800);
+};
+</script>
+<script>
+const HIER='<div class="mx-auto max-w-md mt-4 rounded-2xl p-3 text-center text-sm md:text-base font-black" style="background:#1d4e6b;border:2px solid #7dd3fc">Managing Stress <span class="text-xs font-bold opacity-70">(Symptom • Tactical)</span><div class="rounded-xl p-3 mt-2" style="background:#475569">Managing Time<div class="rounded-xl p-3 mt-2" style="background:#334155">Setting Priorities and Goals<div class="rounded-xl p-3 mt-2 text-black" style="background:#fff7d1;border:2px solid #D4AF37">⭐ Self-Awareness<div class="text-xs font-bold opacity-70">(Problem • Strategic)</div></div></div></div></div>';
+const METER='<div class="mt-4"><div class="relative h-5 rounded-full" style="background:linear-gradient(90deg,#22c55e,#facc15,#ef4444)"><div class="absolute top-[-8px] h-9 w-1.5 bg-white rounded" style="left:68%;box-shadow:0 0 14px #fff"></div></div><div class="flex justify-between text-xs md:text-sm font-bold mt-2"><span class="text-green-300">Situation 1: minor discrepancy</span><span class="text-red-300">Sensitivity line ← Situation 2: serious</span></div></div>';
+const FIVE='<div class="flex flex-wrap gap-2 mt-4 text-sm md:text-base font-black">'+[['❤️','Emotional Intelligence'],['⚖️','Values'],['🧠','Learning Style'],['🔄','Attitudes Toward Change'],['🎯','Core Self-Evaluation']].map(a=>'<span class="rounded-full px-4 py-2 bg-[#D4AF37]/15 border border-[#D4AF37]/60">'+a[0]+' '+a[1]+'</span>').join('')+'</div>';
+const SUM=[
+{pg:'3',ic:'🔑',t:'Keys to Self-Awareness',en:'For more than 300 years, knowledge of the self has been considered the very core of human behavior. Self-awareness lies at the heart of the ability to master oneself, but it is not sufficient. Self-management depends first and foremost on self-awareness.',ar:'لأكثر من 300 عام اعتُبرت معرفة الذات جوهر السلوك الإنساني. الوعي الذاتي في قلب القدرة على إتقان النفس لكنه غير كافٍ وحده. والإدارة الذاتية تعتمد أولًا وقبل كل شيء على الوعي الذاتي.'},
+{pg:'4–5',ic:'🧅',t:'Hierarchy of Personal Self-Management Skills',en:'Self-awareness sits at the core, then Setting Priorities and Goals, Managing Time, and Managing Stress. Developing self-control and clarifying priorities and goals help individuals create direction. Managing time and managing stress make it possible to adapt to and organize their surroundings.',ar:'الوعي الذاتي في المركز، ثم تحديد الأولويات والأهداف، ثم إدارة الوقت، ثم إدارة الضغوط. ضبط النفس وتوضيح الأولويات والأهداف يمنحان الفرد اتجاهًا، أما إدارة الوقت والضغوط فتمكّنانه من التكيف مع محيطه وتنظيمه.',x:HIER},
+{pg:'6–7',ic:'🪞',t:'Definition and Usefulness',en:'Self-awareness is having a clear knowledge and awareness of your personality, including strengths, weaknesses, thoughts, beliefs, motivation, and emotions. It lets you understand other people and how they perceive you, improve relationships, reach goals, and gain greater self-confidence.',ar:'الوعي الذاتي هو معرفة ووعي واضحان بشخصيتك، بما فيها نقاط القوة والضعف والأفكار والمعتقدات والدافعية والمشاعر. يتيح لك فهم الآخرين وكيف يرونك، وتحسين علاقاتك وبلوغ أهدافك وزيادة ثقتك بنفسك.'},
+{pg:'8',ic:'🧩',t:'The Enigma of Self-Awareness',en:'Seeking self knowledge is a prerequisite for personal growth, and more self-aware individuals are healthier and more productive. Yet self knowledge may also inhibit growth: we avoid new self-knowledge because it may make us feel inferior, weak, or ashamed, so we protect our self-esteem.',ar:'السعي لمعرفة الذات شرط للنمو الشخصي، والأكثر وعيًا بذاتهم أصح وأكثر إنتاجية. لكن معرفة الذات قد تعيق النمو أيضًا: نتجنبها لأنها قد تشعرنا بالنقص أو الضعف أو الخجل، فنحمي احترامنا لذاتنا.'},
+{pg:'9–10, 12',ic:'🚧',t:'The Sensitivity Line',en:'The sensitivity line is the point at which individuals become defensive when encountering information inconsistent with their self-concept or pressure to alter their behavior. The more serious the discrepancy, the closer it gets to the line, triggering the threat-rigidity response: becoming conservative and self-protective.',ar:'خط الحساسية هو النقطة التي يصبح عندها الفرد دفاعيًا عند مواجهة معلومات لا تتسق مع مفهومه الذاتي أو ضغط لتغيير سلوكه. كلما زادت خطورة الاختلاف اقتربت المعلومة من الخط، فتظهر استجابة جمود-التهديد: يصبح الفرد محافظًا ومتمسكًا بحماية ذاته.',x:METER},
+{pg:'11–12',ic:'🎭',t:'Two Situations',en:'Situation 1: a friend says you look tired but you feel fine. The discrepancy is minor, so it will not evoke a strong defensive reaction. Situation 2: a coworker judges you incompetent despite your good job. The discrepancy is very high and its implications very serious for your self-concept.',ar:'الموقف 1: صديق يقول إنك تبدو متعبًا وأنت بخير؛ الاختلاف طفيف فلن يثير ردة فعل دفاعية قوية. الموقف 2: زميل يحكم بعدم كفاءتك رغم أدائك الجيد؛ الاختلاف كبير جدًا وتبعاته خطيرة على مفهومك الذاتي.'},
+{pg:'13–14',ic:'🛠️',t:'How Self-Knowledge Can Grow',en:'Information that is verifiable, predictable, and controllable is less likely to cross the sensitive line, and self-disclosure lets others provide insights. Manage the enigma by exercising some control over when and what kind of information you receive, and by involving others in your pursuit of self-understanding.',ar:'المعلومات القابلة للتحقق والتوقع والتحكم أقل احتمالًا لتخطي خط الحساسية، والإفصاح الذاتي يتيح للآخرين تقديم رؤى. ندير اللغز بممارسة بعض التحكم في وقت ونوع المعلومات التي نتلقاها، وبإشراك الآخرين في سعينا لفهم ذواتنا.'},
+{pg:'15–16',ic:'🤝',t:'Appreciating Individual Differences',en:'Most people tend to interact with those like themselves and exclude those who seem different, which is catastrophic. We observe differences but do not have to create distinctions. Observing differences eliminates social barriers, while distinctions create them.',ar:'يميل معظم الناس للتفاعل مع من يشبهونهم واستبعاد المختلفين، وهذا كارثي. نلاحظ الاختلافات لكن لا يلزمنا خلق تمييزات. ملاحظة الاختلاف تزيل الحواجز الاجتماعية، أما التمييزات فتخلقها.'},
+{pg:'17–18',ic:'🌟',t:'Five Areas of Self-Awareness',en:'Five of the most critical areas of self-awareness are key in developing successful management: emotional intelligence, personal values, learning style, orientation toward change, and core self-evaluation.',ar:'خمسة من أهم مجالات الوعي الذاتي مفاتيح لتطوير إدارة ناجحة: الذكاء العاطفي، والقيم الشخصية، وأسلوب التعلم، والتوجه نحو التغيير، والتقييم الذاتي الجوهري.',x:FIVE}];
+const EXS=["ببساطة: عشان تتحكم في حياتك لازم تعرف نفسك الأول. <b>مثال:</b> سواق عايز يوصل مكان لازم يعرف موقعه الحالي أولًا، لكنه كمان محتاج خريطة وبنزين.", "الوعي الذاتي زي أساس البيت، وفوقه الأولويات والأهداف، ثم الوقت، ثم الضغوط. <b>مثال:</b> طالب يعرف نفسه وهدفه (النجاح)، فينظم وقته ويتحمل ضغط الامتحان.", "هو إنك تعرف نقاط قوتك وضعفك ومشاعرك. <b>مثال:</b> تعرف إنك قوي في الشرح وضعيف في الالتزام بالمواعيد، فتحسن علاقتك بزملائك وتثق في نفسك.", "محتاجين نعرف نفسنا عشان نتطور، لكن بنخاف من الحقيقة. <b>مثال:</b> طالب يتجنب يفتح نتيجته خوفًا من الدرجة، فيضيّع فرصة تحسينها.", "لكل واحد نقطة لو لمسها حد بيدافع عن نفسه. <b>مثال:</b> لو حد انتقد شغلك بقسوة هتغضب وتتصلب، وده جمود التهديد.", "ملاحظة بسيطة بتعدّي، وملاحظة جارحة بتثير دفاعك. <b>مثال:</b> «شكلك تعبان» تعدّيها، لكن «إنت مش كفء» بتوجعك.", "أسهل تتقبل معلومة واضحة ومتوقعة، ولما تحكي للناس بيساعدوك. <b>مثال:</b> تعرض مشروعك على صديقك قبل التقديم الرسمي.", "الناس بتميل لمن يشبهها، لكن الأفضل نفهم الاختلاف. <b>مثال:</b> فريق فيه خبرات مختلفة يكون أقوى، بشرط ألا نصنّف الناس.", "خمس مفاتيح: مشاعرك، قيمك، طريقة تعلمك، تعاملك مع التغيير، وصورتك الأساسية عن نفسك. <b>مثال:</b> تعرف إنك بتتعلم بالصور، فتذاكر بالرسومات."];SUM.forEach((s,i)=>s.ex=EXS[i]);
+const shown=new Set();
+function drawSum(){document.getElementById('sumList').innerHTML=SUM.map((s,i)=>{const on=shown.has(i);return '<div class="rounded-3xl p-4 md:p-6 bg-black/25 border border-[#D4AF37]/30"><div class="flex flex-wrap items-center justify-between gap-2"><div class="flex items-center gap-3"><span class="text-3xl">'+s.ic+'</span><div><div class="font-black text-lg md:text-xl">'+(i+1)+'. '+s.t+'</div><span class="text-xs md:text-sm font-bold bg-white/10 rounded-lg px-3 py-1">📘 صفحة '+s.pg+'</span></div></div><button onclick="sumOne('+i+')" class="'+(on?'rounded-xl px-5 py-2.5 font-black bg-white/15 border border-[#D4AF37]':'btn-gold rounded-xl px-5 py-2.5 font-black')+'">'+(on?'🙈 إخفاء الترجمة':'🌐 ترجم')+'</button></div><div class="grid '+(on?'md:grid-cols-2':'')+' gap-4 mt-4"><div dir="ltr" class="text-left font-pop text-base md:text-lg leading-9 bg-black/30 border border-white/10 rounded-2xl p-4">'+s.en+'</div>'+(on?'<div class="ar-box p-4 pop"><div class="text-xs md:text-sm font-black text-[#F5D67B] mb-1">🇸🇦 الترجمة:</div><div class="font-bold text-lg md:text-xl leading-10">'+s.ar+'</div></div>':'')+'</div>'+(s.x||'')+'<div class="rounded-2xl p-4 mt-4" style="background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.55)"><div class="font-black text-[#F5D67B] text-base md:text-lg mb-1">💡 شرح مبسّط ومثال من الواقع</div><div class="font-bold text-lg md:text-xl leading-10">'+s.ex+'</div></div></div>'}).join('')}
+function sumOne(i){shown.has(i)?shown.delete(i):shown.add(i);drawSum()}
+function sumAll(){const all=shown.size<SUM.length;shown.clear();if(all)SUM.forEach((_,i)=>shown.add(i));document.getElementById('sumAllBtn').textContent=all?'🙈 إخفاء كل الترجمات':'🌐 ترجمة كل الفقرات';drawSum()}
+drawSum();
 </script>
 </body>
 </html>
